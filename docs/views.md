@@ -9,8 +9,8 @@
 ## Categories
 ![categories]
 
-## Component Hierarchy
-![hierarchy]
+## Project Index
+![projectIndex]
 
 ## Project Details
 ![projectDetails]
@@ -18,18 +18,19 @@
 ## Project Form
 ![projectForm]
 
-## Project Index
-![projectIndex]
-
 ## User Details
 ![userDetails]
+
+## Component Hierarchy
+![hierarchy]
+
 
 
 [new-user]: ./wireframes/create_account.png
 [new-session]: ./wireframes/login_page.png
 [categories]: ./wireframes/categories.png
-[hierarchy]: ./wireframes/hierarchy.png
+[projectIndex]: ./wireframes/project_index.png
 [projectDetails]: ./wireframes/project_details.png
 [projectForm]: ./wireframes/project_form.png
-[projectIndex]: ./wireframes/project_index.png
 [userDetails]: ./wireframes/user_details.png
+[hierarchy]: ./wireframes/component_hierarchy.png
