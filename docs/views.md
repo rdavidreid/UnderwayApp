@@ -25,7 +25,6 @@
 ![hierarchy]
 
 
-
 [new-user]: ./wireframes/create_account.png
 [new-session]: ./wireframes/login_page.png
 [categories]: ./wireframes/categories.png
