@@ -7,6 +7,26 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  
+  <!--  TODO remove current_user buttons, replace with top bar -->
+
+  <% if current_user %>
+  <%= button_to "Sign Out", session_url, method: :delete %>
+  <%= current_user.username %>
+<% else %>
+  <%= link_to "Sign In", new_session_url %>
+  <%= link_to "Sign Up", new_user_url %>
+<% end %>
+
+  <% if flash[:errors] %>
+  <section id="errors">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li> <%= error %> </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
 
 <%= yield %>
 

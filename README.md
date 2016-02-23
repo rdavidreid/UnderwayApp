@@ -9,8 +9,8 @@
 UnderWay is a web application inspired by Kickstarter built using Ruby on Rails
 and React.js. UnderWay allows users to:
 
-- [ ] Create an account
-- [ ] Log in / Log out
+- [X] Create an account
+- [X] Log in / Log out
 - [ ] Explore projects users have created
 - [ ] Back projects created by other users
 - [ ] Create projects that other users can back.
