@@ -37,10 +37,10 @@ and React.js. UnderWay allows users to:
 
 **Objective:** Build functioning rails project with authentication
 
-- [ ] create `User` model
-- [ ] Implement authentication
-- [ ] create user signup/signin pages
-- [ ] blank landing page after signin
+- [X] create `User` model
+- [X] Implement authentication
+- [X] create user signup/signin pages
+- [X] blank landing page after signin
 
 ### Phase 2: Project Model, API, and basic APIUtil (1.5 days / 2)
 
