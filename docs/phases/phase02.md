@@ -18,19 +18,19 @@
 * projectStore
 
 ### Actions
--projectStore.recieveAllProjects
--projectStore.recieveSelectProjects
--projectStore.recieveSingleProject
--projectStore.updateProject
--projectStore.removeProject
+* projectStore.recieveAllProjects
+* projectStore.recieveSelectProjects
+* projectStore.recieveSingleProject
+* projectStore.updateProject
+* projectStore.removeProject
 
 
 ### ApiUtil
-  ApiUtil.fetchAllProjects
-  ApiUtil.fetchSingleProject
-  ApiUtil.createProject
-  ApiUtil.updateProject
-  ApiUtil.destroyProject
+* ApiUtil.fetchAllProjects
+* ApiUtil.fetchSingleProject
+* ApiUtil.createProject
+* ApiUtil.updateProject
+* ApiUtil.destroyProject
 
 ## Gems/Libraries
 * Webpack
