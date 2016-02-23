@@ -15,7 +15,6 @@
 * ProjectForm
 
 ### Stores
-* ProjectFormStore
 
 ### Actions
 

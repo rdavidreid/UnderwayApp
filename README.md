@@ -2,7 +2,7 @@
 
 [Heroku link][heroku]
 
-[heroku]: http://www.herokuapp.com
+[heroku]: https://underway.herokuapp.com/
 
 ## Minimum Viable Product
 
@@ -68,7 +68,7 @@ the API.
   - [ ] `ProjectForm` (To create a new project)
 
 
-### Phase 4: Start Styling (0.5 days / 4.5)
+### Phase 4: Start Styling (1 day / 5)
 
 **Objective:** Existing pages (including singup/signin) will look good.
 
@@ -77,7 +77,7 @@ the API.
 - [ ] position elements on page
 - [ ] add basic colors & styles
 
-### Phase 5: Back Projects (2 days / 6.5)
+### Phase 5: Back Projects (2 days / 7)
 
 **Objective:** Add functionality so projects can be 'backed'
 
@@ -92,7 +92,7 @@ the API.
 - [ ] Add Reward creation to Project Creation
 - [ ] Style new elements
 
-### Phase 6: User Profile Page (1 days / 7.5)
+### Phase 6: User Profile Page (1 days / 8)
 
 **Objective:** Add functionality to allow user to see backed projects, created
 projects, and change display name / password
@@ -102,7 +102,7 @@ projects, and change display name / password
 - [ ] Users page displays projects user has created
 
 
-### Phase 7: Touch up CSS ( 0.5 days / 8)
+### Phase 7: Touch up CSS (1 day / 9)
 
 **Objective:** Make things look pretty!
 
@@ -112,7 +112,7 @@ projects, and change display name / password
 - [ ] Make sure CSS and overall style is the same across all pages
 
 
-### Phase 8: Categories (1 day / 9)
+### Phase 8: Categories (1 day / 10)
 
 **Objective:** All projects have a category. On project index page, user can
 chose which categories to display, or to display all.
@@ -123,7 +123,7 @@ chose which categories to display, or to display all.
 - [ ] add functionality that allows user to sort by category on Discovery page
 - [ ] Style new elements
 
-### Phase 9: Polish  & Refactor (1 days / 10)
+### Phase 9: Polish  & Refactor (1 days / 11)
 
 **Objective:** Make site as clean and presentable as possible
 

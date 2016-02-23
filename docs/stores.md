@@ -22,32 +22,6 @@ Holds all persisted Project data.
 
 
 
-### ProjectFormStore
-
-Holds un-persisted project data to send to the API.
-
-##### Actions:
-- `receiveProjectFormParams`
-
-##### Listeners:
-- `ProjectForm`
-
-
-
-### BackerStore
-
-Will hold current user's backed project data from join table
-
-##### Actions:
-- `recieveAllPairs`
-- `recieveSelectPairs`
-- `removePair`
-
-##### Listeners:
-- `ProjectDetail`
-
-
-
 ### RewardStore
 
 Holds all persisted reward data.
@@ -59,18 +33,6 @@ Holds all persisted reward data.
 
 ##### Listeners:
 - `ProjectDetail`
-
-
-
-### RewardFormStore
-
-Holds un-persisted reward data to send to the API.
-
-##### Actions:
-- `receiveRewardFormParams`
-
-##### Listeners:
-- `ProjectForm`
 
 
 
@@ -92,7 +54,5 @@ shows Users details, backed projects, and created projects
 
 ##### Actions:
 - `recieveUserDetails`
-- `recieveBackedProjects`
-- `recieveCreatedProjects`
 
 ##### Listeners:
