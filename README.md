@@ -47,10 +47,10 @@ and React.js. UnderWay allows users to:
 **Objective:** A project can be created, viewed, edited and destroyed through
 the API.
 
-- [ ] create `Project` model
-- [ ] seed the database with test data
-- [ ] create standard CRUD API for projects (`ProjectsController`)
-- [ ] create jBuilder views for projects
+- [X] create `Project` model
+- [X] seed the database with test data
+- [X] create standard CRUD API for projects (`ProjectsController`)
+- [X] create jBuilder views for projects
 - [ ] setup Webpack & Flux
 - [ ] setup `APIUtil` to interact with the API
 - [ ] test API interaction in the console.
