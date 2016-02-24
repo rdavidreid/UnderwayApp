@@ -25,3 +25,30 @@ current_funding:    0,
 funding_goal:       100000,
 campaign_end_date:  Date.new
 })
+
+Project.create!({
+title:              "project 2",
+blurb:              "The blurb of project 2",
+img_url:            "http://lorempixel.com/200/200/cats/",
+details:            "These are the details of project two. This could contain
+a very large amount of text. text text text text text text text text text text",
+author_id:          1,
+category_id:        1,
+current_funding:    0,
+funding_goal:       100000,
+campaign_end_date:  Date.new
+})
+
+
+Project.create!({
+title:              "project 3",
+blurb:              "The blurb of project 3",
+img_url:            "http://lorempixel.com/200/200/cats/",
+details:            "These are the details of project three. This could contain
+a very large amount of text. text text text text text text text text text text",
+author_id:          1,
+category_id:        1,
+current_funding:    0,
+funding_goal:       100000,
+campaign_end_date:  Date.new
+})

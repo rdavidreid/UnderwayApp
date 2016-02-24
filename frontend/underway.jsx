@@ -1,5 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ProjectStore = require('./stores/ProjectStore');
+var ApiUtil = require('./util/api_util');
+
 
 
 var Fun = React.createClass({
@@ -11,7 +14,7 @@ var Fun = React.createClass({
 
 });
 
-
+window.ApiUtil = ApiUtil;
 
 document.addEventListener("DOMContentLoaded", function () {
   ReactDOM.render(<Fun />, document.getElementById('content'));

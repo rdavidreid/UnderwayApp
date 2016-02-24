@@ -51,9 +51,9 @@ the API.
 - [X] seed the database with test data
 - [X] create standard CRUD API for projects (`ProjectsController`)
 - [X] create jBuilder views for projects
-- [ ] setup Webpack & Flux
-- [ ] setup `APIUtil` to interact with the API
-- [ ] test API interaction in the console.
+- [X] setup Webpack & Flux
+- [X] setup `APIUtil` to interact with the API
+- [X] test API interaction in the console.
 
 ### Phase 3: Flux Architecture and Router (2 days / 4)
 
