@@ -10,7 +10,7 @@ var ApiActions = {
   },
   recieveSingle: function(obj) {
     Dispatcher.dispatch({
-      actionType: ProjectConstants.PROJECTS_RECIEVED,
+      actionType: ProjectConstants.SINGLE_PROJECT_RECIEVED,
       projects: obj
     });
   },
