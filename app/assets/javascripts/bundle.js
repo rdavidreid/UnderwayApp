@@ -51,6 +51,7 @@
 	var ProjectIndex = __webpack_require__(184);
 	var ProjectDetail = __webpack_require__(235);
 	var ProjectForm = __webpack_require__(236);
+	var ProjectEditForm = __webpack_require__(241);
 
 	var Router = __webpack_require__(186).Router;
 	var Route = __webpack_require__(186).Route;
@@ -64,7 +65,9 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'app' },
-	      React.createElement(ProjectIndex, null)
+	      React.createElement(ProjectIndex, null),
+	      '// ',
+	      this.props.children
 	    );
 	  }
 
@@ -75,9 +78,10 @@
 	var routes = React.createElement(
 	  Router,
 	  null,
-	  React.createElement(Route, { path: '/', component: App }),
+	  React.createElement(Route, { path: '/', component: ProjectIndex }),
 	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
-	  React.createElement(Route, { path: 'createproject', component: ProjectForm })
+	  React.createElement(Route, { path: 'createproject', component: ProjectForm }),
+	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm })
 	)
 
 	// <Route path="project/:id" component={ProjectDetail}>
@@ -26548,23 +26552,21 @@
 	      // data: bounds,
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
-	        func && func(data.id);
+	        func && func(data.project.id);
 	      },
-	      error: function (data) {
-
-	        console.log(data);
-	      }
+	      error: function (data) {}
 	    });
 	  },
 	  // "/api/projects/"
-	  updateProject: function (currentProject) {
+	  updateProject: function (currentProject, func) {
 	    $.ajax({
-	      url: "/api/projects/" + currentProject['project']['id'],
+	      url: "/api/projects/" + currentProject['Project']['project']['id'],
 	      type: "PATCH",
 	      data: currentProject,
 	      // data: bounds,
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
+	        func && func(data.project.id);
 	      }
 	    });
 	  },
@@ -31373,10 +31375,12 @@
 	var React = __webpack_require__(1);
 	var ProjectStore = __webpack_require__(159);
 	var ApiUtil = __webpack_require__(182);
+	var History = __webpack_require__(186).History;
 
 	var ProjectDetail = React.createClass({
 	  displayName: 'ProjectDetail',
 
+	  mixins: [History],
 
 	  getStateFromStore: function () {
 	    return { Project: ProjectStore.findById(parseInt(this.props.params.id)) };
@@ -31403,12 +31407,32 @@
 	    this.projectListener.remove();
 	  },
 
+	  deleteProject: function () {
+	    ApiUtil.destroyProject(this.state.Project);
+	    this.history.push('/');
+	  },
+
+	  editProject: function () {
+	    this.history.push('/editproject/' + this.state.Project.project.id);
+	  },
+
 	  render: function () {
 	    if (this.state.Project === undefined || this.state.Project.project === undefined) {
 	      return React.createElement(
 	        'p',
 	        null,
 	        'Loading...'
+	      );
+	    } else {
+	      var btnDelete = React.createElement(
+	        'button',
+	        { onClick: this.deleteProject },
+	        'Delete'
+	      );
+	      var btnEdit = React.createElement(
+	        'button',
+	        { onClick: this.editProject },
+	        'Edit'
 	      );
 	    }
 	    return React.createElement(
@@ -31434,7 +31458,11 @@
 	      ),
 	      'IDIS: ',
 	      this.props.params.id,
-	      ' WOO'
+	      ' WOO',
+	      React.createElement('br', null),
+	      btnEdit,
+	      ' ',
+	      btnDelete
 	    );
 	  }
 	});
@@ -31449,6 +31477,7 @@
 	var ApiUtil = __webpack_require__(182);
 	var History = __webpack_require__(186).History;
 	var LinkedStateMixin = __webpack_require__(237);
+	var ProjectStore = __webpack_require__(159);
 
 	var projectForm = React.createClass({
 	  displayName: 'projectForm',
@@ -31469,26 +31498,26 @@
 	    return this.inputs;
 	  },
 
-	  // TODO: REFACTOR / CLEAN THIS. must be a better way
+	  // TODO: REFACTOR / CLEAN THIS. add into another file
 
 	  validateInput: function () {
 	    this.errors = [];
-	    if (this.state.title === "") {
+	    if (this.state.title === "" || this.state.title === " ") {
 	      this.errors.push("Title can not be blank");
 	    }
-	    if (this.state.blurb === "") {
+	    if (this.state.blurb === "" || this.state.title === " ") {
 	      this.errors.push("blurb cannot be blank");
 	    }
-	    if (this.state.campaign_end_date === "") {
+	    if (this.state.campaign_end_date === "" || this.state.title === " ") {
 	      this.errors.push("date cannot be blank");
 	    }
-	    if (this.state.details === "") {
+	    if (this.state.details === "" || this.state.title === " ") {
 	      this.errors.push("details cannot be blank");
 	    }
-	    if (this.state.category_id === "") {
+	    if (this.state.category_id === "" || this.state.title === " ") {
 	      this.errors.push("you must select a category!");
 	    }
-	    if (this.state.funding_goal === "") {
+	    if (this.state.funding_goal === "" || this.state.title === " ") {
 	      this.errors.push("You must have a funding goal");
 	    }
 	    if (this.errors.length > 0) {
@@ -31501,12 +31530,14 @@
 	    event.preventDefault();
 	    var project = {};
 
+	    //TODO EDIT THIS
+
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state.key;
+	      console.log(this.state.key);
 	    }.bind(this));
 
 	    var valid = this.validateInput();
-	    debugger;
 	    if (valid) {
 	      ApiUtil.createProject(this.state, function (id) {
 	        this.history.pushState(null, "/project/" + id, {});
@@ -31537,6 +31568,7 @@
 	          'label',
 	          { htmlFor: 'project_title' },
 	          'Title:',
+	          React.createElement('br', null),
 	          React.createElement('input', {
 	            type: 'text',
 	            id: 'project_title',
@@ -31552,6 +31584,7 @@
 	          'label',
 	          { htmlFor: 'project_blurb' },
 	          'Blurb:',
+	          React.createElement('br', null),
 	          React.createElement('input', {
 	            type: 'text',
 	            id: 'project_blurb',
@@ -31567,6 +31600,7 @@
 	          'label',
 	          { htmlFor: 'project_end_date' },
 	          'End date:',
+	          React.createElement('br', null),
 	          React.createElement('input', {
 	            type: 'date',
 	            id: 'project_end_date',
@@ -31582,6 +31616,7 @@
 	          'label',
 	          { htmlFor: 'details' },
 	          'Details:',
+	          React.createElement('br', null),
 	          React.createElement('textarea', { id: 'details', valueLink: this.linkState("details") })
 	        )
 	      ),
@@ -31592,6 +31627,7 @@
 	          'label',
 	          { htmlFor: 'category' },
 	          'Category:',
+	          React.createElement('br', null),
 	          React.createElement(
 	            'select',
 	            { id: 'category', valueLink: this.linkState("category_id") },
@@ -31630,6 +31666,7 @@
 	          'label',
 	          { htmlFor: 'funding_goal' },
 	          'Funding Goal:',
+	          React.createElement('br', null),
 	          React.createElement('input', {
 	            type: 'text',
 	            id: 'funding_goal',
@@ -31645,6 +31682,7 @@
 	          'label',
 	          { htmlFor: 'img_url' },
 	          'Image:',
+	          React.createElement('br', null),
 	          React.createElement('input', {
 	            type: 'text',
 	            id: 'img_url',
@@ -31893,6 +31931,184 @@
 	};
 
 	module.exports = ReactStateSetters;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+	var History = __webpack_require__(186).History;
+	var LinkedStateMixin = __webpack_require__(237);
+	var ProjectStore = __webpack_require__(159);
+
+	var projectForm = React.createClass({
+	  displayName: 'projectForm',
+
+	  mixins: [LinkedStateMixin, History],
+
+	  inputs: {
+	    title: "",
+	    blurb: "",
+	    campaign_end_date: "",
+	    details: "",
+	    category_id: "",
+	    funding_goal: "",
+	    img_url: ""
+	  },
+
+	  getStateFromStore: function () {
+	    return { Project: ProjectStore.findById(parseInt(this.props.params.id)) };
+	  },
+
+	  componentDidMount: function () {
+	    this.projectListener = ProjectStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+	  },
+
+	  componentWillUnmount: function () {
+	    this.projectListener.remove();
+	  },
+
+	  _onChange: function () {
+	    this.setState(this.getStateFromStore());
+	  },
+
+	  getInitialState: function () {
+	    console.log(this.props.params.id);
+	    console.log("EDIT FORM!!");
+	    return this.getStateFromStore();
+	  },
+
+	  // TODO: REFACTOR / CLEAN THIS. add into another file
+
+	  validateInput: function () {
+	    this.errors = [];
+	    if (this.state.title === "" || this.state.title === " ") {
+	      this.errors.push("Title can not be blank");
+	    }
+	    if (this.state.blurb === "" || this.state.title === " ") {
+	      this.errors.push("blurb cannot be blank");
+	    }
+	    if (this.state.campaign_end_date === "" || this.state.title === " ") {
+	      this.errors.push("date cannot be blank");
+	    }
+	    if (this.state.details === "" || this.state.title === " ") {
+	      this.errors.push("details cannot be blank");
+	    }
+	    if (this.state.category_id === "" || this.state.title === " ") {
+	      this.errors.push("you must select a category!");
+	    }
+	    if (this.state.funding_goal === "" || this.state.title === " ") {
+	      this.errors.push("You must have a funding goal");
+	    }
+	    if (this.errors.length > 0) {
+	      return false;
+	    }
+	    return true;
+	  },
+
+	  editProject: function (event) {
+	    event.preventDefault();
+	    var project = {};
+
+	    //TODO EDIT THIS
+
+	    Object.keys(this.state).forEach(function (key) {
+	      project[key] = this.state[key];
+	      console.log(this.state.key);
+	    }.bind(this));
+
+	    var valid = this.validateInput();
+	    if (valid) {
+	      ApiUtil.updateProject(project, function (id) {
+	        this.history.pushState(null, "/project/" + id, {});
+	      }.bind(this));
+	    } else {
+	      alert(this.errors.join("\n"));
+	    }
+	  },
+
+	  render: function () {
+	    if (this.state.Project == undefined) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'loading...'
+	      );
+	    }
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'form',
+	        { className: 'new-project', onSubmit: this.editProject },
+	        React.createElement(
+	          'h2',
+	          null,
+	          this.state.Project.title
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'project_blurb' },
+	            'Blurb:',
+	            React.createElement('br', null),
+	            React.createElement('input', {
+	              type: 'text',
+	              id: 'project_blurb',
+	              valueLink: this.linkState("blurb"),
+	              defaultValue: this.state.Project.project.blurb,
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'details' },
+	            'Details:',
+	            React.createElement('br', null),
+	            React.createElement('textarea', {
+	              id: 'details',
+	              valueLink: this.linkState("details"),
+	              defaultValue: this.state.Project.project.details
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'img_url' },
+	            'Image:',
+	            React.createElement('br', null),
+	            React.createElement('input', {
+	              type: 'text',
+	              id: 'img_url',
+	              valueLink: this.linkState("img_url"),
+	              defaultValue: this.state.Project.project.img_url,
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Edit Project'
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = projectForm;
 
 /***/ }
 /******/ ]);

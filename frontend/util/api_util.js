@@ -9,7 +9,6 @@ var ApiUtil = {
         ApiActions.recieveAll(data);
       },
     });
-
   },
 
   fetchSingleProject: function(id) {
@@ -33,23 +32,22 @@ var ApiUtil = {
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);
-        func && func(data.id);
+        func && func(data.project.id);
       },
       error: function(data) {
-
-        console.log(data);
       }
     });
   },
 // "/api/projects/"
-  updateProject: function(currentProject) {
+  updateProject: function(currentProject, func) {
     $.ajax({
-      url: "/api/projects/" + currentProject['project']['id'],
+      url: "/api/projects/" + currentProject['Project']['project']['id'],
       type: "PATCH",
-      data: currentProject,
+      data: (currentProject),
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);
+        func && func(data.project.id);
       },
     });
   },

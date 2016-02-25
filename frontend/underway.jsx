@@ -5,6 +5,7 @@ var ApiUtil = require('./util/api_util');
 var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
 var ProjectForm = require('./components/projectForm');
+var ProjectEditForm = require('./components/ProjectEditForm');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -16,6 +17,7 @@ var App = React.createClass({
     return(
       <div id="app">
         <ProjectIndex />
+        // {this.props.children}
       </div>
     );
   }
@@ -26,9 +28,12 @@ var App = React.createClass({
 
 var routes = (
   <Router>
-    <Route path="/" component={App} ></Route>
+
+    <Route path="/" component={ProjectIndex} ></Route>
     <Route path="project/:id" component={ProjectDetail} ></Route>
     <Route path="createproject" component={ProjectForm}></Route>
+    <Route path="editproject/:id" component={ProjectEditForm}></Route>
+
   </Router>
 
     // <Route path="project/:id" component={ProjectDetail}>

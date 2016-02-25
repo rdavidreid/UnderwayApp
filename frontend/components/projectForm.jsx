@@ -2,6 +2,7 @@ var React = require('react');
 var ApiUtil = require('../util/api_util.js');
 var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var ProjectStore = require('../stores/ProjectStore');
 
 var projectForm = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -17,26 +18,32 @@ var projectForm = React.createClass({
   },
 
   getInitialState: function() {
-    return this.inputs;
+    return(this.inputs);
   },
 
-  // TODO: REFACTOR / CLEAN THIS. must be a better way
+  // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
     this.errors = [];
-    if(this.state.title === "") {this.errors.push("Title can not be blank");}
-    if(this.state.blurb ==="") {this.errors.push("blurb cannot be blank"); }
-    if(this.state.campaign_end_date === ""){
+    if(this.state.title === "" || this.state.title === " ") {
+      this.errors.push("Title can not be blank");
+    }
+    if(this.state.blurb ==="" || this.state.title === " ") {
+      this.errors.push("blurb cannot be blank");
+    }
+    if(this.state.campaign_end_date === "" || this.state.title === " ") {
       this.errors.push("date cannot be blank");
     }
-    if(this.state.details === "") {this.errors.push("details cannot be blank");}
-    if(this.state.category_id ==="") {
+    if(this.state.details === "" || this.state.title === " ") {
+      this.errors.push("details cannot be blank");
+    }
+    if(this.state.category_id ==="" || this.state.title === " ") {
       this.errors.push("you must select a category!");
     }
-    if(this.state.funding_goal === ""){
+    if(this.state.funding_goal === "" || this.state.title === " ") {
       this.errors.push("You must have a funding goal");
     }
-    if (this.errors.length > 0){
+    if (this.errors.length > 0) {
       return false;
     }
     return true;
@@ -46,12 +53,14 @@ var projectForm = React.createClass({
     event.preventDefault();
     var project = {};
 
+    //TODO EDIT THIS
+
     Object.keys(this.state).forEach(function(key){
       project[key] = this.state.key;
+      console.log(this.state.key);
     }.bind(this));
 
     var valid = this.validateInput();
-    debugger;
     if (valid) {
       ApiUtil.createProject(this.state, function(id) {
         this.history.pushState(null, "/project/" + id, {});
@@ -77,6 +86,7 @@ var projectForm = React.createClass({
       <form className="new-project" onSubmit={this.createProject}>
         <div>
           <label htmlFor='project_title'>Title:
+            <br />
             <input
               type="text"
               id="project_title"
@@ -88,6 +98,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='project_blurb'>Blurb:
+            <br />
             <input
               type="text"
               id="project_blurb"
@@ -99,6 +110,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='project_end_date'>End date:
+            <br />
             <input
               type="date"
               id="project_end_date"
@@ -110,6 +122,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='details'>Details:
+            <br />
             <textarea id="details" valueLink={this.linkState("details")}>
             </textarea>
           </label>
@@ -117,6 +130,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='category'>Category:
+            <br />
             <select id="category" valueLink={this.linkState("category_id")}>
               <option value=" ">select:</option>
               <option value={1}>Category 1</option>
@@ -129,6 +143,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='funding_goal'>Funding Goal:
+            <br />
             <input
               type="text"
               id="funding_goal"
@@ -140,6 +155,7 @@ var projectForm = React.createClass({
 
         <div>
           <label htmlFor='img_url'>Image:
+            <br />
             <input
               type="text"
               id="img_url"

@@ -65,7 +65,7 @@ the API.
   - [X] `ProjectsIndex` (contains index items)
   - [X] `ProjectIndexItem` (Displays small amount of details on each project)
   - [X] `ProjectDetail` (Displays all details on specific project)
-  - [ ] `ProjectForm` (To create a new project)
+  - [X] `ProjectForm` (To create a new project)
 
 
 ### Phase 4: Start Styling (1 day / 5)

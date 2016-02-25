@@ -5,7 +5,9 @@ class Api::ProjectsController < ApplicationController
   end
 
   def show
+    # puts "PARAMS: #{params[id]}"
     @project = Project.find_by_id(params[:id])
+    puts "PROJECT = #{@project}"
   end
 
   # def errors
@@ -40,14 +42,18 @@ class Api::ProjectsController < ApplicationController
 
   def update
     @project = Project.find_by_id(params[:id])
-
     if @project
-      if @project.update({
-        blurb: params[:project][:blurb],
-        img_url: params[:project][:img_url],
-        details: params[:project][:details]
-        })
+      if @project.update(edit_params)
+        puts "great success"
       end
+      # if @project.update({
+      #   blurb: params[:blurb],
+      #   img_url: params[:img_url],
+      #   details: params[:details]
+      #   })
+      #   puts @project
+      #   puts "asdfffasdflkjasdflkjasdlkfjaslkdfjalksdjflkasdjfklajsldkfjlaksd"
+      # end
     end
 
     render :show
@@ -68,8 +74,12 @@ class Api::ProjectsController < ApplicationController
     puts params
     params.require(:project).permit(
       :title, :blurb, :img_url, :details, :category_id,
-      :funding_goal, :campaign_end_date
+      :funding_goal, :campaign_end_date, :Project
     )
+  end
+
+  def edit_params
+    params.permit(:blurb, :img_url, :details)
   end
 
   # TODO REMOVE:
