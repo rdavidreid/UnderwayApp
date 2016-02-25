@@ -6,6 +6,8 @@ var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
 var ProjectForm = require('./components/projectForm');
 var ProjectEditForm = require('./components/ProjectEditForm');
+var Menu = require('./components/Menu');
+
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -16,29 +18,37 @@ var App = React.createClass({
   render: function() {
     return(
       <div id="app">
-        <ProjectIndex />
-        // {this.props.children}
+        <Menu />
+
+        {this.props.children}
       </div>
     );
   }
 
-  // <ProjectDetail />
-  // {this.props.children}
 });
 
 var routes = (
-  <Router>
-
-    <Route path="/" component={ProjectIndex} ></Route>
+  <Route path="/" component={App}>
+    <IndexRoute component={ProjectIndex}></IndexRoute>
     <Route path="project/:id" component={ProjectDetail} ></Route>
     <Route path="createproject" component={ProjectForm}></Route>
     <Route path="editproject/:id" component={ProjectEditForm}></Route>
-
-  </Router>
-
-    // <Route path="project/:id" component={ProjectDetail}>
-    // </Route>
+  </Route>
 );
+
+
+
+// var routes = (
+//   <Router>
+//
+//     <Route path="/" component={ProjectIndex} ></Route>
+//     <Route path="project/:id" component={ProjectDetail} ></Route>
+//     <Route path="createproject" component={ProjectForm}></Route>
+//     <Route path="editproject/:id" component={ProjectEditForm}></Route>
+//
+//   </Router>
+
+// );
 
 // TODO REMOVE:
 window.ApiUtil = ApiUtil;

@@ -72,6 +72,7 @@ the API.
 
 **Objective:** Existing pages (including singup/signin) will look good.
 
+- [ ] create top menu bar
 - [ ] create a basic style guide
 - [ ] implement bootstrap
 - [ ] position elements on page

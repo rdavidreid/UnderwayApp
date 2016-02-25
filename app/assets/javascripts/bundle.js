@@ -52,6 +52,7 @@
 	var ProjectDetail = __webpack_require__(235);
 	var ProjectForm = __webpack_require__(236);
 	var ProjectEditForm = __webpack_require__(241);
+	var Menu = __webpack_require__(242);
 
 	var Router = __webpack_require__(186).Router;
 	var Route = __webpack_require__(186).Route;
@@ -65,28 +66,33 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'app' },
-	      React.createElement(ProjectIndex, null),
-	      '// ',
+	      React.createElement(Menu, null),
 	      this.props.children
 	    );
 	  }
 
-	  // <ProjectDetail />
-	  // {this.props.children}
 	});
 
 	var routes = React.createElement(
-	  Router,
-	  null,
-	  React.createElement(Route, { path: '/', component: ProjectIndex }),
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: ProjectIndex }),
 	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
 	  React.createElement(Route, { path: 'createproject', component: ProjectForm }),
 	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm })
-	)
+	);
 
-	// <Route path="project/:id" component={ProjectDetail}>
-	// </Route>
-	;
+	// var routes = (
+	//   <Router>
+	//
+	//     <Route path="/" component={ProjectIndex} ></Route>
+	//     <Route path="project/:id" component={ProjectDetail} ></Route>
+	//     <Route path="createproject" component={ProjectForm}></Route>
+	//     <Route path="editproject/:id" component={ProjectEditForm}></Route>
+	//
+	//   </Router>
+
+	// );
 
 	// TODO REMOVE:
 	window.ApiUtil = ApiUtil;
@@ -32109,6 +32115,264 @@
 	});
 
 	module.exports = projectForm;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Logo = __webpack_require__(245);
+	var Discover = __webpack_require__(244);
+	var Create = __webpack_require__(243);
+	var Profile = __webpack_require__(246);
+	var History = __webpack_require__(186).History;
+
+	// <nav className="navbar navbar-default" role="navigation">
+	//   <div className="container">
+	//
+	//     <div className="navbar-header">
+	//       <Logo className="navbar-brand" />
+	//     </div>
+	//
+	//     <ul className="nav nav-pills">
+	//
+	//       <li role="presentation"><Discover /></li>
+	//       <li role="presentation"><Create /></li>
+	//     </ul>
+	//
+	//     <ul className="nav navbar-nav navbar-right">
+	//       <li className="dropdown">
+	//         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Menu <span className="caret"></span></a>
+	//         <ul className="dropdown-menu" role="menu">
+	//           <li><a href="#">Login</a></li>
+	//           <li className="divider"></li>
+	//           <li>thing</li>
+	//         </ul>
+	//       </li>
+	//     </ul>
+	//   </div>
+	// </nav>
+
+	var Menu = React.createClass({
+	  displayName: 'Menu',
+
+	  mixins: [History],
+	  render: function () {
+	    return React.createElement(
+	      'nav',
+	      { className: 'navbar navbar-default' },
+	      React.createElement(
+	        'div',
+	        { className: 'container-fluid' },
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-header' },
+	          React.createElement(
+	            'button',
+	            { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
+	            React.createElement(
+	              'span',
+	              { className: 'sr-only' },
+	              'Toggle navigation'
+	            ),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' })
+	          ),
+	          React.createElement(Logo, { className: 'navbar-brand' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                null,
+	                React.createElement(Discover, null)
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                null,
+	                React.createElement(Create, null)
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav navbar-right' },
+	            React.createElement(
+	              'li',
+	              { className: 'dropdown' },
+	              React.createElement(
+	                'a',
+	                {
+	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
+	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
+	                'Profile',
+	                React.createElement('span', { className: 'caret' })
+	              ),
+	              React.createElement(
+	                'ul',
+	                { className: 'dropdown-menu' },
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    null,
+	                    'My Page'
+	                  )
+	                ),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    null,
+	                    'Settings'
+	                  )
+	                ),
+	                React.createElement('li', { role: 'separator', className: 'divider' }),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    { href: '#' },
+	                    'Logout'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	// <div className="navbar navbar-fixed-top">
+	//   <div className="container">
+	//     <div className="navbar-header">
+	//       <Logo className="navbar-brand" />
+	//       <button type="button" className="navbar-toggle" data-toggle="collapse"data-target=".navbar-collapse">
+	//         <span className="sr-only">Toggle nav</span>
+	//         <span className="icon-bar"></span>
+	//         <span className="icon-bar"></span>
+	//         <span className="icon-bar"></span>
+	//       </button>
+	//     </div>
+	//
+	//     <div className="collapse navbar-collapse">
+	//       <ul className="nav navbar-nav">
+	//         <li><Discover /></li>
+	//         <li><Create /></li>
+	//       </ul>
+	//     </div>
+	//   </div>
+	// </div>
+
+	// <Logo /><Discover /><Create />
+	// <Logo />
+	// <Discover />
+	// <Create />
+	// <Profile />
+	module.exports = Menu;
+
+	// Logo
+	// Discover
+	// Create
+	// Profile
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(186).History;
+
+	var Create = React.createClass({
+	  displayName: 'Create',
+
+	  mixins: [History],
+	  _clickCreate: function () {
+	    this.history.push("/createProject");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickCreate },
+	      'Create'
+	    );
+	  }
+	});
+
+	module.exports = Create;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(186).History;
+
+	var Discover = React.createClass({
+	  displayName: 'Discover',
+
+	  mixins: [History],
+	  _clickDiscover: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickDiscover },
+	      'Discover'
+	    );
+	  }
+	});
+
+	module.exports = Discover;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(186).History;
+
+	var Logo = React.createClass({
+	  displayName: 'Logo',
+
+	  mixins: [History],
+	  _clickLogo: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'logo-icon', onClick: this._clickLogo },
+	      React.createElement('img', { src: '/assets/Underway-icon.png', id: 'icon' })
+	    );
+	  }
+	});
+
+	module.exports = Logo;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	
 
 /***/ }
 /******/ ]);
