@@ -80,7 +80,6 @@ var projectForm = React.createClass({
       project[key] = this.state[key];
       console.log(this.state.key);
     }.bind(this));
-
     var valid = this.validateInput();
     if (valid) {
       ApiUtil.updateProject(project, function(id) {

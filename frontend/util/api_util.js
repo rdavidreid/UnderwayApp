@@ -43,7 +43,8 @@ var ApiUtil = {
     $.ajax({
       url: "/api/projects/" + currentProject['Project']['project']['id'],
       type: "PATCH",
-      data: (currentProject),
+      data: {project: currentProject},
+      // data: (currentProject),
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);

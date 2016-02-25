@@ -43,7 +43,7 @@ class Api::ProjectsController < ApplicationController
   def update
     @project = Project.find_by_id(params[:id])
     if @project
-      if @project.update(edit_params)
+      if @project.update(project_params)
         puts "great success"
       end
       # if @project.update({
@@ -78,9 +78,9 @@ class Api::ProjectsController < ApplicationController
     )
   end
 
-  def edit_params
-    params.permit(:blurb, :img_url, :details)
-  end
+  # def edit_params
+  #   params.permit(:blurb, :img_url, :details)
+  # end
 
   # TODO REMOVE:
   # @project = Project.new(

@@ -26562,7 +26562,8 @@
 	    $.ajax({
 	      url: "/api/projects/" + currentProject['Project']['project']['id'],
 	      type: "PATCH",
-	      data: currentProject,
+	      data: { project: currentProject },
+	      // data: (currentProject),
 	      // data: bounds,
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
@@ -32018,7 +32019,6 @@
 	      project[key] = this.state[key];
 	      console.log(this.state.key);
 	    }.bind(this));
-
 	    var valid = this.validateInput();
 	    if (valid) {
 	      ApiUtil.updateProject(project, function (id) {
