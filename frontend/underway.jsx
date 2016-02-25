@@ -4,6 +4,7 @@ var ProjectStore = require('./stores/ProjectStore');
 var ApiUtil = require('./util/api_util');
 var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
+var ProjectForm = require('./components/projectForm');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -27,6 +28,7 @@ var routes = (
   <Router>
     <Route path="/" component={App} ></Route>
     <Route path="project/:id" component={ProjectDetail} ></Route>
+    <Route path="createproject" component={ProjectForm}></Route>
   </Router>
 
     // <Route path="project/:id" component={ProjectDetail}>

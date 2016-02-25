@@ -8,6 +8,10 @@ class Api::ProjectsController < ApplicationController
     @project = Project.find_by_id(params[:id])
   end
 
+  # def errors
+  #   @my_errors
+  # end
+
   def create
     @project = Project.new(project_params)
 
@@ -28,6 +32,8 @@ class Api::ProjectsController < ApplicationController
     if @project.save
       render :show
     else
+      # @my_errors = @project.errors.full_messages
+      # render json: @erorrs, status: 402
     end
 
   end
@@ -59,6 +65,7 @@ class Api::ProjectsController < ApplicationController
   private
 
   def project_params
+    puts params
     params.require(:project).permit(
       :title, :blurb, :img_url, :details, :category_id,
       :funding_goal, :campaign_end_date

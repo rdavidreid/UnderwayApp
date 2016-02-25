@@ -33,7 +33,8 @@ var ProjectDetail = React.createClass({
   },
 
   render: function() {
-    if (this.state.Project === undefined || this.state.Project.project === undefined){
+    if (this.state.Project === undefined ||
+    this.state.Project.project === undefined){
       return(<p>Loading...</p>);
     }
     return(

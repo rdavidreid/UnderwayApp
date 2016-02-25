@@ -50,6 +50,7 @@
 	var ApiUtil = __webpack_require__(182);
 	var ProjectIndex = __webpack_require__(184);
 	var ProjectDetail = __webpack_require__(235);
+	var ProjectForm = __webpack_require__(236);
 
 	var Router = __webpack_require__(186).Router;
 	var Route = __webpack_require__(186).Route;
@@ -75,7 +76,8 @@
 	  Router,
 	  null,
 	  React.createElement(Route, { path: '/', component: App }),
-	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail })
+	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
+	  React.createElement(Route, { path: 'createproject', component: ProjectForm })
 	)
 
 	// <Route path="project/:id" component={ProjectDetail}>
@@ -26535,17 +26537,22 @@
 	    });
 	  },
 
-	  createProject: function (newProject) {
+	  createProject: function (newProject, func) {
 	    // var newProject = {};
 	    // newProject['project']['title'] = "peanuts";
 
 	    $.ajax({
 	      url: "/api/projects",
 	      type: "POST",
-	      data: newProject,
+	      data: { project: newProject },
 	      // data: bounds,
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
+	        func && func(data.id);
+	      },
+	      error: function (data) {
+
+	        console.log(data);
 	      }
 	    });
 	  },
@@ -31433,6 +31440,459 @@
 	});
 
 	module.exports = ProjectDetail;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+	var History = __webpack_require__(186).History;
+	var LinkedStateMixin = __webpack_require__(237);
+
+	var projectForm = React.createClass({
+	  displayName: 'projectForm',
+
+	  mixins: [LinkedStateMixin, History],
+
+	  inputs: {
+	    title: "",
+	    blurb: "",
+	    campaign_end_date: "",
+	    details: "",
+	    category_id: "",
+	    funding_goal: "",
+	    img_url: ""
+	  },
+
+	  getInitialState: function () {
+	    return this.inputs;
+	  },
+
+	  // TODO: REFACTOR / CLEAN THIS. must be a better way
+
+	  validateInput: function () {
+	    this.errors = [];
+	    if (this.state.title === "") {
+	      this.errors.push("Title can not be blank");
+	    }
+	    if (this.state.blurb === "") {
+	      this.errors.push("blurb cannot be blank");
+	    }
+	    if (this.state.campaign_end_date === "") {
+	      this.errors.push("date cannot be blank");
+	    }
+	    if (this.state.details === "") {
+	      this.errors.push("details cannot be blank");
+	    }
+	    if (this.state.category_id === "") {
+	      this.errors.push("you must select a category!");
+	    }
+	    if (this.state.funding_goal === "") {
+	      this.errors.push("You must have a funding goal");
+	    }
+	    if (this.errors.length > 0) {
+	      return false;
+	    }
+	    return true;
+	  },
+
+	  createProject: function (event) {
+	    event.preventDefault();
+	    var project = {};
+
+	    Object.keys(this.state).forEach(function (key) {
+	      project[key] = this.state.key;
+	    }.bind(this));
+
+	    var valid = this.validateInput();
+	    debugger;
+	    if (valid) {
+	      ApiUtil.createProject(this.state, function (id) {
+	        this.history.pushState(null, "/project/" + id, {});
+	      }.bind(this));
+	    } else {
+	      alert(this.errors.join("\n"));
+	    }
+	  },
+
+	  render: function () {
+
+	    // if (this.errors !== undefined && this.errors.length > 0){
+	    //   var errorArr = this.errors.map(function(error) {
+	    //     return(<li id="error-item"></li>);
+	    //   });
+	    // }else{
+	    //   this.errorArr = "";
+	    // }
+	    // <ul id="error-list">{errorArr}</ul>
+
+	    return React.createElement(
+	      'form',
+	      { className: 'new-project', onSubmit: this.createProject },
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'project_title' },
+	          'Title:',
+	          React.createElement('input', {
+	            type: 'text',
+	            id: 'project_title',
+	            valueLink: this.linkState("title"),
+	            required: true
+	          })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'project_blurb' },
+	          'Blurb:',
+	          React.createElement('input', {
+	            type: 'text',
+	            id: 'project_blurb',
+	            valueLink: this.linkState("blurb"),
+	            required: true
+	          })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'project_end_date' },
+	          'End date:',
+	          React.createElement('input', {
+	            type: 'date',
+	            id: 'project_end_date',
+	            valueLink: this.linkState("campaign_end_date"),
+	            required: true
+	          })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'details' },
+	          'Details:',
+	          React.createElement('textarea', { id: 'details', valueLink: this.linkState("details") })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'category' },
+	          'Category:',
+	          React.createElement(
+	            'select',
+	            { id: 'category', valueLink: this.linkState("category_id") },
+	            React.createElement(
+	              'option',
+	              { value: ' ' },
+	              'select:'
+	            ),
+	            React.createElement(
+	              'option',
+	              { value: 1 },
+	              'Category 1'
+	            ),
+	            React.createElement(
+	              'option',
+	              { value: 2 },
+	              'Category 2'
+	            ),
+	            React.createElement(
+	              'option',
+	              { value: 3 },
+	              'Category 3'
+	            ),
+	            React.createElement(
+	              'option',
+	              { value: 4 },
+	              'Category 4'
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'funding_goal' },
+	          'Funding Goal:',
+	          React.createElement('input', {
+	            type: 'text',
+	            id: 'funding_goal',
+	            valueLink: this.linkState("funding_goal"),
+	            required: true
+	          })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'img_url' },
+	          'Image:',
+	          React.createElement('input', {
+	            type: 'text',
+	            id: 'img_url',
+	            valueLink: this.linkState("img_url"),
+	            required: true
+	          })
+	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        null,
+	        'Create Project'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = projectForm;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(238);
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+
+	'use strict';
+
+	var ReactLink = __webpack_require__(239);
+	var ReactStateSetters = __webpack_require__(240);
+
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+
+	'use strict';
+
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+
+	var React = __webpack_require__(2);
+
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+
+	module.exports = ReactLink;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+
+	'use strict';
+
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+
+	module.exports = ReactStateSetters;
 
 /***/ }
 /******/ ]);

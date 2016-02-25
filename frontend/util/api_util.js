@@ -22,18 +22,23 @@ var ApiUtil = {
     });
   },
 
-  createProject: function(newProject) {
+  createProject: function(newProject, func) {
     // var newProject = {};
     // newProject['project']['title'] = "peanuts";
 
     $.ajax({
       url: "/api/projects",
       type: "POST",
-      data: newProject,
+      data: {project: newProject},
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);
+        func && func(data.id);
       },
+      error: function(data) {
+
+        console.log(data);
+      }
     });
   },
 // "/api/projects/"

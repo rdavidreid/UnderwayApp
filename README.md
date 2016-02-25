@@ -59,12 +59,12 @@ the API.
 
 **Objective:** Projects can be created, viewed, edited and destroyed with UI.
 
-- [ ] setup the flux loop
-- [ ] setup React Router
+- [X] setup the flux loop
+- [X] setup React Router
 - implement each Project component, building out flux loop as needed.
-  - [ ] `ProjectsIndex` (contains index items)
-  - [ ] `ProjectIndexItem` (Displays small amount of details on each project)
-  - [ ] `ProjectDetail` (Displays all details on specific project)
+  - [X] `ProjectsIndex` (contains index items)
+  - [X] `ProjectIndexItem` (Displays small amount of details on each project)
+  - [X] `ProjectDetail` (Displays all details on specific project)
   - [ ] `ProjectForm` (To create a new project)
 
 
