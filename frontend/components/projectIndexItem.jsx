@@ -12,13 +12,20 @@ var ProjectIndexItem = React.createClass({
 
   render: function() {
     return(
-      <li id='listIndexItem'
+      <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-4"
         onClick={this.showDetails}
         key={parseInt(this.props.project.id)} >
-
-        <p>Title: {this.props.project.title}</p>
-        <p>Blurb: {this.props.project.blurb}</p>
-      </li>
+        <div className="inner-box">
+          <div className="thumbnail">
+            <h3 className="project-index-item-title">{this.props.project.title}
+            </h3>
+            <br />
+            <br />
+            <img src="http://lorempixel.com/400/400/cats"></img>
+            <p>Blurb: {this.props.project.blurb}</p>
+          </div>
+        </div>
+      </div>
     );
   }
 

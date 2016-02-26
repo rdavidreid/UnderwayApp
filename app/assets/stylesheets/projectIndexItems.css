@@ -1,0 +1,12 @@
+.project-index-item-title {
+  text-align: center;
+}
+.index-item {
+  border-radius: 20px;
+  max-width: 600px;
+}
+.inner-box {
+  box-shadow: 5px 5px 2px #888888;
+  border-radius: 20px;
+
+}

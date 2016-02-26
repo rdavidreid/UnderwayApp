@@ -19,8 +19,9 @@ var App = React.createClass({
     return(
       <div id="app">
         <Menu />
-
-        {this.props.children}
+        <div className="container">
+          {this.props.children}
+        </div>
       </div>
     );
   }

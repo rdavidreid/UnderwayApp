@@ -6,35 +6,6 @@ var Profile = require('./menuitems/profile');
 var SignOut = require('./menuitems/SignOut');
 var History = require('react-router').History;
 
-
-
-
-// <nav className="navbar navbar-default" role="navigation">
-//   <div className="container">
-//
-//     <div className="navbar-header">
-//       <Logo className="navbar-brand" />
-//     </div>
-//
-//     <ul className="nav nav-pills">
-//
-//       <li role="presentation"><Discover /></li>
-//       <li role="presentation"><Create /></li>
-//     </ul>
-//
-//     <ul className="nav navbar-nav navbar-right">
-//       <li className="dropdown">
-//         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Menu <span className="caret"></span></a>
-//         <ul className="dropdown-menu" role="menu">
-//           <li><a href="#">Login</a></li>
-//           <li className="divider"></li>
-//           <li>thing</li>
-//         </ul>
-//       </li>
-//     </ul>
-//   </div>
-// </nav>
-
 var Menu = React.createClass({
   mixins: [History],
   render: function() {
@@ -44,7 +15,15 @@ var Menu = React.createClass({
         <div className="container-fluid">
 
           <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+
+            <button
+              type="button"
+              className="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1"
+              aria-expanded="false"
+            >
+
               <span className="sr-only">Toggle navigation</span>
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
@@ -53,7 +32,10 @@ var Menu = React.createClass({
             <Logo className="navbar-brand" />
           </div>
 
-          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div
+            className="collapse navbar-collapse"
+            id="bs-example-navbar-collapse-1"
+          >
 
             <ul className="nav navbar-nav">
               <li><a><Discover /></a></li>
@@ -64,7 +46,9 @@ var Menu = React.createClass({
               <li className="dropdown">
                 <a
                   href="#" className="dropdown-toggle" data-toggle="dropdown"
-                  role="button" aria-haspopup="true" aria-expanded="false">Profile
+                  role="button" aria-haspopup="true" aria-expanded="false"
+                >
+                  Profile
                   <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu">
@@ -88,7 +72,8 @@ var Menu = React.createClass({
 //   <div className="container">
 //     <div className="navbar-header">
 //       <Logo className="navbar-brand" />
-//       <button type="button" className="navbar-toggle" data-toggle="collapse"data-target=".navbar-collapse">
+//       <button type="button" className="navbar-toggle"
+//        data-toggle="collapse"data-target=".navbar-collapse">
 //         <span className="sr-only">Toggle nav</span>
 //         <span className="icon-bar"></span>
 //         <span className="icon-bar"></span>

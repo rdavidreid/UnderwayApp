@@ -67,7 +67,11 @@
 	      'div',
 	      { id: 'app' },
 	      React.createElement(Menu, null),
-	      this.props.children
+	      React.createElement(
+	        'div',
+	        { className: 'container' },
+	        this.props.children
+	      )
 	    );
 	  }
 
@@ -26691,8 +26695,8 @@
 	    });
 
 	    return React.createElement(
-	      'ul',
-	      { id: 'indexItemContainer' },
+	      'div',
+	      { className: 'row' },
 	      arrProjects
 	    );
 	  }
@@ -26700,6 +26704,19 @@
 	});
 
 	module.exports = ProjectIndex;
+
+	// <div class="row">
+	//   <div class="col-sm-6 col-md-4">
+	//     <div class="thumbnail">
+	//       <img src="..." alt="...">
+	//       <div class="caption">
+	//         <h3>Thumbnail label</h3>
+	//         <p>...</p>
+	//         <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+	//       </div>
+	//     </div>
+	//   </div>
+	// </div>
 
 /***/ },
 /* 185 */
@@ -26721,21 +26738,31 @@
 
 	  render: function () {
 	    return React.createElement(
-	      'li',
-	      { id: 'listIndexItem',
+	      'div',
+	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
 	        onClick: this.showDetails,
 	        key: parseInt(this.props.project.id) },
 	      React.createElement(
-	        'p',
-	        null,
-	        'Title: ',
-	        this.props.project.title
-	      ),
-	      React.createElement(
-	        'p',
-	        null,
-	        'Blurb: ',
-	        this.props.project.blurb
+	        'div',
+	        { className: 'inner-box' },
+	        React.createElement(
+	          'div',
+	          { className: 'thumbnail' },
+	          React.createElement(
+	            'h3',
+	            { className: 'project-index-item-title' },
+	            this.props.project.title
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('img', { src: 'http://lorempixel.com/400/400/cats' }),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Blurb: ',
+	            this.props.project.blurb
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -32154,32 +32181,6 @@
 	var SignOut = __webpack_require__(248);
 	var History = __webpack_require__(186).History;
 
-	// <nav className="navbar navbar-default" role="navigation">
-	//   <div className="container">
-	//
-	//     <div className="navbar-header">
-	//       <Logo className="navbar-brand" />
-	//     </div>
-	//
-	//     <ul className="nav nav-pills">
-	//
-	//       <li role="presentation"><Discover /></li>
-	//       <li role="presentation"><Create /></li>
-	//     </ul>
-	//
-	//     <ul className="nav navbar-nav navbar-right">
-	//       <li className="dropdown">
-	//         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Menu <span className="caret"></span></a>
-	//         <ul className="dropdown-menu" role="menu">
-	//           <li><a href="#">Login</a></li>
-	//           <li className="divider"></li>
-	//           <li>thing</li>
-	//         </ul>
-	//       </li>
-	//     </ul>
-	//   </div>
-	// </nav>
-
 	var Menu = React.createClass({
 	  displayName: 'Menu',
 
@@ -32196,7 +32197,13 @@
 	          { className: 'navbar-header' },
 	          React.createElement(
 	            'button',
-	            { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
+	            {
+	              type: 'button',
+	              className: 'navbar-toggle collapsed',
+	              'data-toggle': 'collapse',
+	              'data-target': '#bs-example-navbar-collapse-1',
+	              'aria-expanded': 'false'
+	            },
 	            React.createElement(
 	              'span',
 	              { className: 'sr-only' },
@@ -32210,7 +32217,10 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	          {
+	            className: 'collapse navbar-collapse',
+	            id: 'bs-example-navbar-collapse-1'
+	          },
 	          React.createElement(
 	            'ul',
 	            { className: 'nav navbar-nav' },
@@ -32243,7 +32253,8 @@
 	                'a',
 	                {
 	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
-	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
+	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false'
+	                },
 	                'Profile',
 	                React.createElement('span', { className: 'caret' })
 	              ),
@@ -32291,7 +32302,8 @@
 	//   <div className="container">
 	//     <div className="navbar-header">
 	//       <Logo className="navbar-brand" />
-	//       <button type="button" className="navbar-toggle" data-toggle="collapse"data-target=".navbar-collapse">
+	//       <button type="button" className="navbar-toggle"
+	//        data-toggle="collapse"data-target=".navbar-collapse">
 	//         <span className="sr-only">Toggle nav</span>
 	//         <span className="icon-bar"></span>
 	//         <span className="icon-bar"></span>
