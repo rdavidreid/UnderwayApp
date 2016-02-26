@@ -26,4 +26,16 @@ class Project < ActiveRecord::Base
     class_name: 'User'
   )
 
+  has_many(
+    :rewards
+  )
+
+  has_many(
+    :backers,
+    through: :rewards
+  )
+
+
+
+
 end

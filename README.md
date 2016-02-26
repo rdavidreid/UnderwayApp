@@ -11,7 +11,7 @@ and React.js. UnderWay allows users to:
 
 - [X] Create an account
 - [X] Log in / Log out
-- [ ] Explore projects users have created
+- [X] Explore projects users have created
 - [ ] Back projects created by other users
 - [ ] Create projects that other users can back.
 - [ ] Projects are funded if enough money is raised in a set amount of time.
@@ -72,18 +72,18 @@ the API.
 
 **Objective:** Existing pages (including singup/signin) will look good.
 
-- [ ] create top menu bar
-- [ ] create a basic style guide
-- [ ] implement bootstrap
-- [ ] position elements on page
-- [ ] add basic colors & styles
+- [X] create top menu bar
+- [X] create a basic style guide
+- [X] implement bootstrap
+- [X] position elements on page
+- [X] add basic colors & styles
 
 ### Phase 5: Back Projects (2 days / 7)
 
 **Objective:** Add functionality so projects can be 'backed'
 
-- [ ] create `backers` join table
-- [ ] create `Rewards` Table and Model
+- [X] create `backers` join table
+- [X] create `Rewards` Table and Model
 - build out API, Flux loop, and components for:
   - [ ] backers create, destroy, index, show API
   - [ ] rewards create, index
@@ -141,8 +141,12 @@ chose which categories to display, or to display all.
 - [ ] Implement 'Account Settings.' Edit display name, update password, etc.
 - [ ] Implement infinite scroll on Project Index. Fix scalability.
 
-[phase-one]: ./docs/phases/phase1.md
-[phase-two]: ./docs/phases/phase2.md
-[phase-three]: ./docs/phases/phase3.md
-[phase-four]: ./docs/phases/phase4.md
-[phase-five]: ./docs/phases/phase5.md
+[phase-one]: ./docs/phases/phase01.md
+[phase-two]: ./docs/phases/phase02.md
+[phase-three]: ./docs/phases/phase03.md
+[phase-four]: ./docs/phases/phase04.md
+[phase-five]: ./docs/phases/phase05.md
+[phase-five]: ./docs/phases/phase06.md
+[phase-five]: ./docs/phases/phase07.md
+[phase-five]: ./docs/phases/phase08.md
+[phase-five]: ./docs/phases/phase09.md
