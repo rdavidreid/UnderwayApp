@@ -31477,6 +31477,7 @@
 	  },
 
 	  render: function () {
+
 	    if (this.state.Project === undefined || this.state.Project.project === undefined) {
 	      return React.createElement(
 	        'p',
@@ -31495,6 +31496,15 @@
 	        'Edit'
 	      );
 	    }
+
+	    var rewards = "";
+	    if (this.state.Project.project.rewards === undefined) {} else {
+	      rewards = [];
+	      this.state.Project.project.rewards.forEach(function (el) {
+	        rewards.push(el.reward_title);
+	      });
+	    }
+
 	    return React.createElement(
 	      'div',
 	      null,
@@ -31565,7 +31575,9 @@
 	        React.createElement(
 	          'div',
 	          { className: 'col-md-4' },
-	          'This will be rewards'
+	          'This will be rewards',
+	          React.createElement('br', null),
+	          rewards
 	        )
 	      )
 	    );

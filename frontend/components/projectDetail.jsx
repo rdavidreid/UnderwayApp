@@ -45,6 +45,7 @@ var ProjectDetail = React.createClass({
   },
 
   render: function() {
+
     if (this.state.Project === undefined ||
     this.state.Project.project === undefined){
       return(<p>Loading...</p>);
@@ -52,6 +53,16 @@ var ProjectDetail = React.createClass({
       var btnDelete = (<button onClick={this.deleteProject}>Delete</button>);
       var btnEdit =   (<button onClick={this.editProject}>Edit</button>);
     }
+
+    var rewards = ""
+    if (this.state.Project.project.rewards === undefined){
+    } else {
+      rewards = [];
+      this.state.Project.project.rewards.forEach(function(el) {
+        rewards.push(el.reward_title);
+      });
+    }
+
     return(
       <div>
       <div className="row details-top">
@@ -78,6 +89,8 @@ var ProjectDetail = React.createClass({
         </div>
         <div className="col-md-4">
           This will be rewards
+          <br></br>
+          {rewards}
         </div>
       </div>
       </div>

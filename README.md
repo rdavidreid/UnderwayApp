@@ -85,9 +85,9 @@ the API.
 - [X] create `backers` join table
 - [X] create `Rewards` Table and Model
 - build out API, Flux loop, and components for:
-  - [ ] backers create, destroy, index, show API
-  - [ ] rewards create, index
-  - [ ] fetching rewards for specific project
+  - [ ] backers create, index, show [API ONLY]
+  - [ ] rewards create, destroy, index
+  - [X] fetching rewards for specific project
   - [ ] Backing a project on project show page
   - [ ] `Reward` component.
 - [ ] Add Reward creation to Project Creation
