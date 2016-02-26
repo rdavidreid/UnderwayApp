@@ -53,13 +53,33 @@ var ProjectDetail = React.createClass({
       var btnEdit =   (<button onClick={this.editProject}>Edit</button>);
     }
     return(
-      <div id="ProjectDetailPane">
-        <h3>TITLE: {this.state.Project.project.title}</h3>
-        <p>Blurb:{this.state.Project.project.blurb}</p>
+      <div>
+      <div className="row details-top">
+        <div id="ProjectDetailPane" className="col-md-6">
+          <h3>TITLE: {this.state.Project.project.title}</h3>
+          <img src={this.state.Project.project.img_url}></img>
+          <p>Blurb:{this.state.Project.project.blurb}</p>
+          ID IS: {this.props.params.id}
+          <br/>
+          {btnEdit} {btnDelete}
+        </div>
+
+        <div className="col-md-6">
+          <h4>Funding Goal:</h4>
+          <p>{this.state.Project.project.funding_goal}</p>
+          <h4>Campaign end date:</h4>
+          <p>{this.state.Project.project.campaign_end_date}</p>
+        </div>
+      </div>
+
+      <div className="row row details-bottom">
+        <div className="col-md-8">
         <p>details:{this.state.Project.project.details}</p>
-        IDIS: {this.props.params.id} WOO
-        <br/>
-        {btnEdit} {btnDelete}
+        </div>
+        <div className="col-md-4">
+          This will be rewards
+        </div>
+      </div>
       </div>
     );
   }

@@ -31497,32 +31497,77 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { id: 'ProjectDetailPane' },
+	      null,
 	      React.createElement(
-	        'h3',
-	        null,
-	        'TITLE: ',
-	        this.state.Project.project.title
+	        'div',
+	        { className: 'row details-top' },
+	        React.createElement(
+	          'div',
+	          { id: 'ProjectDetailPane', className: 'col-md-6' },
+	          React.createElement(
+	            'h3',
+	            null,
+	            'TITLE: ',
+	            this.state.Project.project.title
+	          ),
+	          React.createElement('img', { src: this.state.Project.project.img_url }),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Blurb:',
+	            this.state.Project.project.blurb
+	          ),
+	          'ID IS: ',
+	          this.props.params.id,
+	          React.createElement('br', null),
+	          btnEdit,
+	          ' ',
+	          btnDelete
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-md-6' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Funding Goal:'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.Project.project.funding_goal
+	          ),
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Campaign end date:'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.Project.project.campaign_end_date
+	          )
+	        )
 	      ),
 	      React.createElement(
-	        'p',
-	        null,
-	        'Blurb:',
-	        this.state.Project.project.blurb
-	      ),
-	      React.createElement(
-	        'p',
-	        null,
-	        'details:',
-	        this.state.Project.project.details
-	      ),
-	      'IDIS: ',
-	      this.props.params.id,
-	      ' WOO',
-	      React.createElement('br', null),
-	      btnEdit,
-	      ' ',
-	      btnDelete
+	        'div',
+	        { className: 'row row details-bottom' },
+	        React.createElement(
+	          'div',
+	          { className: 'col-md-8' },
+	          React.createElement(
+	            'p',
+	            null,
+	            'details:',
+	            this.state.Project.project.details
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-md-4' },
+	          'This will be rewards'
+	        )
+	      )
 	    );
 	  }
 	});
@@ -31618,143 +31663,216 @@
 	    // }
 	    // <ul id="error-list">{errorArr}</ul>
 
+	    //
+	    // <form class="form-horizontal">
+	    //   <div class="form-group">
+	    //     <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+	    //     <div class="col-sm-10">
+	    //       <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+	    //     </div>
+	    //   </div>
+	    //   <div class="form-group">
+	    //     <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+	    //     <div class="col-sm-10">
+	    //       <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+	    //     </div>
+	    //   </div>
+	    //   <div class="form-group">
+	    //     <div class="col-sm-offset-2 col-sm-10">
+	    //       <div class="checkbox">
+	    //         <label>
+	    //           <input type="checkbox"> Remember me
+	    //         </label>
+	    //       </div>
+	    //     </div>
+	    //   </div>
+	    //   <div class="form-group">
+	    //     <div class="col-sm-offset-2 col-sm-10">
+	    //       <button type="submit" class="btn btn-default">Sign in</button>
+	    //     </div>
+	    //   </div>
+	    // </form>
+
 	    return React.createElement(
-	      'form',
-	      { className: 'new-project', onSubmit: this.createProject },
+	      'div',
+	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
 	      React.createElement(
-	        'div',
-	        null,
+	        'form',
+	        { className: 'form-horizontal createProjectForm', onSubmit: this.createProject },
 	        React.createElement(
-	          'label',
-	          { htmlFor: 'project_title' },
-	          'Title:',
-	          React.createElement('br', null),
-	          React.createElement('input', {
-	            type: 'text',
-	            id: 'project_title',
-	            valueLink: this.linkState("title"),
-	            required: true
-	          })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
+	          'h2',
+	          { className: 'create-form-title' },
+	          'Create Project'
+	        ),
 	        React.createElement(
-	          'label',
-	          { htmlFor: 'project_blurb' },
-	          'Blurb:',
-	          React.createElement('br', null),
-	          React.createElement('input', {
-	            type: 'text',
-	            id: 'project_blurb',
-	            valueLink: this.linkState("blurb"),
-	            required: true
-	          })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'project_end_date' },
-	          'End date:',
-	          React.createElement('br', null),
-	          React.createElement('input', {
-	            type: 'date',
-	            id: 'project_end_date',
-	            valueLink: this.linkState("campaign_end_date"),
-	            required: true
-	          })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'details' },
-	          'Details:',
-	          React.createElement('br', null),
-	          React.createElement('textarea', { id: 'details', valueLink: this.linkState("details") })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'category' },
-	          'Category:',
-	          React.createElement('br', null),
+	          'div',
+	          { className: 'form-group ' },
 	          React.createElement(
-	            'select',
-	            { id: 'category', valueLink: this.linkState("category_id") },
+	            'label',
+	            { htmlFor: 'project_title', className: 'col-sm-2 control-label' },
+	            'Title:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'text',
+	              className: 'form-control',
+	              id: 'project_title',
+	              valueLink: this.linkState("title"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'project_blurb', className: 'col-sm-2 control-label' },
+	            'Blurb:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'text',
+	              className: 'form-control',
+	              id: 'project_blurb',
+	              valueLink: this.linkState("blurb"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'project_end_date', className: 'col-sm-2 control-label' },
+	            'End date:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'date',
+	              className: 'form-control',
+	              id: 'project_end_date',
+	              valueLink: this.linkState("campaign_end_date"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'details', className: 'col-sm-2 control-label' },
+	            'Details:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('textarea', { className: 'form-control', id: 'details', valueLink: this.linkState("details") })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'category', className: 'col-sm-2 control-label' },
+	            'Category:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
 	            React.createElement(
-	              'option',
-	              { value: ' ' },
-	              'select:'
-	            ),
+	              'select',
+	              { id: 'category', valueLink: this.linkState("category_id") },
+	              React.createElement(
+	                'option',
+	                { value: ' ' },
+	                'select:'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 1 },
+	                'Category 1'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 2 },
+	                'Category 2'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 3 },
+	                'Category 3'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 4 },
+	                'Category 4'
+	              )
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'funding_goal', className: 'col-sm-2 control-label' },
+	            'Funding Goal:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'text',
+	              id: 'funding_goal',
+	              valueLink: this.linkState("funding_goal"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
+	            'Image:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'text',
+	              id: 'img_url',
+	              valueLink: this.linkState("img_url"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
 	            React.createElement(
-	              'option',
-	              { value: 1 },
-	              'Category 1'
-	            ),
-	            React.createElement(
-	              'option',
-	              { value: 2 },
-	              'Category 2'
-	            ),
-	            React.createElement(
-	              'option',
-	              { value: 3 },
-	              'Category 3'
-	            ),
-	            React.createElement(
-	              'option',
-	              { value: 4 },
-	              'Category 4'
+	              'button',
+	              null,
+	              'Create Project'
 	            )
 	          )
 	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'funding_goal' },
-	          'Funding Goal:',
-	          React.createElement('br', null),
-	          React.createElement('input', {
-	            type: 'text',
-	            id: 'funding_goal',
-	            valueLink: this.linkState("funding_goal"),
-	            required: true
-	          })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'img_url' },
-	          'Image:',
-	          React.createElement('br', null),
-	          React.createElement('input', {
-	            type: 'text',
-	            id: 'img_url',
-	            valueLink: this.linkState("img_url"),
-	            required: true
-	          })
-	        )
-	      ),
-	      React.createElement(
-	        'button',
-	        null,
-	        'Create Project'
 	      )
 	    );
 	  }
@@ -32099,24 +32217,29 @@
 
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
 	      React.createElement(
 	        'form',
-	        { className: 'new-project', onSubmit: this.editProject },
+	        { className: 'form-horizontal editProjectForm', onSubmit: this.editProject },
 	        React.createElement(
 	          'h2',
 	          null,
-	          this.state.Project.title
+	          'Editing: ',
+	          this.state.Project.project.title
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
+	          { className: 'form-group ' },
 	          React.createElement(
 	            'label',
-	            { htmlFor: 'project_blurb' },
-	            'Blurb:',
-	            React.createElement('br', null),
+	            { htmlFor: 'project_blurb', className: 'col-sm-2 control-label' },
+	            'Edit Blurb:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
 	            React.createElement('input', {
+	              className: 'form-control',
 	              type: 'text',
 	              id: 'project_blurb',
 	              valueLink: this.linkState("blurb"),
@@ -32127,13 +32250,17 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
+	          { className: 'form-group ' },
 	          React.createElement(
 	            'label',
-	            { htmlFor: 'details' },
-	            'Details:',
-	            React.createElement('br', null),
+	            { htmlFor: 'project_detals', className: 'col-sm-2 control-label' },
+	            'Edit Details:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
 	            React.createElement('textarea', {
+	              className: 'form-control',
 	              id: 'details',
 	              valueLink: this.linkState("details"),
 	              defaultValue: this.state.Project.project.details
@@ -32142,13 +32269,17 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
+	          { className: 'form-group ' },
 	          React.createElement(
 	            'label',
-	            { htmlFor: 'img_url' },
-	            'Image:',
-	            React.createElement('br', null),
+	            { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
+	            'Image URL:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
 	            React.createElement('input', {
+	              className: 'form-control',
 	              type: 'text',
 	              id: 'img_url',
 	              valueLink: this.linkState("img_url"),
@@ -32158,9 +32289,17 @@
 	          )
 	        ),
 	        React.createElement(
-	          'button',
-	          null,
-	          'Edit Project'
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement(
+	              'button',
+	              null,
+	              'Edit Project'
+	            )
+	          )
 	        )
 	      )
 	    );

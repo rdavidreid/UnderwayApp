@@ -97,49 +97,57 @@ var projectForm = React.createClass({
     }
 
     return(
-      <div>
-        <form className="new-project" onSubmit={this.editProject}>
-          <h2>{this.state.Project.title}</h2>
+      <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+        <form className="form-horizontal editProjectForm" onSubmit={this.editProject}>
+          <h2>Editing: {this.state.Project.project.title}</h2>
 
-          <div>
-            <label htmlFor='project_blurb'>Blurb:
-              <br />
+          <div className="form-group ">
+            <label htmlFor='project_blurb' className="col-sm-2 control-label">Edit Blurb:</label>
+            <div className="col-sm-10">
               <input
+                className="form-control"
                 type="text"
                 id="project_blurb"
                 valueLink={this.linkState("blurb")}
                 defaultValue={this.state.Project.project.blurb}
                 required
               />
-            </label>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor='details'>Details:
-              <br />
+          <div className="form-group ">
+            <label htmlFor='project_detals' className="col-sm-2 control-label">Edit Details:</label>
+              <div className="col-sm-10">
               <textarea
+                className="form-control"
                 id="details"
                 valueLink={this.linkState("details")}
                 defaultValue={this.state.Project.project.details}
                 >
               </textarea>
-            </label>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor='img_url'>Image:
-              <br />
+          <div className="form-group ">
+            <label htmlFor='img_url' className="col-sm-2 control-label">Image URL:</label>
+              <div className="col-sm-10">
+
               <input
+                className="form-control"
                 type="text"
                 id="img_url"
                 valueLink={this.linkState("img_url")}
                 defaultValue={this.state.Project.project.img_url}
                 required
               />
-            </label>
+            </div>
           </div>
 
-          <button>Edit Project</button>
+          <div className="form-group">
+            <div className="col-sm-10">
+              <button>Edit Project</button>
+            </div>
+          </div>
 
         </form>
       </div>
