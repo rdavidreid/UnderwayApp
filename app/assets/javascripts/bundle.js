@@ -26590,10 +26590,20 @@
 	        ApiActions.recieveAll(newData);
 	      }
 	    });
+	  },
+
+	  signOut: function () {
+	    $.ajax({
+	      url: "/session",
+	      type: "DELETE",
+	      // data: currentProject,
+	      // data: bounds,
+	      success: function () {
+	        window.location.reload();
+	      }
+	    });
 	  }
-	  // fetchSingleProject: function() {
-	  //
-	  // }
+
 	};
 
 	// TODO: REMOVE THIS -- hardcoded to create a project with API
@@ -26733,6 +26743,22 @@
 	});
 
 	module.exports = ProjectIndexItem;
+	//
+	// <div class="row">
+	//   <div class="col-sm-6 col-md-4">
+	//     <div class="thumbnail">
+	//       <img src="..." alt="...">
+	//       <div class="caption">
+	//         <h3>Thumbnail label</h3>
+	//         <p>...</p>
+	//         <p>
+	//           <a href="#" class="btn btn-primary" role="button">Button</a>
+	//           <a href="#" class="btn btn-default" role="button">Button</a>
+	//         </p>
+	//       </div>
+	//     </div>
+	//   </div>
+	// </div>
 
 /***/ },
 /* 186 */
@@ -32125,6 +32151,7 @@
 	var Discover = __webpack_require__(244);
 	var Create = __webpack_require__(243);
 	var Profile = __webpack_require__(246);
+	var SignOut = __webpack_require__(248);
 	var History = __webpack_require__(186).History;
 
 	// <nav className="navbar navbar-default" role="navigation">
@@ -32247,8 +32274,8 @@
 	                  null,
 	                  React.createElement(
 	                    'a',
-	                    { href: '#' },
-	                    'Logout'
+	                    null,
+	                    React.createElement(SignOut, null)
 	                  )
 	                )
 	              )
@@ -32373,6 +32400,35 @@
 /***/ function(module, exports) {
 
 	
+
+/***/ },
+/* 247 */,
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+	var History = __webpack_require__(186).History;
+
+	var SignOut = React.createClass({
+	  displayName: 'SignOut',
+
+	  mixins: [History],
+
+	  _clickSignOut: function () {
+	    ApiUtil.signOut();
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickSignOut },
+	      'SignOut'
+	    );
+	  }
+	});
+
+	module.exports = SignOut;
 
 /***/ }
 /******/ ]);

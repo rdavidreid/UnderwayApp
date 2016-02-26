@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
     if @user
       logout
     end
-    redirect_to new_session_url
+    render :new
   end
 
 end

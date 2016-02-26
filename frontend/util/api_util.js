@@ -65,10 +65,20 @@ var ApiUtil = {
         ApiActions.recieveAll(newData);
       },
     });
+  },
+
+  signOut: function() {
+    $.ajax({
+      url: "/session",
+      type: "DELETE",
+      // data: currentProject,
+      // data: bounds,
+      success: function() {
+        window.location.reload();
+      },
+    });
   }
-  // fetchSingleProject: function() {
-  //
-  // }
+
 };
 
 

@@ -3,6 +3,7 @@ var Logo = require('./menuitems/logo');
 var Discover = require('./menuitems/discover');
 var Create = require('./menuitems/create');
 var Profile = require('./menuitems/profile');
+var SignOut = require('./menuitems/SignOut');
 var History = require('react-router').History;
 
 
@@ -70,7 +71,7 @@ var Menu = React.createClass({
                   <li><a>My Page</a></li>
                   <li><a>Settings</a></li>
                   <li role="separator" className="divider"></li>
-                  <li><a href="#">Logout</a></li>
+                  <li><a><SignOut /></a></li>
                 </ul>
               </li>
             </ul>
