@@ -21,7 +21,6 @@ class Api::BackersController < ApplicationController
     if @backer.save
       render :show
     else
-      debugger
     end
   end
 

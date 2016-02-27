@@ -30,6 +30,8 @@ ProjectStore.__onDispatch = function(payload) {
       this.__emitChange();
       console.log('single project from the store');
       console.log(_projects);
+    case ProjectConstants.REWARD_CREATED:
+      this.__emitChange
   }
 };
 

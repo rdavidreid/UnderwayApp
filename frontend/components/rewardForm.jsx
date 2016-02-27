@@ -16,8 +16,37 @@ var projectForm = React.createClass({
     reward_max_count: ""
   },
 
+  // getInitialState: function() {
+  //   return(this.inputs);
+  // },
+
+  getStateFromStore: function() {
+    return({Project: ProjectStore.findById(
+      parseInt(this.props.params.id)
+    )});
+  },
+
+  _onChange: function() {
+    this.setState(this.getStateFromStore());
+  },
+
   getInitialState: function() {
-    return(this.inputs);
+    this.state = {};
+    this.state.inputs = this.inputs;
+    return this.getStateFromStore();
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+  },
+
+  componentDidMount: function() {
+    this.projectListener = ProjectStore.addListener(this._onChange);
+    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+  },
+
+  componentWillUnmount: function() {
+    this.projectListener.remove();
   },
 
   // TODO: REFACTOR / CLEAN THIS. add into another file
@@ -63,9 +92,15 @@ var projectForm = React.createClass({
 
     var valid = this.validateInput();
     if (valid) {
-      ApiUtil.createReward(this.state, function(id) {
-        this.history.pushState(null, "/project/" + id, {});
-      }.bind(this));
+      ApiUtil.createReward(this.state, function(id) {});
+      this.setState({
+        title: "",
+        description: "",
+        cost: "",
+        project_id: "",
+        delivery_date: "",
+        reward_max_count: ""
+      });
     } else{
       alert(this.errors.join("\n"));
     }
@@ -74,15 +109,32 @@ var projectForm = React.createClass({
 
   render: function() {
     var msg = "";
-    debugger;
+    var rewards = "";
+
+    if(this.state.Project !== undefined && this.state.Project.project !== undefined){
+      rewards = [];
+      this.state.Project.project.rewards.forEach(function(el) {
+        rewards.push(el.reward_title);
+      });
+    }
+    //
+    // if (this.state.Project.project.rewards === undefined){
+    // } else {
+    //   rewards = [];
+    //   this.state.Project.project.rewards.forEach(function(el) {
+    //     rewards.push(el.reward_title);
+    //   });
+    // }
+
     if(this.props.location.query.new === "true"){
-      msg = <div>Dont forget to add rewards to your project! Projects that have
+      msg = <div className="alert alert-info">Dont forget to add rewards to your project! Projects that have
         rewards get *significantly* more funding than those which dont.</div>;
-  } else {
-    <div>Add more rewards! Achieve your dreams!</div>;
-  }
+      } else {
+        msg = <div className="alert alert-info">Add more rewards! Achieve your dreams!</div>;
+      }
     return(
-      <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+      <div className="row create-form">
+      <div className="col-sm-12 col-md-8">
       <form className="form-horizontal createRewardForm" onSubmit={this.createReward}>
 
         <h2 className="create-form-title">REWARD FORM</h2>
@@ -176,9 +228,15 @@ var projectForm = React.createClass({
 
       </form>
     </div>
+    <div className="col-sm-12 col-md-4">
+      <h2 className="create-form-title">Existing Rewards</h2>
+      {rewards}
+    </div>
+    </div>
 
     );
   }
 });
+
 
 module.exports = projectForm;

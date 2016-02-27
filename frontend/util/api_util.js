@@ -80,7 +80,6 @@ var ApiUtil = {
   },
 
   createReward: function(newReward, func) {
-
     $.ajax({
       url: "/api/rewards",
       type: "POST",
@@ -88,6 +87,7 @@ var ApiUtil = {
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);
+        // ApiActions.createdReward(data);
         // func && func(data.project.id);
       },
       error: function(data) {

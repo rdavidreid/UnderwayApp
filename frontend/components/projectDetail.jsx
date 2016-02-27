@@ -44,6 +44,10 @@ var ProjectDetail = React.createClass({
     this.history.push('/editproject/' + this.state.Project.project.id);
   },
 
+  editRewards: function() {
+    this.history.push('/editreward/' + this.state.Project.project.id);
+  },
+
   render: function() {
 
     if (this.state.Project === undefined ||
@@ -52,6 +56,7 @@ var ProjectDetail = React.createClass({
     } else {
       var btnDelete = (<button onClick={this.deleteProject}>Delete</button>);
       var btnEdit =   (<button onClick={this.editProject}>Edit</button>);
+      var btnEditRewards = (<button onClick={this.editRewards}>Add Rewards</button>);
     }
 
     var rewards = ""
@@ -72,7 +77,7 @@ var ProjectDetail = React.createClass({
           <p>Blurb:{this.state.Project.project.blurb}</p>
           ID IS: {this.props.params.id}
           <br/>
-          {btnEdit} {btnDelete}
+          {btnEdit} {btnDelete} {btnEditRewards}
         </div>
 
         <div className="col-md-6">

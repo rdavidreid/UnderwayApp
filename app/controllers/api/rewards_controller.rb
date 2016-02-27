@@ -11,7 +11,15 @@ class Api::RewardsController < ApplicationController
   def create
     @reward = Reward.new(reward_params)
     if @reward.save
-      render :show
+      @project = @reward.project
+      current_users_rewards = current_user.rewards
+      @current_users_current_project_rewards = []
+      current_users_rewards.map do |el|
+        if el.project_id == @project.id
+          @current_users_current_project_rewards.push(el)
+        end
+      end
+      render "/api/projects/show"
     else
     end
   end

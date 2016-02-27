@@ -15,6 +15,13 @@ var ApiActions = {
     });
   },
 
+  createdReward: function(obj) {
+    Dispatcher.dispatch({
+      actionType: ProjectConstants.SINGLE_PROJECT_RECIEVED,
+      projects: obj
+    });
+  },
+
 };
 
 
