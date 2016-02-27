@@ -13,7 +13,6 @@ class Api::RewardsController < ApplicationController
     if @reward.save
       render :show
     else
-      debugger
     end
   end
 

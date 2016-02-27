@@ -63,7 +63,7 @@ var projectForm = React.createClass({
     var valid = this.validateInput();
     if (valid) {
       ApiUtil.createProject(this.state, function(id) {
-        this.history.pushState(null, "/project/" + id, {});
+        this.history.pushState(null, "/editreward/" + id, {new: true});
       }.bind(this));
     } else{
       alert(this.errors.join("\n"));

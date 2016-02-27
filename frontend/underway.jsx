@@ -6,6 +6,7 @@ var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
 var ProjectForm = require('./components/projectForm');
 var ProjectEditForm = require('./components/ProjectEditForm');
+var RewardForm = require('./components/rewardForm');
 var Menu = require('./components/Menu');
 
 
@@ -34,6 +35,7 @@ var routes = (
     <Route path="project/:id" component={ProjectDetail} ></Route>
     <Route path="createproject" component={ProjectForm}></Route>
     <Route path="editproject/:id" component={ProjectEditForm}></Route>
+    <Route path="editreward/:id" component={RewardForm}></Route>
   </Route>
 );
 

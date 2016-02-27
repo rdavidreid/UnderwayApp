@@ -95,6 +95,7 @@ var projectForm = React.createClass({
     if(this.state.Project == undefined){
       return(<div>loading...</div>);
     }
+    debugger;
 
     return(
       <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">

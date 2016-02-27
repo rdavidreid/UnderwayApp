@@ -52,6 +52,7 @@
 	var ProjectDetail = __webpack_require__(235);
 	var ProjectForm = __webpack_require__(236);
 	var ProjectEditForm = __webpack_require__(241);
+	var RewardForm = __webpack_require__(249);
 	var Menu = __webpack_require__(242);
 
 	var Router = __webpack_require__(186).Router;
@@ -83,7 +84,8 @@
 	  React.createElement(IndexRoute, { component: ProjectIndex }),
 	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
 	  React.createElement(Route, { path: 'createproject', component: ProjectForm }),
-	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm })
+	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm }),
+	  React.createElement(Route, { path: 'editreward/:id', component: RewardForm })
 	);
 
 	// var routes = (
@@ -26606,6 +26608,21 @@
 	        window.location.reload();
 	      }
 	    });
+	  },
+
+	  createReward: function (newReward, func) {
+
+	    $.ajax({
+	      url: "/api/rewards",
+	      type: "POST",
+	      data: { reward: newReward },
+	      // data: bounds,
+	      success: function (data) {
+	        ApiActions.recieveSingle(data);
+	        // func && func(data.project.id);
+	      },
+	      error: function (data) {}
+	    });
 	  }
 
 	};
@@ -31657,7 +31674,7 @@
 	    var valid = this.validateInput();
 	    if (valid) {
 	      ApiUtil.createProject(this.state, function (id) {
-	        this.history.pushState(null, "/project/" + id, {});
+	        this.history.pushState(null, "/editreward/" + id, { new: true });
 	      }.bind(this));
 	    } else {
 	      alert(this.errors.join("\n"));
@@ -32226,6 +32243,7 @@
 	        'loading...'
 	      );
 	    }
+	    debugger;
 
 	    return React.createElement(
 	      'div',
@@ -32592,6 +32610,251 @@
 	});
 
 	module.exports = SignOut;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+	var History = __webpack_require__(186).History;
+	var LinkedStateMixin = __webpack_require__(237);
+	var ProjectStore = __webpack_require__(159);
+
+	var projectForm = React.createClass({
+	  displayName: 'projectForm',
+
+	  mixins: [LinkedStateMixin, History],
+
+	  inputs: {
+	    title: "",
+	    description: "",
+	    cost: "",
+	    project_id: "",
+	    delivery_date: "",
+	    reward_max_count: ""
+	  },
+
+	  getInitialState: function () {
+	    return this.inputs;
+	  },
+
+	  // TODO: REFACTOR / CLEAN THIS. add into another file
+
+	  validateInput: function () {
+	    // this.errors = [];
+	    // if(this.state.title === "" || this.state.title === " ") {
+	    //   this.errors.push("Title can not be blank");
+	    // }
+	    // if(this.state.blurb ==="" || this.state.title === " ") {
+	    //   this.errors.push("blurb cannot be blank");
+	    // }
+	    // if(this.state.campaign_end_date === "" || this.state.title === " ") {
+	    //   this.errors.push("date cannot be blank");
+	    // }
+	    // if(this.state.details === "" || this.state.title === " ") {
+	    //   this.errors.push("details cannot be blank");
+	    // }
+	    // if(this.state.category_id ==="" || this.state.title === " ") {
+	    //   this.errors.push("you must select a category!");
+	    // }
+	    // if(this.state.funding_goal === "" || this.state.title === " ") {
+	    //   this.errors.push("You must have a funding goal");
+	    // }
+	    // if (this.errors.length > 0) {
+	    //   return false;
+	    // }
+	    return true;
+	  },
+
+	  createReward: function (event) {
+
+	    event.preventDefault();
+	    this.state.project_id = this.props.params.id;
+	    var project = {};
+
+	    //TODO EDIT THIS
+
+	    Object.keys(this.state).forEach(function (key) {
+	      project[key] = this.state.key;
+	      console.log(this.state.key);
+	    }.bind(this));
+
+	    var valid = this.validateInput();
+	    if (valid) {
+	      ApiUtil.createReward(this.state, function (id) {
+	        this.history.pushState(null, "/project/" + id, {});
+	      }.bind(this));
+	    } else {
+	      alert(this.errors.join("\n"));
+	    }
+	  },
+
+	  render: function () {
+	    var msg = "";
+	    debugger;
+	    if (this.props.location.query.new === "true") {
+	      msg = React.createElement(
+	        'div',
+	        null,
+	        'Dont forget to add rewards to your project! Projects that have rewards get *significantly* more funding than those which dont.'
+	      );
+	    } else {
+	      React.createElement(
+	        'div',
+	        null,
+	        'Add more rewards! Achieve your dreams!'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
+	      React.createElement(
+	        'form',
+	        { className: 'form-horizontal createRewardForm', onSubmit: this.createReward },
+	        React.createElement(
+	          'h2',
+	          { className: 'create-form-title' },
+	          'REWARD FORM'
+	        ),
+	        msg,
+	        React.createElement(
+	          'div',
+	          { className: 'form-group ' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'title', className: 'col-sm-2 control-label' },
+	            'Title:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'text',
+	              className: 'form-control',
+	              id: 'title',
+	              valueLink: this.linkState("title"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'description', className: 'col-sm-2 control-label' },
+	            'description:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'text',
+	              className: 'form-control',
+	              id: 'description',
+	              valueLink: this.linkState("description"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'cost', className: 'col-sm-2 control-label' },
+	            'Cost:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              type: 'integer',
+	              className: 'form-control',
+	              id: 'cost',
+	              valueLink: this.linkState("cost"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'delivery_date', className: 'col-sm-2 control-label' },
+	            'Delivery Date:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'date',
+	              id: 'delivery_date',
+	              valueLink: this.linkState("delivery_date"),
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'quantity', className: 'col-sm-2 control-label' },
+	            'Quantity (optional):'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'text',
+	              id: 'quantity',
+	              valueLink: this.linkState("quantity")
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
+	            'Image URL (optional):'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'text',
+	              id: 'img_url',
+	              valueLink: this.linkState("img_url")
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement(
+	              'button',
+	              null,
+	              'Create Reward'
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = projectForm;
 
 /***/ }
 /******/ ]);

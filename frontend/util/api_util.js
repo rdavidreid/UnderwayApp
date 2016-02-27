@@ -77,7 +77,23 @@ var ApiUtil = {
         window.location.reload();
       },
     });
-  }
+  },
+
+  createReward: function(newReward, func) {
+
+    $.ajax({
+      url: "/api/rewards",
+      type: "POST",
+      data: {reward: newReward},
+      // data: bounds,
+      success: function(data) {
+        ApiActions.recieveSingle(data);
+        // func && func(data.project.id);
+      },
+      error: function(data) {
+      }
+    });
+  },
 
 };
 
