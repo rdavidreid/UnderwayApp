@@ -12,8 +12,8 @@ and React.js. UnderWay allows users to:
 - [X] Create an account
 - [X] Log in / Log out
 - [X] Explore projects users have created
-- [ ] Back projects created by other users
-- [ ] Create projects that other users can back.
+- [X] Back projects created by other users
+- [X] Create projects that other users can back.
 - [ ] Projects are funded if enough money is raised in a set amount of time.
 - [ ] Projects are not funded if funding goal is not met by deadline.
 
@@ -85,13 +85,13 @@ the API.
 - [X] create `backers` join table
 - [X] create `Rewards` Table and Model
 - build out API, Flux loop, and components for:
-  - [ ] backers create, index, show [API ONLY]
-  - [ ] rewards create, destroy, index
+  - [X] backers create, index, show [API ONLY]
+  - [X] rewards create, destroy, index
   - [X] fetching rewards for specific project
-  - [ ] Backing a project on project show page
-  - [ ] `Reward` component.
-- [ ] Add Reward creation to Project Creation
-- [ ] Style new elements
+  - [X] Backing a project on project show page
+  - [X] `Reward` component.
+- [X] Add Reward creation to Project Creation
+- [X] Style new elements
 
 ### Phase 6: User Profile Page (1 days / 8)
 

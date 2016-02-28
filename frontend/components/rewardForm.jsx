@@ -3,6 +3,7 @@ var ApiUtil = require('../util/api_util.js');
 var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
+var RewardDetail = require('./rewardDetail');
 
 var projectForm = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -99,6 +100,8 @@ var projectForm = React.createClass({
         cost: "",
         project_id: "",
         delivery_date: "",
+        img_url: "",
+        quantity: "",
         reward_max_count: ""
       });
     } else{
@@ -106,6 +109,9 @@ var projectForm = React.createClass({
     }
   },
 
+  backToProject: function() {
+    this.history.push('/project/' + this.state.Project.project.id);
+  },
 
   render: function() {
     var msg = "";
@@ -113,8 +119,9 @@ var projectForm = React.createClass({
 
     if(this.state.Project !== undefined && this.state.Project.project !== undefined){
       rewards = [];
-      this.state.Project.project.rewards.forEach(function(el) {
-        rewards.push(el.reward_title);
+      rewards = this.state.Project.project.rewards.map(function(el) {
+        // rewards.push(el.reward_title);
+        return(<RewardDetail reward={el} clickerFunc="none" />);
       });
     }
     //
@@ -227,6 +234,7 @@ var projectForm = React.createClass({
         </div>
 
       </form>
+      <button onClick={this.backToProject}>Back to Project</button>
     </div>
     <div className="col-sm-12 col-md-4">
       <h2 className="create-form-title">Existing Rewards</h2>

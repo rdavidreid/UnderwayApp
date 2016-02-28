@@ -20,11 +20,14 @@ json.project do
   # @project.rewards.each do |reward|
     # json.rewards do
     json.reward_title reward.title
+    json.reward_id reward.id
     json.reward_description reward.description
     json.reward_cost reward.cost
     json.reward_count reward.reward_count
+    json.reward_delivery_date reward.delivery_date
     json.reward_real_count reward.backers.length
     json.reward_max_count reward.reward_max_count
+    json.reward_number_sold reward.backers.count
 
     json.rewards_bought do
       arr = []

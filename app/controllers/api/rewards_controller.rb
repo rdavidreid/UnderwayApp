@@ -8,6 +8,10 @@ class Api::RewardsController < ApplicationController
     @reward = Reward.find_by_id(params[:id])
   end
 
+
+  # TODO not ok not dry. this logic into the view. search for render
+  #  /api/projects/show' and refactor them all
+
   def create
     @reward = Reward.new(reward_params)
     if @reward.save

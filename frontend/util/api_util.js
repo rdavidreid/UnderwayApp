@@ -101,6 +101,7 @@ var ApiUtil = {
       type: "POST",
       data: {backer: newBacker},
       success: function(data) {
+        ApiActions.recieveSingle(data);
         console.log("created",data);
       }
     });

@@ -26634,6 +26634,7 @@
 	      type: "POST",
 	      data: { backer: newBacker },
 	      success: function (data) {
+	        ApiActions.recieveSingle(data);
 	        console.log("created", data);
 	      }
 	    });
@@ -32652,6 +32653,7 @@
 	var History = __webpack_require__(186).History;
 	var LinkedStateMixin = __webpack_require__(237);
 	var ProjectStore = __webpack_require__(159);
+	var RewardDetail = __webpack_require__(251);
 
 	var projectForm = React.createClass({
 	  displayName: 'projectForm',
@@ -32748,11 +32750,17 @@
 	        cost: "",
 	        project_id: "",
 	        delivery_date: "",
+	        img_url: "",
+	        quantity: "",
 	        reward_max_count: ""
 	      });
 	    } else {
 	      alert(this.errors.join("\n"));
 	    }
+	  },
+
+	  backToProject: function () {
+	    this.history.push('/project/' + this.state.Project.project.id);
 	  },
 
 	  render: function () {
@@ -32761,8 +32769,9 @@
 
 	    if (this.state.Project !== undefined && this.state.Project.project !== undefined) {
 	      rewards = [];
-	      this.state.Project.project.rewards.forEach(function (el) {
-	        rewards.push(el.reward_title);
+	      rewards = this.state.Project.project.rewards.map(function (el) {
+	        // rewards.push(el.reward_title);
+	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'none' });
 	      });
 	    }
 	    //
@@ -32933,6 +32942,11 @@
 	              )
 	            )
 	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.backToProject },
+	          'Back to Project'
 	        )
 	      ),
 	      React.createElement(
@@ -32961,18 +32975,147 @@
 	var RewardDetail = React.createClass({
 	  displayName: 'RewardDetail',
 
-	  _createBacker: function () {
+
+	  _clickerFunc: function () {
 	    console.log("you clicked:", this.props.reward.reward_title);
-	    var newBacker = { project_id: this.props.reward.project_id };
-	    ApiUtil.createBacker(newBacker);
-	    //TODO this is what you are doing
+	    if (this.props.clickerFunc === "none") {} else {
+	      var newBacker = { reward_id: this.props.reward.reward_id };
+	      if (false) {
+	        alert(this.props.reward.reward_title + " is sold out!");
+	      } else {
+	        ApiUtil.createBacker(newBacker);
+	      }
+	    }
 	  },
 
 	  render: function () {
+	    var reward = this.props.reward;
+	    if (reward.rewards_bought.rewards_bought > 0) {
+	      var count = "You own: " + reward.rewards_bought.rewards_bought;
+	    } else {
+	      count = "";
+	    }
+
+	    if (parseInt(reward.reward_max_count) > 0) {
+	      var maxCount = "Quantity: " + reward.reward_max_count;
+	    } else {
+	      maxCount = "";
+	    }
+
 	    return React.createElement(
 	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._createBacker },
-	      this.props.reward.reward_title
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_title
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Price: ',
+	        reward.reward_cost
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_description
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Delivery Date: ',
+	        reward.reward_delivery_date
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        maxCount
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        count
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = RewardDetail;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+
+	var RewardDetail = React.createClass({
+	  displayName: 'RewardDetail',
+
+
+	  _clickerFunc: function () {
+	    console.log("you clicked:", this.props.reward.reward_title);
+	    if (this.props.clickerFunc === "none") {} else {
+	      var newBacker = { reward_id: this.props.reward.reward_id };
+	      if (false) {
+	        alert(this.props.reward.reward_title + " is sold out!");
+	      } else {
+	        ApiUtil.createBacker(newBacker);
+	      }
+	    }
+	  },
+
+	  render: function () {
+	    var reward = this.props.reward;
+	    if (reward.rewards_bought.rewards_bought > 0) {
+	      var count = "You own: " + reward.rewards_bought.rewards_bought;
+	    } else {
+	      count = "";
+	    }
+
+	    if (parseInt(reward.reward_max_count) > 0) {
+	      var maxCount = "Quantity: " + reward.reward_max_count;
+	    } else {
+	      maxCount = "";
+	    }
+
+	    return React.createElement(
+	      'div',
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_title
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Price: ',
+	        reward.reward_cost
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_description
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Delivery Date: ',
+	        reward.reward_delivery_date
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        maxCount
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        count
+	      )
 	    );
 	  }
 

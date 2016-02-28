@@ -52,14 +52,15 @@ class Api::ProjectsController < ApplicationController
       if @project.update(project_params)
         puts "great success"
       end
-      # if @project.update({
-      #   blurb: params[:blurb],
-      #   img_url: params[:img_url],
-      #   details: params[:details]
-      #   })
-      #   puts @project
-      #   puts "asdfffasdflkjasdflkjasdlkfjaslkdfjalksdjflkasdjfklajsldkfjlaksd"
-      # end
+
+      current_users_rewards = current_user.rewards
+      @current_users_current_project_rewards = []
+      current_users_rewards.map do |el|
+        if el.project_id == @project.id
+          @current_users_current_project_rewards.push(el)
+        end
+      end
+
     end
 
     render :show

@@ -60,7 +60,7 @@ var ProjectDetail = React.createClass({
       var btnEditRewards = (<button onClick={this.editRewards}>Add Rewards</button>);
     }
 
-    var rewards = ""
+    var rewards = "";
     if (this.state.Project.project.rewards === undefined){
     } else {
       rewards = [];
