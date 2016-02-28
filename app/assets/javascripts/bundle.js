@@ -26626,6 +26626,17 @@
 	      },
 	      error: function (data) {}
 	    });
+	  },
+
+	  createBacker: function (newBacker) {
+	    $.ajax({
+	      url: "/api/backers",
+	      type: "POST",
+	      data: { backer: newBacker },
+	      success: function (data) {
+	        console.log("created", data);
+	      }
+	    });
 	  }
 
 	};
@@ -31462,6 +31473,7 @@
 	var React = __webpack_require__(1);
 	var ProjectStore = __webpack_require__(159);
 	var ApiUtil = __webpack_require__(182);
+	var RewardDetail = __webpack_require__(250);
 	var History = __webpack_require__(186).History;
 
 	var ProjectDetail = React.createClass({
@@ -31536,8 +31548,8 @@
 	    var rewards = "";
 	    if (this.state.Project.project.rewards === undefined) {} else {
 	      rewards = [];
-	      this.state.Project.project.rewards.forEach(function (el) {
-	        rewards.push(el.reward_title);
+	      rewards = this.state.Project.project.rewards.map(function (el) {
+	        return React.createElement(RewardDetail, { reward: el });
 	      });
 	    }
 
@@ -32938,6 +32950,35 @@
 	});
 
 	module.exports = projectForm;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+
+	var RewardDetail = React.createClass({
+	  displayName: 'RewardDetail',
+
+	  _createBacker: function () {
+	    console.log("you clicked:", this.props.reward.reward_title);
+	    var newBacker = { project_id: this.props.reward.project_id };
+	    ApiUtil.createBacker(newBacker);
+	    //TODO this is what you are doing
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'col-md-12 reward-detail', onClick: this._createBacker },
+	      this.props.reward.reward_title
+	    );
+	  }
+
+	});
+
+	module.exports = RewardDetail;
 
 /***/ }
 /******/ ]);

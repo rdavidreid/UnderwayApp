@@ -95,6 +95,17 @@ var ApiUtil = {
     });
   },
 
+  createBacker: function(newBacker) {
+    $.ajax({
+      url: "/api/backers",
+      type: "POST",
+      data: {backer: newBacker},
+      success: function(data) {
+        console.log("created",data);
+      }
+    });
+  }
+
 };
 
 

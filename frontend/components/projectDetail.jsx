@@ -1,6 +1,7 @@
 var React = require('react');
 var ProjectStore = require('../stores/ProjectStore');
 var ApiUtil = require('../util/api_util');
+var RewardDetail = require('./RewardDetail');
 var History = require('react-router').History;
 
 
@@ -63,8 +64,8 @@ var ProjectDetail = React.createClass({
     if (this.state.Project.project.rewards === undefined){
     } else {
       rewards = [];
-      this.state.Project.project.rewards.forEach(function(el) {
-        rewards.push(el.reward_title);
+      rewards = this.state.Project.project.rewards.map(function(el) {
+        return(<RewardDetail reward={el} />);
       });
     }
 
