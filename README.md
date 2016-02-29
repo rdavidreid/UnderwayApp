@@ -98,9 +98,9 @@ the API.
 **Objective:** Add functionality to allow user to see backed projects, created
 projects, and change display name / password
 
-- [ ] Create `UserDetails` component, API, and Flux Loop
-- [ ] Users page displays projects user has backed
-- [ ] Users page displays projects user has created
+- [X] Create `UserDetails` component, API, and Flux Loop
+- [X] Users page displays projects user has backed
+- [X] Users page displays projects user has created
 
 
 ### Phase 7: Touch up CSS (1 day / 9)
@@ -111,6 +111,7 @@ projects, and change display name / password
 - [ ] Refactor all things that need to be refactored.
 - [ ] Go through all pages and touch up CSS where necessary
 - [ ] Make sure CSS and overall style is the same across all pages
+- [ ] Finish off funding of projects
 
 
 ### Phase 8: Categories (1 day / 10)

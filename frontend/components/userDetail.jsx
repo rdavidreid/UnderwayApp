@@ -37,13 +37,14 @@ var ProjectDetail = React.createClass({
   },
 
   _clickRewardRow: function() {
-    debugger;
     this.history.push('/project/' + arguments[0]);
   },
 
   render: function() {
     var that = this;
+
     if (this.state.User != undefined){
+
       var backedProjects = this.state.User.backed_projects.map(function(el) {
         return(<ProjectIndexItem project={el} key={el.id}/>);
       });
@@ -52,44 +53,29 @@ var ProjectDetail = React.createClass({
         return(<ProjectIndexItem project={el} key={el.id}/>);
       });
 
-      // var rewards = this.state.User.rewards.map(function(el) {
-      //   return(<RewardDetail reward={el} clickerFunc="none" />);
-      // });
-
-
-
-    var rewardRow = this.state.User.rewards.map(function(el) {
-      return(
-          <UserRewardTableRows reward={el}/>
-        );
+      var rewardRow = this.state.User.rewards.map(function(el) {
+        return(<UserRewardTableRows reward={el}/>);
       });
 
-    } else {
+    }
+    else {
+
       backedProjects = [];
       createdProjects = [];
-      rewards = [];
+      rewardRow = [];
     }
 
     return (
       <div>
+
         <div className="row">
-          <div id="backedProjects" className="col-md-12">
-            <h2>Backed Projects</h2>
-            {backedProjects}
-          </div>
-        </div>
-        <div className="row">
-          <div id="createdProjects" className="col-md-12">
-            <h2> Created Projects</h2>
-            {createdProjects}
-          </div>
+          <h2 className="userDetailTitle">Backed Projects</h2>
+          {backedProjects}
         </div>
 
         <div className="row">
-          <div id="rewards">
-            <h2>Purchase History</h2>
-              {rewards}
-          </div>
+          <h2 className="userDetailTitle"> Created Projects</h2>
+          {createdProjects}
         </div>
 
         <table className="table table-hover">
@@ -106,9 +92,7 @@ var ProjectDetail = React.createClass({
             {rewardRow}
           </tbody>
         </table>
-
-
-    </div>
+      </div>
     );
   }
 });

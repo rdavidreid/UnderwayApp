@@ -32366,13 +32366,42 @@
 	var Create = __webpack_require__(243);
 	var Profile = __webpack_require__(246);
 	var SignOut = __webpack_require__(248);
+	var UserStore = __webpack_require__(253);
+	var ApiUtil = __webpack_require__(182);
+
 	var History = __webpack_require__(186).History;
 
 	var Menu = React.createClass({
 	  displayName: 'Menu',
 
 	  mixins: [History],
+
+	  getStateFromStore: function () {
+	    return { User: UserStore.currentUser() };
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  _onChange: function () {
+	    this.setState({ User: UserStore.currentUser() });
+	  },
+
+	  componentDidMount: function () {
+	    this.userListener = UserStore.addListener(this._onChange);
+	    ApiUtil.fetchCurrentUser();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+
 	  render: function () {
+	    var username = "Options";
+	    if (this.state.User != undefined) {
+	      username = this.state.User.username;
+	    }
 	    return React.createElement(
 	      'nav',
 	      { className: 'navbar navbar-default' },
@@ -32442,7 +32471,7 @@
 	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
 	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false'
 	                },
-	                'Profile',
+	                username,
 	                React.createElement('span', { className: 'caret' })
 	              ),
 	              React.createElement(
@@ -32454,16 +32483,7 @@
 	                  React.createElement(
 	                    'a',
 	                    null,
-	                    'My Page'
-	                  )
-	                ),
-	                React.createElement(
-	                  'li',
-	                  null,
-	                  React.createElement(
-	                    'a',
-	                    null,
-	                    'Settings'
+	                    React.createElement(Profile, null)
 	                  )
 	                ),
 	                React.createElement('li', { role: 'separator', className: 'divider' }),
@@ -32596,9 +32616,28 @@
 
 /***/ },
 /* 246 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(186).History;
+
+	var Profile = React.createClass({
+	  displayName: 'Profile',
+
+	  mixins: [History],
+	  _clickCreate: function () {
+	    this.history.push("/userDetails");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickCreate },
+	      'Profile'
+	    );
+	  }
+	});
+
+	module.exports = Profile;
 
 /***/ },
 /* 247 */,
@@ -33186,13 +33225,14 @@
 	  },
 
 	  _clickRewardRow: function () {
-	    debugger;
 	    this.history.push('/project/' + arguments[0]);
 	  },
 
 	  render: function () {
 	    var that = this;
+
 	    if (this.state.User != undefined) {
+
 	      var backedProjects = this.state.User.backed_projects.map(function (el) {
 	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
 	      });
@@ -33201,17 +33241,14 @@
 	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
 	      });
 
-	      // var rewards = this.state.User.rewards.map(function(el) {
-	      //   return(<RewardDetail reward={el} clickerFunc="none" />);
-	      // });
-
 	      var rewardRow = this.state.User.rewards.map(function (el) {
 	        return React.createElement(UserRewardTableRows, { reward: el });
 	      });
 	    } else {
+
 	      backedProjects = [];
 	      createdProjects = [];
-	      rewards = [];
+	      rewardRow = [];
 	    }
 
 	    return React.createElement(
@@ -33221,43 +33258,21 @@
 	        'div',
 	        { className: 'row' },
 	        React.createElement(
-	          'div',
-	          { id: 'backedProjects', className: 'col-md-12' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Backed Projects'
-	          ),
-	          backedProjects
-	        )
+	          'h2',
+	          { className: 'userDetailTitle' },
+	          'Backed Projects'
+	        ),
+	        backedProjects
 	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'row' },
 	        React.createElement(
-	          'div',
-	          { id: 'createdProjects', className: 'col-md-12' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            ' Created Projects'
-	          ),
-	          createdProjects
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'div',
-	          { id: 'rewards' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Purchase History'
-	          ),
-	          rewards
-	        )
+	          'h2',
+	          { className: 'userDetailTitle' },
+	          ' Created Projects'
+	        ),
+	        createdProjects
 	      ),
 	      React.createElement(
 	        'table',

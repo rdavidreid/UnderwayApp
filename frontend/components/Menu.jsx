@@ -4,11 +4,41 @@ var Discover = require('./menuitems/discover');
 var Create = require('./menuitems/create');
 var Profile = require('./menuitems/profile');
 var SignOut = require('./menuitems/SignOut');
+var UserStore = require('../stores/UserStore');
+var ApiUtil = require('../util/api_util');
+
 var History = require('react-router').History;
 
 var Menu = React.createClass({
   mixins: [History],
+
+  getStateFromStore: function() {
+    return({User: UserStore.currentUser()});
+},
+
+  getInitialState: function() {
+    return this.getStateFromStore();
+  },
+
+  _onChange: function() {
+    this.setState({User: UserStore.currentUser()});
+  },
+
+  componentDidMount: function() {
+    this.userListener = UserStore.addListener(this._onChange);
+    ApiUtil.fetchCurrentUser();
+  },
+
+  componentWillUnmount: function() {
+    this.userListener.remove();
+  },
+
+
   render: function() {
+    var username = "Options";
+    if (this.state.User != undefined) {
+      username = this.state.User.username;
+    }
     return(
 
       <nav className="navbar navbar-default">
@@ -48,12 +78,11 @@ var Menu = React.createClass({
                   href="#" className="dropdown-toggle" data-toggle="dropdown"
                   role="button" aria-haspopup="true" aria-expanded="false"
                 >
-                  Profile
+                  {username}
                   <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a>My Page</a></li>
-                  <li><a>Settings</a></li>
+                  <li><a><Profile /></a></li>
                   <li role="separator" className="divider"></li>
                   <li><a><SignOut /></a></li>
                 </ul>
