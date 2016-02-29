@@ -26737,19 +26737,6 @@
 
 	module.exports = ProjectIndex;
 
-	// <div class="row">
-	//   <div class="col-sm-6 col-md-4">
-	//     <div class="thumbnail">
-	//       <img src="..." alt="...">
-	//       <div class="caption">
-	//         <h3>Thumbnail label</h3>
-	//         <p>...</p>
-	//         <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-	//       </div>
-	//     </div>
-	//   </div>
-	// </div>
-
 /***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
@@ -26787,7 +26774,7 @@
 	          ),
 	          React.createElement('br', null),
 	          React.createElement('br', null),
-	          React.createElement('img', { src: 'http://lorempixel.com/400/400/cats' }),
+	          React.createElement('img', { className: 'index-item-image', src: this.props.project.img_url }),
 	          React.createElement(
 	            'p',
 	            null,
@@ -31628,6 +31615,7 @@
 
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(182);
+	var Cloud = __webpack_require__(259);
 	var History = __webpack_require__(186).History;
 	var LinkedStateMixin = __webpack_require__(237);
 	var ProjectStore = __webpack_require__(159);
@@ -31700,46 +31688,12 @@
 	    }
 	  },
 
+	  postImage: function (image) {
+	    debugger;
+	    this.setState({ img_url: image.url });
+	  },
+
 	  render: function () {
-
-	    // if (this.errors !== undefined && this.errors.length > 0){
-	    //   var errorArr = this.errors.map(function(error) {
-	    //     return(<li id="error-item"></li>);
-	    //   });
-	    // }else{
-	    //   this.errorArr = "";
-	    // }
-	    // <ul id="error-list">{errorArr}</ul>
-
-	    //
-	    // <form class="form-horizontal">
-	    //   <div class="form-group">
-	    //     <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-	    //     <div class="col-sm-10">
-	    //       <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-	    //     </div>
-	    //   </div>
-	    //   <div class="form-group">
-	    //     <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-	    //     <div class="col-sm-10">
-	    //       <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-	    //     </div>
-	    //   </div>
-	    //   <div class="form-group">
-	    //     <div class="col-sm-offset-2 col-sm-10">
-	    //       <div class="checkbox">
-	    //         <label>
-	    //           <input type="checkbox"> Remember me
-	    //         </label>
-	    //       </div>
-	    //     </div>
-	    //   </div>
-	    //   <div class="form-group">
-	    //     <div class="col-sm-offset-2 col-sm-10">
-	    //       <button type="submit" class="btn btn-default">Sign in</button>
-	    //     </div>
-	    //   </div>
-	    // </form>
 
 	    return React.createElement(
 	      'div',
@@ -31908,6 +31862,7 @@
 	            })
 	          )
 	        ),
+	        React.createElement(Cloud, { postImage: this.postImage }),
 	        React.createElement(
 	          'div',
 	          { className: 'form-group' },
@@ -33378,6 +33333,44 @@
 	});
 
 	module.exports = userRewardTableRows;
+
+/***/ },
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(182);
+
+	var Cloud = React.createClass({
+	  displayName: 'Cloud',
+
+
+	  _uploadPicture: function (event) {
+
+	    event.preventDefault();
+	    cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function (error, results) {
+	      if (!error) {
+	        this.props.postImage(results[0]);
+	      }
+	    }.bind(this));
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'upload-form' },
+	      React.createElement(
+	        'button',
+	        { onClick: this._uploadPicture },
+	        'Upload Image'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Cloud;
 
 /***/ }
 /******/ ]);

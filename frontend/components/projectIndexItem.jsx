@@ -21,7 +21,10 @@ var ProjectIndexItem = React.createClass({
             </h3>
             <br />
             <br />
-            <img src="http://lorempixel.com/400/400/cats"></img>
+
+            <img className="index-item-image" src={this.props.project.img_url}>
+            </img>
+
             <p>Blurb: {this.props.project.blurb}</p>
           </div>
         </div>

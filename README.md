@@ -135,6 +135,7 @@ chose which categories to display, or to display all.
 
 ### Bonus Features (TBD)
 - [ ] Implement 'quill' for text inputs
+- [X] implement 'cloudinary' for picture uploading
 - [ ] Author can post updates on authored project
 - [ ] Multiple sessions
 - [ ] Users can post comments on projects they have backed
