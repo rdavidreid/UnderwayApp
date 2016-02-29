@@ -10,7 +10,7 @@ var RewardDetail = React.createClass({
 
     } else {
       var newBacker = {reward_id: this.props.reward.reward_id};
-      if (false && this.props.reward.reward_max_count &&
+      if (this.props.reward.reward_max_count &&
         this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
         alert(this.props.reward.reward_title + " is sold out!");
       } else {
@@ -32,8 +32,6 @@ var RewardDetail = React.createClass({
     } else {
       maxCount = "";
     }
-
-
 
     return(
       <div className="col-md-12 reward-detail" onClick={this._clickerFunc}>

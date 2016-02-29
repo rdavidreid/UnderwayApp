@@ -87,8 +87,6 @@ var ApiUtil = {
       // data: bounds,
       success: function(data) {
         ApiActions.recieveSingle(data);
-        // ApiActions.createdReward(data);
-        // func && func(data.project.id);
       },
       error: function(data) {
       }
@@ -102,35 +100,20 @@ var ApiUtil = {
       data: {backer: newBacker},
       success: function(data) {
         ApiActions.recieveSingle(data);
-        console.log("created",data);
+      }
+    });
+  },
+
+  fetchCurrentUser: function() {
+    $.ajax({
+      url: "/api/session",
+      type: "GET",
+      success: function(data) {
+        ApiActions.recieveUser(data);
       }
     });
   }
 
 };
-
-
-
- // TODO: REMOVE THIS -- hardcoded to create a project with API
-
- // ApiUtil.createProject({project: {title: "testtitle", blurb: "The blurb of project 1",
- // img_url: "http://lorempixel.com/200/200/cats/",
- // details: "These are the details of project one. This could contain",
- // author_id: 1,
- // category_id: 1,
- // current_funding: 0,
- // funding_goal: 100000, campaign_end_date: new Date() }})
-
- // ApiUtil.updateProject({project: {id: 2, title: "THIS IS AN EDITED TITLE WOOT",
- // blurb: "EDITED BLURB TOO WOOOOOT",
- // img_url: "http://lorempixel.com/200/200/cats/",
- // details: "These are the EDITED DETAILS OF THE PROJECT WOOOOOT",
- // author_id: 1,
- // category_id: 1,
- // current_funding: 0,
- // funding_goal: 100000,
- // campaign_end_date: new Date() }})
-
- // ApiUtil.destroyProject({project: {id: 2}})
 
 module.exports = ApiUtil;

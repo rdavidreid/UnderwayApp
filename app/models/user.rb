@@ -23,6 +23,35 @@ class User < ActiveRecord::Base
 
   has_many(:rewards, through: :backers)
 
+  def authored_projects
+    arr = []
+    Project.all.each do |project|
+      arr << project if project.author_id == self.id
+    end
+    arr
+  end
+
+
+  def backed_projects
+    arr = []
+    self.rewards.each do |reward|
+      arr.push(reward.project)
+    end
+    arr.uniq
+  end
+
+  def uniq_rewards
+    arr = []
+    self.rewards.each do |reward|
+      arr.push(reward)
+    end
+    arr.uniq
+  end
+
+  def money spent
+
+  end
+
   def self.generate_session_token
     SecureRandom::urlsafe_base64
   end

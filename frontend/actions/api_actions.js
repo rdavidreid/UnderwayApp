@@ -1,5 +1,6 @@
 var Dispatcher = require("../dispatcher/dispatcher");
 var ProjectConstants= require("../constants/ProjectConstants");
+var UserConstants = require('../constants/UserConstants');
 
 var ApiActions = {
   recieveAll: function(obj){
@@ -19,6 +20,14 @@ var ApiActions = {
     Dispatcher.dispatch({
       actionType: ProjectConstants.SINGLE_PROJECT_RECIEVED,
       projects: obj
+    });
+  },
+
+  recieveUser: function(obj) {
+    console.log("in the api_actions");
+    Dispatcher.dispatch({
+      actionType: UserConstants.CURRENT_USER_RECIEVED,
+      user: obj
     });
   },
 

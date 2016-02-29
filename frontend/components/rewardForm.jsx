@@ -101,8 +101,7 @@ var projectForm = React.createClass({
         project_id: "",
         delivery_date: "",
         img_url: "",
-        quantity: "",
-        reward_max_count: ""
+        reward_max_count: "",
       });
     } else{
       alert(this.errors.join("\n"));
@@ -124,14 +123,6 @@ var projectForm = React.createClass({
         return(<RewardDetail reward={el} clickerFunc="none" />);
       });
     }
-    //
-    // if (this.state.Project.project.rewards === undefined){
-    // } else {
-    //   rewards = [];
-    //   this.state.Project.project.rewards.forEach(function(el) {
-    //     rewards.push(el.reward_title);
-    //   });
-    // }
 
     if(this.props.location.query.new === "true"){
       msg = <div className="alert alert-info">Dont forget to add rewards to your project! Projects that have
@@ -202,14 +193,14 @@ var projectForm = React.createClass({
         </div>
 
         <div className="form-group">
-          <label htmlFor='quantity' className="col-sm-2 control-label">Quantity (optional):
+          <label htmlFor='reward_max_count' className="col-sm-2 control-label">Quantity (optional):
           </label>
             <div className="col-sm-10">
             <input
               className="form-control"
               type="text"
-              id="quantity"
-              valueLink={this.linkState("quantity")}
+              id="reward_max_count"
+              valueLink={this.linkState("reward_max_count")}
             />
           </div>
         </div>

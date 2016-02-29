@@ -6,6 +6,8 @@ class Api::ProjectsController < ApplicationController
 
   def show
     # puts "PARAMS: #{params[id]}"
+    # TODO put this in your model!!!
+    
     @project = Project.find_by_id(params[:id])
     current_users_rewards = current_user.rewards
     @current_users_current_project_rewards = []

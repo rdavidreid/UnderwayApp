@@ -1,11 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ProjectStore = require('./stores/ProjectStore');
+var UserStore = require('./stores/UserStore');
 var ApiUtil = require('./util/api_util');
 var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
 var ProjectForm = require('./components/projectForm');
 var ProjectEditForm = require('./components/ProjectEditForm');
+var UserDetail = require('./components/userDetail');
 var RewardForm = require('./components/rewardForm');
 var Menu = require('./components/Menu');
 
@@ -36,6 +38,7 @@ var routes = (
     <Route path="createproject" component={ProjectForm}></Route>
     <Route path="editproject/:id" component={ProjectEditForm}></Route>
     <Route path="editreward/:id" component={RewardForm}></Route>
+    <Route path="userdetails" component={UserDetail}></Route>
   </Route>
 );
 

@@ -84,6 +84,8 @@ var ProjectDetail = React.createClass({
         <div className="col-md-6">
           <h4>Funding Goal:</h4>
           <p>{this.state.Project.project.funding_goal}</p>
+          <h4>Funding Raised:</h4>
+          <p>{this.state.Project.project.current_funding}</p>
           <h4>Campaign end date:</h4>
           <p>{this.state.Project.project.campaign_end_date}</p>
         </div>
@@ -94,7 +96,6 @@ var ProjectDetail = React.createClass({
         <p>details:{this.state.Project.project.details}</p>
         </div>
         <div className="col-md-4">
-          This will be rewards
           <br></br>
           {rewards}
         </div>

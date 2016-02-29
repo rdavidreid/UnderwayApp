@@ -22,14 +22,10 @@ ProjectStore.__onDispatch = function(payload) {
     case ProjectConstants.PROJECTS_RECIEVED:
       this.resetProjects(payload.projects);
       this.__emitChange();
-      console.log('from the store');
-      console.log(_projects);
       break;
     case ProjectConstants.SINGLE_PROJECT_RECIEVED:
       this.resetProjects([payload.projects]);
       this.__emitChange();
-      console.log('single project from the store');
-      console.log(_projects);
     case ProjectConstants.REWARD_CREATED:
       this.__emitChange
   }

@@ -15,6 +15,8 @@ class Api::BackersController < ApplicationController
 
     if @backer.save
       @project = @backer.project
+      @project.current_funding += @backer.reward.cost
+      @project.save
       current_users_rewards = current_user.rewards
       @current_users_current_project_rewards = []
       current_users_rewards.map do |el|

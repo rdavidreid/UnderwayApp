@@ -17,7 +17,7 @@
 class Reward < ActiveRecord::Base
 
   belongs_to(:project)
-  has_many(:backers)
+  has_many(:backers, dependent: :destroy)
   has_many(:users, through: :backers, source: :user)
 
 

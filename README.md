@@ -146,7 +146,7 @@ chose which categories to display, or to display all.
 [phase-three]: ./docs/phases/phase03.md
 [phase-four]: ./docs/phases/phase04.md
 [phase-five]: ./docs/phases/phase05.md
-[phase-five]: ./docs/phases/phase06.md
-[phase-five]: ./docs/phases/phase07.md
-[phase-five]: ./docs/phases/phase08.md
-[phase-five]: ./docs/phases/phase09.md
+[phase-six]: ./docs/phases/phase06.md
+[phase-seven]: ./docs/phases/phase07.md
+[phase-eight]: ./docs/phases/phase08.md
+[phase-nine]: ./docs/phases/phase09.md

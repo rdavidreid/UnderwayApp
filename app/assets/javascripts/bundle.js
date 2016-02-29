@@ -47,11 +47,13 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(253);
 	var ApiUtil = __webpack_require__(182);
 	var ProjectIndex = __webpack_require__(184);
 	var ProjectDetail = __webpack_require__(235);
 	var ProjectForm = __webpack_require__(236);
 	var ProjectEditForm = __webpack_require__(241);
+	var UserDetail = __webpack_require__(254);
 	var RewardForm = __webpack_require__(249);
 	var Menu = __webpack_require__(242);
 
@@ -85,7 +87,8 @@
 	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
 	  React.createElement(Route, { path: 'createproject', component: ProjectForm }),
 	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm }),
-	  React.createElement(Route, { path: 'editreward/:id', component: RewardForm })
+	  React.createElement(Route, { path: 'editreward/:id', component: RewardForm }),
+	  React.createElement(Route, { path: 'userdetails', component: UserDetail })
 	);
 
 	// var routes = (
@@ -19740,14 +19743,10 @@
 	    case ProjectConstants.PROJECTS_RECIEVED:
 	      this.resetProjects(payload.projects);
 	      this.__emitChange();
-	      console.log('from the store');
-	      console.log(_projects);
 	      break;
 	    case ProjectConstants.SINGLE_PROJECT_RECIEVED:
 	      this.resetProjects([payload.projects]);
 	      this.__emitChange();
-	      console.log('single project from the store');
-	      console.log(_projects);
 	    case ProjectConstants.REWARD_CREATED:
 	      this.__emitChange;
 	  }
@@ -26621,8 +26620,6 @@
 	      // data: bounds,
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
-	        // ApiActions.createdReward(data);
-	        // func && func(data.project.id);
 	      },
 	      error: function (data) {}
 	    });
@@ -26635,34 +26632,21 @@
 	      data: { backer: newBacker },
 	      success: function (data) {
 	        ApiActions.recieveSingle(data);
-	        console.log("created", data);
+	      }
+	    });
+	  },
+
+	  fetchCurrentUser: function () {
+	    $.ajax({
+	      url: "/api/session",
+	      type: "GET",
+	      success: function (data) {
+	        ApiActions.recieveUser(data);
 	      }
 	    });
 	  }
 
 	};
-
-	// TODO: REMOVE THIS -- hardcoded to create a project with API
-
-	// ApiUtil.createProject({project: {title: "testtitle", blurb: "The blurb of project 1",
-	// img_url: "http://lorempixel.com/200/200/cats/",
-	// details: "These are the details of project one. This could contain",
-	// author_id: 1,
-	// category_id: 1,
-	// current_funding: 0,
-	// funding_goal: 100000, campaign_end_date: new Date() }})
-
-	// ApiUtil.updateProject({project: {id: 2, title: "THIS IS AN EDITED TITLE WOOT",
-	// blurb: "EDITED BLURB TOO WOOOOOT",
-	// img_url: "http://lorempixel.com/200/200/cats/",
-	// details: "These are the EDITED DETAILS OF THE PROJECT WOOOOOT",
-	// author_id: 1,
-	// category_id: 1,
-	// current_funding: 0,
-	// funding_goal: 100000,
-	// campaign_end_date: new Date() }})
-
-	// ApiUtil.destroyProject({project: {id: 2}})
 
 	module.exports = ApiUtil;
 
@@ -26672,6 +26656,7 @@
 
 	var Dispatcher = __webpack_require__(178);
 	var ProjectConstants = __webpack_require__(181);
+	var UserConstants = __webpack_require__(252);
 
 	var ApiActions = {
 	  recieveAll: function (obj) {
@@ -26691,6 +26676,14 @@
 	    Dispatcher.dispatch({
 	      actionType: ProjectConstants.SINGLE_PROJECT_RECIEVED,
 	      projects: obj
+	    });
+	  },
+
+	  recieveUser: function (obj) {
+	    console.log("in the api_actions");
+	    Dispatcher.dispatch({
+	      actionType: UserConstants.CURRENT_USER_RECIEVED,
+	      user: obj
 	    });
 	  }
 
@@ -26805,26 +26798,9 @@
 	      )
 	    );
 	  }
-
 	});
 
 	module.exports = ProjectIndexItem;
-	//
-	// <div class="row">
-	//   <div class="col-sm-6 col-md-4">
-	//     <div class="thumbnail">
-	//       <img src="..." alt="...">
-	//       <div class="caption">
-	//         <h3>Thumbnail label</h3>
-	//         <p>...</p>
-	//         <p>
-	//           <a href="#" class="btn btn-primary" role="button">Button</a>
-	//           <a href="#" class="btn btn-default" role="button">Button</a>
-	//         </p>
-	//       </div>
-	//     </div>
-	//   </div>
-	// </div>
 
 /***/ },
 /* 186 */
@@ -31601,6 +31577,16 @@
 	          React.createElement(
 	            'h4',
 	            null,
+	            'Funding Raised:'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.Project.project.current_funding
+	          ),
+	          React.createElement(
+	            'h4',
+	            null,
 	            'Campaign end date:'
 	          ),
 	          React.createElement(
@@ -31626,7 +31612,6 @@
 	        React.createElement(
 	          'div',
 	          { className: 'col-md-4' },
-	          'This will be rewards',
 	          React.createElement('br', null),
 	          rewards
 	        )
@@ -32751,7 +32736,6 @@
 	        project_id: "",
 	        delivery_date: "",
 	        img_url: "",
-	        quantity: "",
 	        reward_max_count: ""
 	      });
 	    } else {
@@ -32774,14 +32758,6 @@
 	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'none' });
 	      });
 	    }
-	    //
-	    // if (this.state.Project.project.rewards === undefined){
-	    // } else {
-	    //   rewards = [];
-	    //   this.state.Project.project.rewards.forEach(function(el) {
-	    //     rewards.push(el.reward_title);
-	    //   });
-	    // }
 
 	    if (this.props.location.query.new === "true") {
 	      msg = React.createElement(
@@ -32896,7 +32872,7 @@
 	            { className: 'form-group' },
 	            React.createElement(
 	              'label',
-	              { htmlFor: 'quantity', className: 'col-sm-2 control-label' },
+	              { htmlFor: 'reward_max_count', className: 'col-sm-2 control-label' },
 	              'Quantity (optional):'
 	            ),
 	            React.createElement(
@@ -32905,8 +32881,8 @@
 	              React.createElement('input', {
 	                className: 'form-control',
 	                type: 'text',
-	                id: 'quantity',
-	                valueLink: this.linkState("quantity")
+	                id: 'reward_max_count',
+	                valueLink: this.linkState("reward_max_count")
 	              })
 	            )
 	          ),
@@ -32980,7 +32956,7 @@
 	    console.log("you clicked:", this.props.reward.reward_title);
 	    if (this.props.clickerFunc === "none") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (false) {
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
 	        alert(this.props.reward.reward_title + " is sold out!");
 	      } else {
 	        ApiUtil.createBacker(newBacker);
@@ -33059,7 +33035,7 @@
 	    console.log("you clicked:", this.props.reward.reward_title);
 	    if (this.props.clickerFunc === "none") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (false) {
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
 	        alert(this.props.reward.reward_title + " is sold out!");
 	      } else {
 	        ApiUtil.createBacker(newBacker);
@@ -33122,6 +33098,271 @@
 	});
 
 	module.exports = RewardDetail;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	var UserConstants = {
+	  CURRENT_USER_RECIEVED: "CURRENT_USER_RECIEVED"
+	};
+
+	module.exports = UserConstants;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(160).Store;
+	var AppDispatcher = __webpack_require__(178);
+	var UserConstants = __webpack_require__(252);
+
+	var _user = [];
+
+	var UserStore = new Store(AppDispatcher);
+
+	UserStore.resetUsers = function (newUser) {
+	  _user = [newUser];
+	  return _user;
+	};
+
+	UserStore.currentUser = function () {
+	  return _user[0];
+	};
+
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case UserConstants.CURRENT_USER_RECIEVED:
+	      console.log("in the user store");
+	      this.resetUsers(payload.user);
+	      this.__emitChange();
+	  }
+	};
+
+	module.exports = UserStore;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(253);
+	var ApiUtil = __webpack_require__(182);
+	var RewardDetail = __webpack_require__(250);
+	var ProjectIndexItem = __webpack_require__(185);
+	var UserRewardTableRows = __webpack_require__(255);
+
+	var History = __webpack_require__(186).History;
+
+	var ProjectDetail = React.createClass({
+	  displayName: 'ProjectDetail',
+
+	  mixins: [History],
+
+	  getStateFromStore: function () {
+	    return { User: UserStore.currentUser() };
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  _onChange: function () {
+	    this.setState({ User: UserStore.currentUser() });
+	  },
+
+	  componentDidMount: function () {
+	    this.userListener = UserStore.addListener(this._onChange);
+	    ApiUtil.fetchCurrentUser();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+
+	  editRewards: function () {
+	    this.history.push('/editreward/' + this.state.Project.project.id);
+	  },
+
+	  _clickRewardRow: function () {
+	    debugger;
+	    this.history.push('/project/' + arguments[0]);
+	  },
+
+	  render: function () {
+	    var that = this;
+	    if (this.state.User != undefined) {
+	      var backedProjects = this.state.User.backed_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      var createdProjects = this.state.User.authored_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      // var rewards = this.state.User.rewards.map(function(el) {
+	      //   return(<RewardDetail reward={el} clickerFunc="none" />);
+	      // });
+
+	      var rewardRow = this.state.User.rewards.map(function (el) {
+	        return React.createElement(UserRewardTableRows, { reward: el });
+	      });
+	    } else {
+	      backedProjects = [];
+	      createdProjects = [];
+	      rewards = [];
+	    }
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { id: 'backedProjects', className: 'col-md-12' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Backed Projects'
+	          ),
+	          backedProjects
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { id: 'createdProjects', className: 'col-md-12' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            ' Created Projects'
+	          ),
+	          createdProjects
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { id: 'rewards' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Purchase History'
+	          ),
+	          rewards
+	        )
+	      ),
+	      React.createElement(
+	        'table',
+	        { className: 'table table-hover' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Purchase History'
+	        ),
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'th',
+	              null,
+	              'Reward:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'Price:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'delivery_date:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'description:'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          rewardRow
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = ProjectDetail;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(253);
+	var ApiUtil = __webpack_require__(182);
+	var RewardDetail = __webpack_require__(250);
+	var ProjectIndexItem = __webpack_require__(185);
+
+	var History = __webpack_require__(186).History;
+
+	var userRewardTableRows = React.createClass({
+	  displayName: 'userRewardTableRows',
+
+	  mixins: [History],
+
+	  _clickRewardRow: function () {
+	    this.history.push('/project/' + this.props.reward.project_id);
+	  },
+
+	  render: function () {
+	    var dots = "";
+	    if (this.props.reward.description.length > 37) {
+	      dots = "...";
+	    }
+	    return React.createElement(
+	      'tr',
+	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
+	      React.createElement(
+	        'th',
+	        { scope: 'row' },
+	        this.props.reward.title
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.cost
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.divery_date
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.description.slice(0, 40) + dots
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = userRewardTableRows;
 
 /***/ }
 /******/ ]);
