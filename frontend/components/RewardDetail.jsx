@@ -5,7 +5,6 @@ var ApiUtil = require('../util/api_util');
 var RewardDetail = React.createClass({
 
   _clickerFunc: function() {
-    console.log("you clicked:", this.props.reward.reward_title);
     if(this.props.clickerFunc === "none") {
 
     } else {

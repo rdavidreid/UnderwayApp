@@ -12,13 +12,6 @@
 //   height: 100%;
 // }
 
-#rails-body{
-  background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
 #logo{
   display: block;
   margin: auto;
@@ -27,8 +20,18 @@
 }
 
 #account_form{
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
   background: white;
   opacity: .8;
+  margin-top: 20px;
+  transition: all 0.3s ease 0s;
+
+}
+#account_form:hover{
+  -webkit-box-shadow: 0 0 7px #4dc3ff;
+          box-shadow: 0 0 7px #4dc3ff;
+          opacity: .9;
+
 }
 
 .account-form-title{

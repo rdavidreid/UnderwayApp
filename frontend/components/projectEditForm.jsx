@@ -38,8 +38,6 @@ var projectForm = React.createClass({
   },
 
   getInitialState: function() {
-    console.log(this.props.params.id);
-    console.log("EDIT FORM!!");
     return (this.getStateFromStore());
   },
 
@@ -83,7 +81,6 @@ var projectForm = React.createClass({
 
     Object.keys(this.state).forEach(function(key){
       project[key] = this.state[key];
-      console.log(this.state.key);
     }.bind(this));
     var valid = this.validateInput();
     if (valid) {

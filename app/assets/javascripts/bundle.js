@@ -26680,7 +26680,6 @@
 	  },
 
 	  recieveUser: function (obj) {
-	    console.log("in the api_actions");
 	    Dispatcher.dispatch({
 	      actionType: UserConstants.CURRENT_USER_RECIEVED,
 	      user: obj
@@ -26750,23 +26749,34 @@
 	  mixins: [History],
 
 	  showDetails: function () {
-	    console.log("test");
 	    this.history.push('/project/' + this.props.project.id);
-	    console.log("you have clicked item number", this.props.project.id);
+	  },
+
+	  _imgError: function () {
+	    // this.backupImage = (<img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png"></img>);
+	    // console.log("error happend");
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
+	    // debugger;
 	  },
 
 	  render: function () {
-	    var fundingAsPercent = this.props.project.funding_goal / this.props.project.current_funding;
-	    var fundingAsString = Math.round(fundingAsPercent).toString();
 
-	    if (fundingAsString === "Infinity") {
-	      fundingAsString = "0%";
-	    } else {
-	      fundingAsString += "%";
+	    var fundingAsPercent = this.props.project.funding_goal / this.props.project.current_funding;
+	    var fundingAsString = Math.round(fundingAsPercent);
+
+	    if (fundingAsString == Infinity) {
+	      fundingAsString = 0;
 	    }
 
-	    var fundingStyle = { width: fundingAsString };
+	    var fundingStyle = fundingAsString;
+	    if (fundingStyle > 100) {
+	      fundingStyle = "100";
+	    }
+	    fundingStyle = fundingStyle.toString() + "%";
+	    fundingAsString = fundingAsString.toString() + "%";
 
+	    fundingStyle = { width: fundingStyle };
+	    // debugger;
 	    return React.createElement(
 	      'div',
 	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
@@ -26775,27 +26785,18 @@
 	      React.createElement(
 	        'div',
 	        { className: 'inner-box' },
-	        React.createElement('img', { className: 'index-item-image', src: this.props.project.img_url }),
+	        React.createElement('img', {
+	          ref: 'indexItemImage',
+	          className: 'index-item-image',
+	          src: this.props.project.img_url,
+	          onError: this._imgError
+	        }),
 	        React.createElement(
 	          'h3',
 	          { className: 'project-index-item-title' },
 	          this.props.project.title
 	        ),
 	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'progress' },
-	          React.createElement(
-	            'div',
-	            { className: 'progress-bar progress-bar-striped progress-bar-success active',
-	              role: 'progressbar',
-	              'aria-valuenow': '40',
-	              'aria-valuemin': '0',
-	              'aria-valuemax': '100',
-	              style: fundingStyle },
-	            fundingAsString
-	          )
-	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'index-blerb' },
@@ -26805,6 +26806,25 @@
 	            'Blurb: ',
 	            this.props.project.blurb
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'progress' },
+	          React.createElement(
+	            'div',
+	            { className: 'progress-bar progress-bar-success',
+	              role: 'progressbar',
+	              'aria-valuenow': fundingAsString,
+	              'aria-valuemin': '0',
+	              'aria-valuemax': '100',
+	              style: fundingStyle },
+	            fundingAsString
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'itemInfo' },
+	          this.props.project.campaign_end_date - Date.now()
 	        ),
 	        React.createElement('br', null)
 	      )
@@ -31715,7 +31735,6 @@
 
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state.key;
-	      console.log(this.state.key);
 	    }.bind(this));
 
 	    var valid = this.validateInput();
@@ -32197,8 +32216,6 @@
 	  },
 
 	  getInitialState: function () {
-	    console.log(this.props.params.id);
-	    console.log("EDIT FORM!!");
 	    return this.getStateFromStore();
 	  },
 
@@ -32242,7 +32259,6 @@
 
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state[key];
-	      console.log(this.state.key);
 	    }.bind(this));
 	    var valid = this.validateInput();
 	    if (valid) {
@@ -32752,7 +32768,6 @@
 
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state.key;
-	      console.log(this.state.key);
 	    }.bind(this));
 
 	    var valid = this.validateInput();
@@ -32976,7 +32991,6 @@
 
 
 	  _clickerFunc: function () {
-	    console.log("you clicked:", this.props.reward.reward_title);
 	    if (this.props.clickerFunc === "none") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
 	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
@@ -33055,7 +33069,6 @@
 
 
 	  _clickerFunc: function () {
-	    console.log("you clicked:", this.props.reward.reward_title);
 	    if (this.props.clickerFunc === "none") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
 	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
@@ -33156,7 +33169,7 @@
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case UserConstants.CURRENT_USER_RECIEVED:
-	      console.log("in the user store");
+	      console.log("user aquired", payload.user.username);
 	      this.resetUsers(payload.user);
 	      this.__emitChange();
 	  }

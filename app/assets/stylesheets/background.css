@@ -1,0 +1,11 @@
+#rails-body{
+  background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.black-and-white{
+  -webkit-filter: grayscale(1); /* Old WebKit */
+  filter: grayscale(1);
+}

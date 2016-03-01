@@ -58,7 +58,6 @@ var projectForm = React.createClass({
 
     Object.keys(this.state).forEach(function(key){
       project[key] = this.state.key;
-      console.log(this.state.key);
     }.bind(this));
 
     var valid = this.validateInput();

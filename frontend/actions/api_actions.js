@@ -24,7 +24,6 @@ var ApiActions = {
   },
 
   recieveUser: function(obj) {
-    console.log("in the api_actions");
     Dispatcher.dispatch({
       actionType: UserConstants.CURRENT_USER_RECIEVED,
       user: obj
