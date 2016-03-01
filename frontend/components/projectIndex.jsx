@@ -28,6 +28,7 @@ var ProjectIndex = React.createClass({
     });
 
     return(
+
       <div className="row">
         {arrProjects}
       </div>

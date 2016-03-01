@@ -5,7 +5,7 @@ var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 var RewardDetail = require('./rewardDetail');
 
-var projectForm = React.createClass({
+var rewardForm = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   inputs: {
@@ -16,10 +16,6 @@ var projectForm = React.createClass({
     delivery_date: "",
     reward_max_count: ""
   },
-
-  // getInitialState: function() {
-  //   return(this.inputs);
-  // },
 
   getStateFromStore: function() {
     return({Project: ProjectStore.findById(
@@ -206,19 +202,6 @@ var projectForm = React.createClass({
         </div>
 
         <div className="form-group">
-          <label htmlFor='img_url' className="col-sm-2 control-label">Image URL (optional):
-          </label>
-            <div className="col-sm-10">
-            <input
-              className="form-control"
-              type="text"
-              id="img_url"
-              valueLink={this.linkState("img_url")}
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
           <div className="col-sm-10">
             <button>Create Reward</button>
           </div>
@@ -237,5 +220,18 @@ var projectForm = React.createClass({
   }
 });
 
+// <div className="form-group">
+//   <label htmlFor='img_url' className="col-sm-2 control-label">Image URL (optional):
+//   </label>
+//     <div className="col-sm-10">
+//     <input
+//       className="form-control"
+//       type="text"
+//       id="img_url"
+//       valueLink={this.linkState("img_url")}
+//     />
+//   </div>
+// </div>
 
-module.exports = projectForm;
+
+module.exports = rewardForm;

@@ -2,6 +2,7 @@ var React = require('react');
 var ProjectStore = require('../stores/ProjectStore');
 var ApiUtil = require('../util/api_util');
 var RewardDetail = require('./RewardDetail');
+var UserStore = require('../stores/UserStore');
 var History = require('react-router').History;
 
 
@@ -55,9 +56,16 @@ var ProjectDetail = React.createClass({
     this.state.Project.project === undefined){
       return(<p>Loading...</p>);
     } else {
-      var btnDelete = (<button onClick={this.deleteProject}>Delete</button>);
-      var btnEdit =   (<button onClick={this.editProject}>Edit</button>);
-      var btnEditRewards = (<button onClick={this.editRewards}>Add Rewards</button>);
+
+      var btnDelete = (<button
+        className="button blue glossy"
+        onClick={this.deleteProject}>Delete</button>);
+      var btnEdit =   (<button
+        className="button blue glossy"
+        onClick={this.editProject}>Edit</button>);
+      var btnEditRewards = (<button
+        className="button blue glossy"
+        onClick={this.editRewards}>Add Rewards</button>);
     }
 
     var rewards = "";
@@ -70,37 +78,49 @@ var ProjectDetail = React.createClass({
     }
 
     return(
-      <div>
+    <div>
       <div className="row details-top">
+
         <div id="ProjectDetailPane" className="col-md-6">
+
           <h3>TITLE: {this.state.Project.project.title}</h3>
-          <img src={this.state.Project.project.img_url}></img>
+          <img
+            className="project-detail-image"
+            src={this.state.Project.project.img_url}>
+          </img>
           <p>Blurb:{this.state.Project.project.blurb}</p>
-          ID IS: {this.props.params.id}
           <br/>
           {btnEdit} {btnDelete} {btnEditRewards}
+          <br/>
+          <br/>
         </div>
 
         <div className="col-md-6">
+
           <h4>Funding Goal:</h4>
           <p>{this.state.Project.project.funding_goal}</p>
           <h4>Funding Raised:</h4>
           <p>{this.state.Project.project.current_funding}</p>
           <h4>Campaign end date:</h4>
           <p>{this.state.Project.project.campaign_end_date}</p>
+
         </div>
+
       </div>
 
       <div className="row row details-bottom">
+
         <div className="col-md-8">
-        <p>details:{this.state.Project.project.details}</p>
+          <p>details:{this.state.Project.project.details}</p>
         </div>
+
         <div className="col-md-4">
           <br></br>
           {rewards}
         </div>
+
       </div>
-      </div>
+    </div>
     );
   }
 });

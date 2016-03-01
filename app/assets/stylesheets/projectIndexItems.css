@@ -1,16 +1,50 @@
+@media (max-width: 768px) {
+  [class*="container"]{
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+  }
+
+}
+
 .project-index-item-title {
   text-align: center;
 }
+
+.index-item.col-lg-4{
+  min-height: 580px;
+}
+
+.index-item-image{
+  width: 100%;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+
 .center-me{
   margin: 0 auto;
 }
+
 .index-item {
   border-radius: 20px;
-  max-width: 600px;
+  margin: auto;
 }
+
 .inner-box {
   box-shadow: 5px 5px 2px #888888;
   border-radius: 20px;
+  border: 1px solid grey;
+  margin: 10px 0;
+}
+
+.index-blerb{
+  max-width: 90%;
+  margin: auto;
+  word-wrap: break-word;
+}
+
+.progress{
+  margin: 0 5px;
 }
 
 .thisismyclassname{

@@ -1,5 +1,6 @@
 var React = require('react');
 var ApiUtil = require('../util/api_util.js');
+var Cloud = require('./Cloud');
 var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
@@ -40,6 +41,10 @@ var projectForm = React.createClass({
     console.log(this.props.params.id);
     console.log("EDIT FORM!!");
     return (this.getStateFromStore());
+  },
+
+  postImage: function (image) {
+    this.setState({img_url: image.url});
   },
 
   // TODO: REFACTOR / CLEAN THIS. add into another file
@@ -143,9 +148,11 @@ var projectForm = React.createClass({
             </div>
           </div>
 
+          <Cloud postImage={this.postImage} />
+
           <div className="form-group">
             <div className="col-sm-10">
-              <button>Edit Project</button>
+              <button>Confirm Changes</button>
             </div>
           </div>
 

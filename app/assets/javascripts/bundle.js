@@ -26756,6 +26756,17 @@
 	  },
 
 	  render: function () {
+	    var fundingAsPercent = this.props.project.funding_goal / this.props.project.current_funding;
+	    var fundingAsString = Math.round(fundingAsPercent).toString();
+
+	    if (fundingAsString === "Infinity") {
+	      fundingAsString = "0%";
+	    } else {
+	      fundingAsString += "%";
+	    }
+
+	    var fundingStyle = { width: fundingAsString };
+
 	    return React.createElement(
 	      'div',
 	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
@@ -26764,24 +26775,38 @@
 	      React.createElement(
 	        'div',
 	        { className: 'inner-box' },
+	        React.createElement('img', { className: 'index-item-image', src: this.props.project.img_url }),
+	        React.createElement(
+	          'h3',
+	          { className: 'project-index-item-title' },
+	          this.props.project.title
+	        ),
+	        React.createElement('br', null),
 	        React.createElement(
 	          'div',
-	          { className: 'thumbnail' },
+	          { className: 'progress' },
 	          React.createElement(
-	            'h3',
-	            { className: 'project-index-item-title' },
-	            this.props.project.title
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('br', null),
-	          React.createElement('img', { className: 'index-item-image', src: this.props.project.img_url }),
+	            'div',
+	            { className: 'progress-bar progress-bar-striped progress-bar-success active',
+	              role: 'progressbar',
+	              'aria-valuenow': '40',
+	              'aria-valuemin': '0',
+	              'aria-valuemax': '100',
+	              style: fundingStyle },
+	            fundingAsString
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'index-blerb' },
 	          React.createElement(
 	            'p',
 	            null,
 	            'Blurb: ',
 	            this.props.project.blurb
 	          )
-	        )
+	        ),
+	        React.createElement('br', null)
 	      )
 	    );
 	  }
@@ -31438,6 +31463,7 @@
 	var ProjectStore = __webpack_require__(159);
 	var ApiUtil = __webpack_require__(182);
 	var RewardDetail = __webpack_require__(250);
+	var UserStore = __webpack_require__(253);
 	var History = __webpack_require__(186).History;
 
 	var ProjectDetail = React.createClass({
@@ -31492,19 +31518,26 @@
 	        'Loading...'
 	      );
 	    } else {
+
 	      var btnDelete = React.createElement(
 	        'button',
-	        { onClick: this.deleteProject },
+	        {
+	          className: 'button blue glossy',
+	          onClick: this.deleteProject },
 	        'Delete'
 	      );
 	      var btnEdit = React.createElement(
 	        'button',
-	        { onClick: this.editProject },
+	        {
+	          className: 'button blue glossy',
+	          onClick: this.editProject },
 	        'Edit'
 	      );
 	      var btnEditRewards = React.createElement(
 	        'button',
-	        { onClick: this.editRewards },
+	        {
+	          className: 'button blue glossy',
+	          onClick: this.editRewards },
 	        'Add Rewards'
 	      );
 	    }
@@ -31532,21 +31565,23 @@
 	            'TITLE: ',
 	            this.state.Project.project.title
 	          ),
-	          React.createElement('img', { src: this.state.Project.project.img_url }),
+	          React.createElement('img', {
+	            className: 'project-detail-image',
+	            src: this.state.Project.project.img_url }),
 	          React.createElement(
 	            'p',
 	            null,
 	            'Blurb:',
 	            this.state.Project.project.blurb
 	          ),
-	          'ID IS: ',
-	          this.props.params.id,
 	          React.createElement('br', null),
 	          btnEdit,
 	          ' ',
 	          btnDelete,
 	          ' ',
-	          btnEditRewards
+	          btnEditRewards,
+	          React.createElement('br', null),
+	          React.createElement('br', null)
 	        ),
 	        React.createElement(
 	          'div',
@@ -32119,6 +32154,7 @@
 
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(182);
+	var Cloud = __webpack_require__(259);
 	var History = __webpack_require__(186).History;
 	var LinkedStateMixin = __webpack_require__(237);
 	var ProjectStore = __webpack_require__(159);
@@ -32159,6 +32195,10 @@
 	    console.log(this.props.params.id);
 	    console.log("EDIT FORM!!");
 	    return this.getStateFromStore();
+	  },
+
+	  postImage: function (image) {
+	    this.setState({ img_url: image.url });
 	  },
 
 	  // TODO: REFACTOR / CLEAN THIS. add into another file
@@ -32291,6 +32331,7 @@
 	            })
 	          )
 	        ),
+	        React.createElement(Cloud, { postImage: this.postImage }),
 	        React.createElement(
 	          'div',
 	          { className: 'form-group' },
@@ -32300,7 +32341,7 @@
 	            React.createElement(
 	              'button',
 	              null,
-	              'Edit Project'
+	              'Confirm Changes'
 	            )
 	          )
 	        )
@@ -32634,8 +32675,8 @@
 	var ProjectStore = __webpack_require__(159);
 	var RewardDetail = __webpack_require__(251);
 
-	var projectForm = React.createClass({
-	  displayName: 'projectForm',
+	var rewardForm = React.createClass({
+	  displayName: 'rewardForm',
 
 	  mixins: [LinkedStateMixin, History],
 
@@ -32647,10 +32688,6 @@
 	    delivery_date: "",
 	    reward_max_count: ""
 	  },
-
-	  // getInitialState: function() {
-	  //   return(this.inputs);
-	  // },
 
 	  getStateFromStore: function () {
 	    return { Project: ProjectStore.findById(parseInt(this.props.params.id)) };
@@ -32884,25 +32921,6 @@
 	            'div',
 	            { className: 'form-group' },
 	            React.createElement(
-	              'label',
-	              { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
-	              'Image URL (optional):'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement('input', {
-	                className: 'form-control',
-	                type: 'text',
-	                id: 'img_url',
-	                valueLink: this.linkState("img_url")
-	              })
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
 	              'div',
 	              { className: 'col-sm-10' },
 	              React.createElement(
@@ -32933,7 +32951,20 @@
 	  }
 	});
 
-	module.exports = projectForm;
+	// <div className="form-group">
+	//   <label htmlFor='img_url' className="col-sm-2 control-label">Image URL (optional):
+	//   </label>
+	//     <div className="col-sm-10">
+	//     <input
+	//       className="form-control"
+	//       type="text"
+	//       id="img_url"
+	//       valueLink={this.linkState("img_url")}
+	//     />
+	//   </div>
+	// </div>
+
+	module.exports = rewardForm;
 
 /***/ },
 /* 250 */
@@ -33304,6 +33335,7 @@
 	    if (this.props.reward.description.length > 37) {
 	      dots = "...";
 	    }
+
 	    return React.createElement(
 	      'tr',
 	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
@@ -33320,7 +33352,7 @@
 	      React.createElement(
 	        'td',
 	        null,
-	        this.props.reward.divery_date
+	        this.props.reward.delivery_date
 	      ),
 	      React.createElement(
 	        'td',

@@ -11,23 +11,50 @@ var ProjectIndexItem = React.createClass({
   },
 
   render: function() {
+    var fundingAsPercent = this.props.project.funding_goal / this.props.project.current_funding;
+    var fundingAsString = Math.round(fundingAsPercent).toString();
+
+    if(fundingAsString === "Infinity"){
+      fundingAsString = "0%";
+    }
+    else{
+      fundingAsString += "%";
+    }
+
+    var fundingStyle = {width: fundingAsString};
+
     return(
+
       <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-4"
         onClick={this.showDetails}
         key={parseInt(this.props.project.id)} >
+
         <div className="inner-box">
-          <div className="thumbnail">
-            <h3 className="project-index-item-title">{this.props.project.title}
-            </h3>
-            <br />
-            <br />
+          <img className="index-item-image" src={this.props.project.img_url}>
+          </img>
 
-            <img className="index-item-image" src={this.props.project.img_url}>
-            </img>
+          <h3 className="project-index-item-title">{this.props.project.title}
+          </h3>
+          <br />
 
+          <div className="progress">
+            <div className="progress-bar progress-bar-striped progress-bar-success active"
+              role="progressbar"
+              aria-valuenow="40"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style={fundingStyle}>
+                {fundingAsString}
+            </div>
+          </div>
+
+          <div className="index-blerb">
             <p>Blurb: {this.props.project.blurb}</p>
           </div>
+
+          <br />
         </div>
+
       </div>
     );
   }
