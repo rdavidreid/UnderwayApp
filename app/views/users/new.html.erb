@@ -1,23 +1,50 @@
-<div id="account_form">
+<div id="login-background">
 
-  <h2>Create Account</h2>
 
-  <image src='/assets/Underway-logo.png' id="logo"></image>
+  <div id="account_form"
+  class="create-form
+  col-xs-12
+  col-sm-8 col-sm-offset-2
+  col-md-6 col-md-offset-3
+  col-lg-4 col-lg-offset-4">
+
+  <h2 class="account-form-title">Login</h2>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <image src='/assets/Underway-logo.png' id="logo" class="large-logo"></image>
+    </div>
+  </div>
 
   <form action="<%= users_url %>" method="post">
-
     <input type="hidden" name="authenticity_token" value="<% form_authenticity_token %>">
 
-    <label>Username
-      <input type="text" name="user[username]" value="">
-    </label>
+    <div class="form-group">
+      <label htmlFor="username" class="control-label">Username</label>
+      <input type="text" name="user[username]" id="username" class="form-control">
+    </div>
 
-    <label>Password
-      <input type="password" name="user[password]" value="">
-    </label>
+    <div class="form-group">
+      <label htmlFor="password" class="control-label">Password</label>
+      <input type="password" name="user[password]" id="password" class="form-control">
+    </div>
 
-    <input type="submit" name="submit" value="Create">
-
+    <input class="blue button login-button" type="submit" name="submit" value="Log in">
   </form>
+
+  <br>
+
+  <form action="<%= session_url %>" method="post">
+    <input type="hidden" name="authenticity_token" value="<% form_authenticity_token %>">
+    <input type="hidden" name="user[username]" id="username" value="Eugene Fitzherbert">
+    <input type="hidden" name="user[password]" id="password" value="supersecurepassword">
+    <input class="blue button login-button" type="submit" name="submit" value="Demo Account">
+  </form>
+
+  <br>
+
+  <p>Already have an account? <%= link_to "Log in!", new_session_url %></p>
+
+  </div>
 
 </div>

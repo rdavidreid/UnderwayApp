@@ -5,3 +5,33 @@
 .userDetailTitle{
   text-align: center;
 }
+
+// #login-background {
+//   background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
+//   width: 100%;
+//   height: 100%;
+// }
+
+#rails-body{
+  background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#logo{
+  display: block;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+#account_form{
+  background: white;
+  opacity: .8;
+}
+
+.account-form-title{
+  text-align: center;
+
+}

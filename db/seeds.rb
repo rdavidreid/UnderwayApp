@@ -13,6 +13,12 @@ User.create!({
   password: "password"
 })
 
+# Demo Account 1
+User.create!({
+  username: "Eugene Fitzherbert"
+  password: "supersecurepassword"
+})
+
 User.create!({
   username: "seeduser1",
   password: "password"
