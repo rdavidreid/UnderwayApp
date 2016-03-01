@@ -15,7 +15,7 @@ User.create!({
 
 # Demo Account 1
 User.create!({
-  username: "Eugene Fitzherbert"
+  username: "Eugene Fitzherbert",
   password: "supersecurepassword"
 })
 

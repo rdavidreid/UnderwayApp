@@ -10,6 +10,18 @@
 
   <h2 class="account-form-title">Login</h2>
 
+  <% if flash[:errors] %>
+  <div class="alert alert-danger" role="alert">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li> <%= error %> </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  
+
   <div class="row">
     <div class="col-sm-12">
       <image src='/assets/Underway-logo.png' id="logo" class="large-logo"></image>
