@@ -31517,29 +31517,34 @@
 	        null,
 	        'Loading...'
 	      );
-	    } else {
+	    }
 
+	    if (UserStore.currentUser().user_id == this.state.Project.project.author_id) {
 	      var btnDelete = React.createElement(
 	        'button',
 	        {
-	          className: 'button blue glossy',
+	          className: 'button blue',
 	          onClick: this.deleteProject },
 	        'Delete'
 	      );
 	      var btnEdit = React.createElement(
 	        'button',
 	        {
-	          className: 'button blue glossy',
+	          className: 'button blue',
 	          onClick: this.editProject },
 	        'Edit'
 	      );
 	      var btnEditRewards = React.createElement(
 	        'button',
 	        {
-	          className: 'button blue glossy',
+	          className: 'button blue',
 	          onClick: this.editRewards },
 	        'Add Rewards'
 	      );
+	    } else {
+	      btnDelete = "";
+	      btnEdit = "";
+	      btnEditRewards = "";
 	    }
 
 	    var rewards = "";
@@ -31906,7 +31911,7 @@
 	            { className: 'col-sm-10' },
 	            React.createElement(
 	              'button',
-	              null,
+	              { className: 'button blue' },
 	              'Create Project'
 	            )
 	          )
@@ -32338,9 +32343,10 @@
 	          React.createElement(
 	            'div',
 	            { className: 'col-sm-10' },
+	            React.createElement('br', null),
 	            React.createElement(
 	              'button',
-	              null,
+	              { className: 'button blue' },
 	              'Confirm Changes'
 	            )
 	          )
@@ -32439,20 +32445,12 @@
 	            React.createElement(
 	              'li',
 	              null,
-	              React.createElement(
-	                'a',
-	                null,
-	                React.createElement(Discover, null)
-	              )
+	              React.createElement(Discover, null)
 	            ),
 	            React.createElement(
 	              'li',
 	              null,
-	              React.createElement(
-	                'a',
-	                null,
-	                React.createElement(Create, null)
-	              )
+	              React.createElement(Create, null)
 	            )
 	          ),
 	          React.createElement(
@@ -32551,8 +32549,8 @@
 	  },
 	  render: function () {
 	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickCreate },
+	      'a',
+	      { className: '.navbar-link navbar-create', onClick: this._clickCreate },
 	      'Create'
 	    );
 	  }
@@ -32576,8 +32574,8 @@
 	  },
 	  render: function () {
 	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickDiscover },
+	      'a',
+	      { className: '.navbar-link navbar-discover', onClick: this._clickDiscover },
 	      'Discover'
 	    );
 	  }
@@ -32603,7 +32601,7 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'logo-icon', onClick: this._clickLogo },
-	      React.createElement('img', { src: '/assets/Underway-icon.png', id: 'icon' })
+	      React.createElement('img', { src: '/assets/Underway-icon-color.png', id: 'icon' })
 	    );
 	  }
 	});
@@ -32925,7 +32923,7 @@
 	              { className: 'col-sm-10' },
 	              React.createElement(
 	                'button',
-	                null,
+	                { className: 'button blue' },
 	                'Create Reward'
 	              )
 	            )
@@ -32933,7 +32931,7 @@
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.backToProject },
+	          { className: 'button blue', onClick: this.backToProject },
 	          'Back to Project'
 	        )
 	      ),
@@ -33005,10 +33003,10 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      { className: 'col-md-12 reward-detail click-blast', onClick: this._clickerFunc },
 	      React.createElement(
 	        'section',
-	        null,
+	        { className: 'reward-title' },
 	        reward.reward_title
 	      ),
 	      React.createElement(
@@ -33084,10 +33082,10 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      { className: 'col-md-12 reward-detail click-blast', onClick: this._clickerFunc },
 	      React.createElement(
 	        'section',
-	        null,
+	        { className: 'reward-title' },
 	        reward.reward_title
 	      ),
 	      React.createElement(
@@ -33235,6 +33233,22 @@
 	      backedProjects = [];
 	      createdProjects = [];
 	      rewardRow = [];
+	    }
+
+	    if (backedProjects == "") {
+	      backedProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not backed any projects'
+	      );
+	    }
+
+	    if (createdProjects == "") {
+	      var createdProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not created any projects'
+	      );
 	    }
 
 	    return React.createElement(
@@ -33395,7 +33409,7 @@
 	      { className: 'upload-form' },
 	      React.createElement(
 	        'button',
-	        { onClick: this._uploadPicture },
+	        { className: 'button blue', onClick: this._uploadPicture },
 	        'Upload Image'
 	      )
 	    );

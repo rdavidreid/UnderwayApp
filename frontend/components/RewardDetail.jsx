@@ -34,8 +34,10 @@ var RewardDetail = React.createClass({
     }
 
     return(
-      <div className="col-md-12 reward-detail" onClick={this._clickerFunc}>
-        <section>{reward.reward_title}</section>
+
+      <div className="col-md-12 reward-detail click-blast" onClick={this._clickerFunc}>
+
+        <section className="reward-title">{reward.reward_title}</section>
         <section>Price: {reward.reward_cost}</section>
         <section>{reward.reward_description}</section>
         <section>Delivery Date: {reward.reward_delivery_date}</section>

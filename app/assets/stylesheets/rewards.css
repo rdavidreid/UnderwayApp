@@ -1,8 +1,13 @@
 .reward-detail {
-  background-color: green;
+  background-color: #f2f2f2;
   border-radius: 20px;
   padding-top: 20px;
   padding-bottom: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+  transition: all 0.4s ease-in-out;
+}
+
+.reward-detail:hover {
+  background-color: #2ca8d4;
 }

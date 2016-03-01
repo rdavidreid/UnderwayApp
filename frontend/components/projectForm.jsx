@@ -177,7 +177,7 @@ var projectForm = React.createClass({
 
         <div className="form-group">
           <div className="col-sm-10">
-            <button>Create Project</button>
+            <button className="button blue">Create Project</button>
           </div>
         </div>
 

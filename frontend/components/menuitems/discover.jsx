@@ -8,9 +8,11 @@ var Discover = React.createClass({
   },
   render: function() {
     return(
-      <span className=".navbar-link" onClick={this._clickDiscover}>
+
+      <a className=".navbar-link navbar-discover" onClick={this._clickDiscover}>
         Discover
-      </span>
+      </a>
+      
     );
   }
 });

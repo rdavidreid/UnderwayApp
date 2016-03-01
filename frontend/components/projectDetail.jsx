@@ -55,17 +55,23 @@ var ProjectDetail = React.createClass({
     if (this.state.Project === undefined ||
     this.state.Project.project === undefined){
       return(<p>Loading...</p>);
-    } else {
+    }
 
+    if (UserStore.currentUser().user_id == this.state.Project.project.author_id){
       var btnDelete = (<button
-        className="button blue glossy"
+        className="button blue"
         onClick={this.deleteProject}>Delete</button>);
       var btnEdit =   (<button
-        className="button blue glossy"
+        className="button blue"
         onClick={this.editProject}>Edit</button>);
       var btnEditRewards = (<button
-        className="button blue glossy"
+        className="button blue"
         onClick={this.editRewards}>Add Rewards</button>);
+    }
+    else {
+      btnDelete = "";
+      btnEdit = "";
+      btnEditRewards = "";
     }
 
     var rewards = "";

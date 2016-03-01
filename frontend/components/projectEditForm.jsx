@@ -152,7 +152,8 @@ var projectForm = React.createClass({
 
           <div className="form-group">
             <div className="col-sm-10">
-              <button>Confirm Changes</button>
+              <br />
+              <button className="button blue">Confirm Changes</button>
             </div>
           </div>
 

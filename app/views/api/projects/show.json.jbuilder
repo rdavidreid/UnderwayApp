@@ -1,6 +1,7 @@
 json.project do
 
   json.id @project.id
+  json.author_id @project.author_id
   json.title @project.title
   json.blurb @project.blurb
   json.img_url @project.img_url

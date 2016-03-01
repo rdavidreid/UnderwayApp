@@ -9,7 +9,7 @@ var Logo = React.createClass({
   render: function() {
     return(
       <div id="logo-icon" onClick={this._clickLogo}>
-        <img src="/assets/Underway-icon.png" id="icon"></img>
+        <img src="/assets/Underway-icon-color.png" id="icon"></img>
       </div>
     );
   }

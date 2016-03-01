@@ -8,9 +8,11 @@ var Create = React.createClass({
   },
   render: function() {
     return(
-      <span className=".navbar-link" onClick={this._clickCreate}>
+
+      <a className=".navbar-link navbar-create" onClick={this._clickCreate}>
         Create
-      </span>
+      </a>
+      
     );
   }
 });

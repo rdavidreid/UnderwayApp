@@ -68,8 +68,8 @@ var Menu = React.createClass({
           >
 
             <ul className="nav navbar-nav">
-              <li><a><Discover /></a></li>
-              <li><a><Create /></a></li>
+              <li><Discover /></li>
+              <li><Create /></li>
             </ul>
 
             <ul className="nav navbar-nav navbar-right">

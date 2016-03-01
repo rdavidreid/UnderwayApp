@@ -1,46 +1,23 @@
 
-
-.button{
-  font-family: Georgia, serif;
-	background-color: #E1E0E1;
-	padding: 5px 10px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-	color: #666;
-	border-radius: 5px;
-	-moz-background-clip: padding;
-	-webkit-background-clip: padding-box;
-	background-clip: padding-box;
-	display: inline-block;
-	text-align: center;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.45)), to(rgba(255, 255, 255, 0)));
-	background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
-	background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
-	background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
-	background-image: linear-gradient(top, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
-	text-decoration: none;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
-	margin: 0 5px;
-	-webkit-transition: opacity 200ms;
-	-moz-transition: opacity 200ms;
-	transition: opacity 200ms;
-}
-
-.button.glossy {
-	background-image: -webkit-radial-gradient(50% 0, ellipse, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
-	background-image: -moz-radial-gradient(50% 0, ellipse, rgba(255, 255, 255, 0.65) 25%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
-	background-image: -o-radial-gradient(50% 0, ellipse, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
-	background-image: radial-gradient(50% 0, ellipse, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
-	background-size: 300%;
-	background-position: 55% 65%;
-}
-
 .button.blue {
-	background-color: #78CDEA;
+  -webkit-box-shadow: #ccc 0px 4px 5px 0px;
+  -moz-box-shadow: #ccc 0px 4px 5px 0px;
+  box-shadow: #ccc 0px 4px 5px 0px;
+  background: #2fb4e3;
+  color:#fff;
+  transition: all 0.3s ease 0s;
+  border: none;
+  border-radius: 2px;
 }
 
-.button:hover {
-	opacity: 0.8;
+.button.blue.hover, .button.blue:hover {
+  color: #ffdb4d;
+  background:#2ca8d4;
+  -webkit-box-shadow: #bbb 0px 4px 5px 0px;
+  -moz-box-shadow: #bbb 0px 4px 5px 0px;
+  box-shadow: #bbb 0px 4px 5px 0px;
 }
+
 .button:active {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.75) inset;
 }

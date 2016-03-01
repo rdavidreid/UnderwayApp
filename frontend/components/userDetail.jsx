@@ -65,6 +65,20 @@ var ProjectDetail = React.createClass({
       rewardRow = [];
     }
 
+    if(backedProjects == ""){
+      backedProjects = (
+        <div className="alert alert-warning" role="alert">
+          You have not backed any projects
+        </div>
+      );
+    }
+
+    if(createdProjects == ""){
+      var createdProjects = (<div className="alert alert-warning" role="alert">
+        You have not created any projects
+      </div>);
+    }
+
     return (
       <div>
 
