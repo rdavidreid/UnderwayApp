@@ -71,7 +71,6 @@ var projectForm = React.createClass({
   },
 
   postImage: function (image) {
-    debugger;
     this.setState({img_url: image.url});
   },
 

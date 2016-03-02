@@ -40,22 +40,20 @@ User.create!({
 })
 
 Project.create!({
-title:              "Project 1",
-blurb:              "The blurb of Project 1",
-img_url:            "http://lorempixel.com/200/200/cats/",
-details:            "These are the details of Project one. This could contain
-a very large amount of text. text text text text text text text text text text
-text text text text text text text text text texttext text text text text text
-text text text text text text text text text texttext text text text text text
-text text text text text text text text text texttext text text text text text
-text text text text text text text text text texttext text text text text text
-text text text text text text text text text texttext text text text text text
-text text text text text text text text text texttext text text text text text",
+title:              "Flying cat pet",
+blurb:              "Love your feline frined? Give him or her the gift of flight",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg",
 author_id:          1,
 category_id:        1,
 current_funding:    0,
 funding_goal:       100000,
-campaign_end_date:  Time.now + 10.days
+campaign_end_date:  Time.now + 10.days,
+details:            "These are the details of Project one. This could contain
+a very large amount of text. cats and cats and cats and cats and cats and cats and cats and cats and cats and cats and
+cats and cats and cats and cats and cats and cats and cats and cats and cats and cats andcats and cats and cats and cats and cats and cats and
+cats and cats and cats and cats and cats and cats and cats and cats and cats and cats andcats and cats and cats and cats and cats and cats and
+cats and cats and cats and cats and cats and cats and cats and cats and cats and cats andcats and cats and cats and cats and cats and cats and
+cats and cats and cats and cats and cats"
 })
 
 Project.create!({

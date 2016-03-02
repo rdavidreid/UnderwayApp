@@ -89,19 +89,43 @@ var ProjectDetail = React.createClass({
       btnEdit = "";
       btnEditRewards = "";
     }
-    debugger;
+
+    var timeRemainingInt = (Date.parse(this.state.Project.project.campaign_end_date) - new Date());
+    var daysToGo = this._formatTime(timeRemainingInt);
 
     var rewards = "";
+    var endOfFundingMsg = "";
+
     if (this.state.Project.project.rewards === undefined){
-    } else {
+      return null;
+    }
+    else if(timeRemainingInt <= 0) {
+      if (this.state.Project.project.current_funding > this.state.Project.project.funding_goal){
+        endOfFundingMsg = (
+          <div className="funding-over">
+            <h3 className="funding-success">Success!</h3>
+            <p>This project was successfully funded.</p>
+          </div>
+        );
+      }
+      else{
+        endOfFundingMsg =(
+          <div className="funding-over">
+            <h3 className="funding-failure">Unsuccessful</h3>
+            <p>This project did not reach its goal in the provided time limit</p>
+          </div>);
+      }
+      rewards = [];
+      rewards = this.state.Project.project.rewards.map(function(el) {
+        return(<RewardDetail reward={el} clickerFunc="expired"/>);
+      });
+    }
+    else {
       rewards = [];
       rewards = this.state.Project.project.rewards.map(function(el) {
         return(<RewardDetail reward={el} />);
       });
     }
-    var timeRemainingInt = (Date.parse(this.state.Project.project.campaign_end_date) - new Date());
-    var daysToGo = this._formatTime(timeRemainingInt);
-    debugger;
 
     return(
     <div>
@@ -140,6 +164,8 @@ var ProjectDetail = React.createClass({
             {" $" + this.state.Project.project.funding_goal} is raised by
             {" " + this.state.Project.project.campaign_end_date}
           </h6>
+
+          {endOfFundingMsg}
 
         </div>
 

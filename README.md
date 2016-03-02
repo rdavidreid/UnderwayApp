@@ -108,10 +108,10 @@ projects, and change display name / password
 **Objective:** Make things look pretty!
 
 - [X] Get feedback on user experience thus far.
-- [ ] Refactor all things that need to be refactored.
-- [ ] Go through all pages and touch up CSS where necessary
-- [ ] Make sure CSS and overall style is the same across all pages
-- [ ] Finish off funding of projects
+- [X] Refactor all things that need to be refactored.
+- [X] Go through all pages and touch up CSS where necessary
+- [X] Make sure CSS and overall style is the same across all pages
+- [X] Finish off funding of projects
 
 
 ### Phase 8: Categories (1 day / 10)

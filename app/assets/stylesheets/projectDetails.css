@@ -12,19 +12,16 @@
   margin-top: 10px;
 }
 
-.details-top{
-  /*box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
-  background: white;
-  border-style: solid;
-  border-width: 1px;
-  border-color: grey;
-  border-radius: 15px;
-  opacity: .9;
-  transition: all 0.3s ease 0s;*/
+.funding-success{
+  color: green;
 }
 
-.details-bottom{
-  /*margin-top: 20px;
+.funding-failure{
+  color: red;
+}
+
+/*
+.details-top{
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
   background: white;
   border-style: solid;
@@ -32,42 +29,20 @@
   border-color: grey;
   border-radius: 15px;
   opacity: .9;
-  transition: all 0.3s ease 0s;*/
-}
-
-.click-blast:active {
-	opacity: 1;
-	-webkit-animation: flash 1.5s;
-	animation: flash 1.5s;
-}
-
-@-webkit-keyframes flash {
-	0% {
-		opacity: .4;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-@keyframes flash {
-	0% {
-		opacity: .4;
-	}
-	100% {
-		opacity: 1;
-	}
-}
+  transition: all 0.3s ease 0s;
+  }
 
 
-.click-blast {
-	background: #e6ffff;
-}
 
-.reward-title {
-	opacity: 1;
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
-}
-.click-blast:hover section.reward-title {
-	color: #ffdb4d;
-}
+.details-bottom{
+  margin-top: 20px;
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
+  background: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  border-radius: 15px;
+  opacity: .9;
+  transition: all 0.3s ease 0s;
+  }
+  */

@@ -8,7 +8,6 @@ var Cloud = React.createClass({
     event.preventDefault();
     cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function(error, results){
       if(!error){
-        debugger;
         this.props.postImage(results[0]);
       }
     }.bind(this));

@@ -47,19 +47,19 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
-	var UserStore = __webpack_require__(253);
-	var ApiUtil = __webpack_require__(182);
-	var ProjectIndex = __webpack_require__(184);
-	var ProjectDetail = __webpack_require__(235);
-	var ProjectForm = __webpack_require__(236);
-	var ProjectEditForm = __webpack_require__(241);
-	var UserDetail = __webpack_require__(254);
-	var RewardForm = __webpack_require__(249);
-	var Menu = __webpack_require__(242);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(184);
+	var ProjectIndex = __webpack_require__(186);
+	var ProjectDetail = __webpack_require__(237);
+	var ProjectForm = __webpack_require__(239);
+	var ProjectEditForm = __webpack_require__(245);
+	var UserDetail = __webpack_require__(246);
+	var RewardForm = __webpack_require__(248);
+	var Menu = __webpack_require__(250);
 
-	var Router = __webpack_require__(186).Router;
-	var Route = __webpack_require__(186).Route;
-	var IndexRoute = __webpack_require__(186).IndexRoute;
+	var Router = __webpack_require__(188).Router;
+	var Route = __webpack_require__(188).Route;
+	var IndexRoute = __webpack_require__(188).IndexRoute;
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -26532,7 +26532,49 @@
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ApiActions = __webpack_require__(183);
+	var Store = __webpack_require__(160).Store;
+	var AppDispatcher = __webpack_require__(178);
+	var UserConstants = __webpack_require__(183);
+
+	var _user = [];
+
+	var UserStore = new Store(AppDispatcher);
+
+	UserStore.resetUsers = function (newUser) {
+	  _user = [newUser];
+	  return _user;
+	};
+
+	UserStore.currentUser = function () {
+	  return _user[0];
+	};
+
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case UserConstants.CURRENT_USER_RECIEVED:
+	      console.log("user aquired", payload.user.username);
+	      this.resetUsers(payload.user);
+	      this.__emitChange();
+	  }
+	};
+
+	module.exports = UserStore;
+
+/***/ },
+/* 183 */
+/***/ function(module, exports) {
+
+	var UserConstants = {
+	  CURRENT_USER_RECIEVED: "CURRENT_USER_RECIEVED"
+	};
+
+	module.exports = UserConstants;
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ApiActions = __webpack_require__(185);
 
 	var ApiUtil = {
 	  fetchAllProjects: function () {
@@ -26651,12 +26693,12 @@
 	module.exports = ApiUtil;
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Dispatcher = __webpack_require__(178);
 	var ProjectConstants = __webpack_require__(181);
-	var UserConstants = __webpack_require__(252);
+	var UserConstants = __webpack_require__(183);
 
 	var ApiActions = {
 	  recieveAll: function (obj) {
@@ -26691,14 +26733,14 @@
 	module.exports = ApiActions;
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
-	var ApiUtil = __webpack_require__(182);
-	var ProjectIndexItem = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(184);
+	var ProjectIndexItem = __webpack_require__(187);
 
 	var ProjectIndex = React.createClass({
 	  displayName: 'ProjectIndex',
@@ -26737,11 +26779,11 @@
 	module.exports = ProjectIndex;
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(186).History;
+	var History = __webpack_require__(188).History;
 
 	var ProjectIndexItem = React.createClass({
 	  displayName: 'ProjectIndexItem',
@@ -26782,7 +26824,7 @@
 
 	  render: function () {
 
-	    var fundingAsPercent = this.props.project.funding_goal / this.props.project.current_funding;
+	    var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
 	    var fundingAsString = Math.round(fundingAsPercent);
 
 	    if (fundingAsString == Infinity) {
@@ -26898,7 +26940,7 @@
 	module.exports = ProjectIndexItem;
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* components */
@@ -26908,19 +26950,19 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _Router2 = __webpack_require__(187);
+	var _Router2 = __webpack_require__(189);
 
 	var _Router3 = _interopRequireDefault(_Router2);
 
 	exports.Router = _Router3['default'];
 
-	var _Link2 = __webpack_require__(223);
+	var _Link2 = __webpack_require__(225);
 
 	var _Link3 = _interopRequireDefault(_Link2);
 
 	exports.Link = _Link3['default'];
 
-	var _IndexLink2 = __webpack_require__(224);
+	var _IndexLink2 = __webpack_require__(226);
 
 	var _IndexLink3 = _interopRequireDefault(_IndexLink2);
 
@@ -26928,25 +26970,25 @@
 
 	/* components (configuration) */
 
-	var _IndexRedirect2 = __webpack_require__(225);
+	var _IndexRedirect2 = __webpack_require__(227);
 
 	var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
 
 	exports.IndexRedirect = _IndexRedirect3['default'];
 
-	var _IndexRoute2 = __webpack_require__(227);
+	var _IndexRoute2 = __webpack_require__(229);
 
 	var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
 
 	exports.IndexRoute = _IndexRoute3['default'];
 
-	var _Redirect2 = __webpack_require__(226);
+	var _Redirect2 = __webpack_require__(228);
 
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 
 	exports.Redirect = _Redirect3['default'];
 
-	var _Route2 = __webpack_require__(228);
+	var _Route2 = __webpack_require__(230);
 
 	var _Route3 = _interopRequireDefault(_Route2);
 
@@ -26954,19 +26996,19 @@
 
 	/* mixins */
 
-	var _History2 = __webpack_require__(229);
+	var _History2 = __webpack_require__(231);
 
 	var _History3 = _interopRequireDefault(_History2);
 
 	exports.History = _History3['default'];
 
-	var _Lifecycle2 = __webpack_require__(230);
+	var _Lifecycle2 = __webpack_require__(232);
 
 	var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
 
 	exports.Lifecycle = _Lifecycle3['default'];
 
-	var _RouteContext2 = __webpack_require__(231);
+	var _RouteContext2 = __webpack_require__(233);
 
 	var _RouteContext3 = _interopRequireDefault(_RouteContext2);
 
@@ -26974,29 +27016,29 @@
 
 	/* utils */
 
-	var _useRoutes2 = __webpack_require__(210);
+	var _useRoutes2 = __webpack_require__(212);
 
 	var _useRoutes3 = _interopRequireDefault(_useRoutes2);
 
 	exports.useRoutes = _useRoutes3['default'];
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
 	exports.createRoutes = _RouteUtils.createRoutes;
 
-	var _RoutingContext2 = __webpack_require__(207);
+	var _RoutingContext2 = __webpack_require__(209);
 
 	var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
 
 	exports.RoutingContext = _RoutingContext3['default'];
 
-	var _PropTypes2 = __webpack_require__(222);
+	var _PropTypes2 = __webpack_require__(224);
 
 	var _PropTypes3 = _interopRequireDefault(_PropTypes2);
 
 	exports.PropTypes = _PropTypes3['default'];
 
-	var _match2 = __webpack_require__(232);
+	var _match2 = __webpack_require__(234);
 
 	var _match3 = _interopRequireDefault(_match2);
 
@@ -27007,7 +27049,7 @@
 	exports['default'] = _Router4['default'];
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27024,7 +27066,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -27032,21 +27074,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _historyLibCreateHashHistory = __webpack_require__(189);
+	var _historyLibCreateHashHistory = __webpack_require__(191);
 
 	var _historyLibCreateHashHistory2 = _interopRequireDefault(_historyLibCreateHashHistory);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _RoutingContext = __webpack_require__(207);
+	var _RoutingContext = __webpack_require__(209);
 
 	var _RoutingContext2 = _interopRequireDefault(_RoutingContext);
 
-	var _useRoutes = __webpack_require__(210);
+	var _useRoutes = __webpack_require__(212);
 
 	var _useRoutes2 = _interopRequireDefault(_useRoutes);
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var func = _React$PropTypes.func;
@@ -27178,7 +27220,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27245,7 +27287,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27256,23 +27298,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _Actions = __webpack_require__(191);
+	var _Actions = __webpack_require__(193);
 
-	var _ExecutionEnvironment = __webpack_require__(192);
+	var _ExecutionEnvironment = __webpack_require__(194);
 
-	var _DOMUtils = __webpack_require__(193);
+	var _DOMUtils = __webpack_require__(195);
 
-	var _DOMStateStorage = __webpack_require__(194);
+	var _DOMStateStorage = __webpack_require__(196);
 
-	var _createDOMHistory = __webpack_require__(195);
+	var _createDOMHistory = __webpack_require__(197);
 
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 
@@ -27476,7 +27518,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27534,7 +27576,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports) {
 
 	/**
@@ -27570,7 +27612,7 @@
 	};
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27580,7 +27622,7 @@
 	exports.canUseDOM = canUseDOM;
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27660,7 +27702,7 @@
 	}
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/*eslint-disable no-empty */
@@ -27672,7 +27714,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -27734,7 +27776,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27745,15 +27787,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _ExecutionEnvironment = __webpack_require__(192);
+	var _ExecutionEnvironment = __webpack_require__(194);
 
-	var _DOMUtils = __webpack_require__(193);
+	var _DOMUtils = __webpack_require__(195);
 
-	var _createHistory = __webpack_require__(196);
+	var _createHistory = __webpack_require__(198);
 
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 
@@ -27780,7 +27822,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27791,23 +27833,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _deepEqual = __webpack_require__(197);
+	var _deepEqual = __webpack_require__(199);
 
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
-	var _AsyncUtils = __webpack_require__(200);
+	var _AsyncUtils = __webpack_require__(202);
 
-	var _Actions = __webpack_require__(191);
+	var _Actions = __webpack_require__(193);
 
-	var _createLocation2 = __webpack_require__(201);
+	var _createLocation2 = __webpack_require__(203);
 
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 
-	var _runTransitionHook = __webpack_require__(204);
+	var _runTransitionHook = __webpack_require__(206);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _deprecate = __webpack_require__(205);
+	var _deprecate = __webpack_require__(207);
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
@@ -28055,12 +28097,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(198);
-	var isArguments = __webpack_require__(199);
+	var objectKeys = __webpack_require__(200);
+	var isArguments = __webpack_require__(201);
 
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -28155,7 +28197,7 @@
 
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -28170,7 +28212,7 @@
 
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -28196,7 +28238,7 @@
 
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28227,7 +28269,7 @@
 	}
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28236,9 +28278,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _Actions = __webpack_require__(191);
+	var _Actions = __webpack_require__(193);
 
-	var _parsePath = __webpack_require__(202);
+	var _parsePath = __webpack_require__(204);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -28268,7 +28310,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28277,11 +28319,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _extractPath = __webpack_require__(203);
+	var _extractPath = __webpack_require__(205);
 
 	var _extractPath2 = _interopRequireDefault(_extractPath);
 
@@ -28318,7 +28360,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28336,7 +28378,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28345,7 +28387,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28366,7 +28408,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28375,7 +28417,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28391,7 +28433,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28411,7 +28453,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28511,7 +28553,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28526,7 +28568,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -28534,9 +28576,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _getRouteParams = __webpack_require__(208);
+	var _getRouteParams = __webpack_require__(210);
 
 	var _getRouteParams2 = _interopRequireDefault(_getRouteParams);
 
@@ -28657,14 +28699,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(209);
+	var _PatternUtils = __webpack_require__(211);
 
 	/**
 	 * Extracts an object of params the given route cares about from
@@ -28686,7 +28728,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28700,7 +28742,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -28919,7 +28961,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28932,31 +28974,31 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _historyLibActions = __webpack_require__(191);
+	var _historyLibActions = __webpack_require__(193);
 
-	var _historyLibUseQueries = __webpack_require__(211);
+	var _historyLibUseQueries = __webpack_require__(213);
 
 	var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
 
-	var _computeChangedRoutes2 = __webpack_require__(216);
+	var _computeChangedRoutes2 = __webpack_require__(218);
 
 	var _computeChangedRoutes3 = _interopRequireDefault(_computeChangedRoutes2);
 
-	var _TransitionUtils = __webpack_require__(217);
+	var _TransitionUtils = __webpack_require__(219);
 
-	var _isActive2 = __webpack_require__(219);
+	var _isActive2 = __webpack_require__(221);
 
 	var _isActive3 = _interopRequireDefault(_isActive2);
 
-	var _getComponents = __webpack_require__(220);
+	var _getComponents = __webpack_require__(222);
 
 	var _getComponents2 = _interopRequireDefault(_getComponents);
 
-	var _matchRoutes = __webpack_require__(221);
+	var _matchRoutes = __webpack_require__(223);
 
 	var _matchRoutes2 = _interopRequireDefault(_matchRoutes);
 
@@ -29216,7 +29258,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29229,15 +29271,15 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _qs = __webpack_require__(212);
+	var _qs = __webpack_require__(214);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _runTransitionHook = __webpack_require__(204);
+	var _runTransitionHook = __webpack_require__(206);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _parsePath = __webpack_require__(202);
+	var _parsePath = __webpack_require__(204);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -29336,13 +29378,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Stringify = __webpack_require__(213);
-	var Parse = __webpack_require__(215);
+	var Stringify = __webpack_require__(215);
+	var Parse = __webpack_require__(217);
 
 
 	// Declare internals
@@ -29357,12 +29399,12 @@
 
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(214);
+	var Utils = __webpack_require__(216);
 
 
 	// Declare internals
@@ -29484,7 +29526,7 @@
 
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports) {
 
 	// Load modules
@@ -29680,12 +29722,12 @@
 
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(214);
+	var Utils = __webpack_require__(216);
 
 
 	// Declare internals
@@ -29872,14 +29914,14 @@
 
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(209);
+	var _PatternUtils = __webpack_require__(211);
 
 	function routeParamsChanged(route, prevState, nextState) {
 	  if (!route.path) return false;
@@ -29933,7 +29975,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29942,7 +29984,7 @@
 	exports.runEnterHooks = runEnterHooks;
 	exports.runLeaveHooks = runLeaveHooks;
 
-	var _AsyncUtils = __webpack_require__(218);
+	var _AsyncUtils = __webpack_require__(220);
 
 	function createEnterHook(hook, route) {
 	  return function (a, b, callback) {
@@ -30010,7 +30052,7 @@
 	}
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30073,14 +30115,14 @@
 	}
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(209);
+	var _PatternUtils = __webpack_require__(211);
 
 	function deepEqual(a, b) {
 	  if (a == b) return true;
@@ -30201,14 +30243,14 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _AsyncUtils = __webpack_require__(218);
+	var _AsyncUtils = __webpack_require__(220);
 
 	function getComponentsForRoute(location, route, callback) {
 	  if (route.component || route.components) {
@@ -30239,7 +30281,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30248,15 +30290,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _AsyncUtils = __webpack_require__(218);
+	var _AsyncUtils = __webpack_require__(220);
 
-	var _PatternUtils = __webpack_require__(209);
+	var _PatternUtils = __webpack_require__(211);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
 	function getChildRoutes(route, location, callback) {
 	  if (route.childRoutes) {
@@ -30433,7 +30475,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30491,7 +30533,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30659,7 +30701,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30678,7 +30720,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Link = __webpack_require__(223);
+	var _Link = __webpack_require__(225);
 
 	var _Link2 = _interopRequireDefault(_Link);
 
@@ -30706,7 +30748,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30719,11 +30761,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30731,11 +30773,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Redirect = __webpack_require__(226);
+	var _Redirect = __webpack_require__(228);
 
 	var _Redirect2 = _interopRequireDefault(_Redirect);
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -30785,7 +30827,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30798,7 +30840,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30806,11 +30848,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _PatternUtils = __webpack_require__(209);
+	var _PatternUtils = __webpack_require__(211);
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -30898,7 +30940,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30911,11 +30953,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(190);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30923,9 +30965,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	var func = _react2['default'].PropTypes.func;
 
@@ -30974,7 +31016,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30987,7 +31029,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30995,9 +31037,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -31047,14 +31089,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PropTypes = __webpack_require__(222);
+	var _PropTypes = __webpack_require__(224);
 
 	/**
 	 * A mixin that adds the "history" instance variable to components.
@@ -31075,7 +31117,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31088,7 +31130,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -31145,7 +31187,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31188,7 +31230,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31199,21 +31241,21 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _historyLibCreateMemoryHistory = __webpack_require__(233);
+	var _historyLibCreateMemoryHistory = __webpack_require__(235);
 
 	var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
 
-	var _historyLibUseBasename = __webpack_require__(234);
+	var _historyLibUseBasename = __webpack_require__(236);
 
 	var _historyLibUseBasename2 = _interopRequireDefault(_historyLibUseBasename);
 
-	var _RouteUtils = __webpack_require__(206);
+	var _RouteUtils = __webpack_require__(208);
 
-	var _useRoutes = __webpack_require__(210);
+	var _useRoutes = __webpack_require__(212);
 
 	var _useRoutes2 = _interopRequireDefault(_useRoutes);
 
@@ -31257,7 +31299,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 233 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31268,13 +31310,13 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(190);
+	var _invariant = __webpack_require__(192);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _Actions = __webpack_require__(191);
+	var _Actions = __webpack_require__(193);
 
-	var _createHistory = __webpack_require__(196);
+	var _createHistory = __webpack_require__(198);
 
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 
@@ -31405,7 +31447,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 234 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31418,17 +31460,17 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _ExecutionEnvironment = __webpack_require__(192);
+	var _ExecutionEnvironment = __webpack_require__(194);
 
-	var _runTransitionHook = __webpack_require__(204);
+	var _runTransitionHook = __webpack_require__(206);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _extractPath = __webpack_require__(203);
+	var _extractPath = __webpack_require__(205);
 
 	var _extractPath2 = _interopRequireDefault(_extractPath);
 
-	var _parsePath = __webpack_require__(202);
+	var _parsePath = __webpack_require__(204);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -31539,15 +31581,15 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 235 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ProjectStore = __webpack_require__(159);
-	var ApiUtil = __webpack_require__(182);
-	var RewardDetail = __webpack_require__(250);
-	var UserStore = __webpack_require__(253);
-	var History = __webpack_require__(186).History;
+	var ApiUtil = __webpack_require__(184);
+	var RewardDetail = __webpack_require__(238);
+	var UserStore = __webpack_require__(182);
+	var History = __webpack_require__(188).History;
 
 	var ProjectDetail = React.createClass({
 	  displayName: 'ProjectDetail',
@@ -31645,18 +31687,57 @@
 	      btnEdit = "";
 	      btnEditRewards = "";
 	    }
-	    debugger;
+
+	    var timeRemainingInt = Date.parse(this.state.Project.project.campaign_end_date) - new Date();
+	    var daysToGo = this._formatTime(timeRemainingInt);
 
 	    var rewards = "";
-	    if (this.state.Project.project.rewards === undefined) {} else {
+	    var endOfFundingMsg = "";
+
+	    if (this.state.Project.project.rewards === undefined) {
+	      return null;
+	    } else if (timeRemainingInt <= 0) {
+	      if (this.state.Project.project.current_funding > this.state.Project.project.funding_goal) {
+	        endOfFundingMsg = React.createElement(
+	          'div',
+	          { className: 'funding-over' },
+	          React.createElement(
+	            'h3',
+	            { className: 'funding-success' },
+	            'Success!'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'This project was successfully funded.'
+	          )
+	        );
+	      } else {
+	        endOfFundingMsg = React.createElement(
+	          'div',
+	          { className: 'funding-over' },
+	          React.createElement(
+	            'h3',
+	            { className: 'funding-failure' },
+	            'Unsuccessful'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'This project did not reach its goal in the provided time limit'
+	          )
+	        );
+	      }
+	      rewards = [];
+	      rewards = this.state.Project.project.rewards.map(function (el) {
+	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'expired' });
+	      });
+	    } else {
 	      rewards = [];
 	      rewards = this.state.Project.project.rewards.map(function (el) {
 	        return React.createElement(RewardDetail, { reward: el });
 	      });
 	    }
-	    var timeRemainingInt = Date.parse(this.state.Project.project.campaign_end_date) - new Date();
-	    var daysToGo = this._formatTime(timeRemainingInt);
-	    debugger;
 
 	    return React.createElement(
 	      'div',
@@ -31739,7 +31820,8 @@
 	            " $" + this.state.Project.project.funding_goal,
 	            ' is raised by',
 	            " " + this.state.Project.project.campaign_end_date
-	          )
+	          ),
+	          endOfFundingMsg
 	        )
 	      ),
 	      React.createElement(
@@ -31769,14 +31851,136 @@
 	module.exports = ProjectDetail;
 
 /***/ },
-/* 236 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-	var Cloud = __webpack_require__(259);
-	var History = __webpack_require__(186).History;
-	var LinkedStateMixin = __webpack_require__(237);
+	var ApiUtil = __webpack_require__(184);
+
+	var RewardDetail = React.createClass({
+	  displayName: 'RewardDetail',
+
+
+	  _clickerFunc: function () {
+	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
+	      var newBacker = { reward_id: this.props.reward.reward_id };
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
+	        alert(this.props.reward.reward_title + " is sold out!");
+	      } else {
+	        ApiUtil.createBacker(newBacker);
+	      }
+	    }
+	  },
+
+	  render: function () {
+	    var reward = this.props.reward;
+
+	    if (reward.rewards_bought.rewards_bought > 0) {
+	      var count = "You own: " + reward.rewards_bought.rewards_bought;
+	    } else {
+	      count = "";
+	    }
+
+	    if (parseInt(reward.reward_max_count) > 0) {
+	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
+	    } else {
+	      countRemaining = "";
+	    }
+
+	    if (reward.reward_max_count) {
+	      var rewardLimit = "Limited " + reward.number_remaining + " left of " + reward.reward_max_count;
+	    } else {
+	      rewardLimit = "";
+	    }
+
+	    if (this.props.clickerFunc === "expired") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask red-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Funding period over'
+	          )
+	        )
+	      );
+	    } else {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask green-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Select this reward'
+	          )
+	        )
+	      );
+	    }
+
+	    return React.createElement(
+	      'div',
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      React.createElement(
+	        'section',
+	        null,
+	        'Pledge',
+	        " $" + reward.reward_cost
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_number_sold,
+	        ' backers. ',
+	        rewardLimit
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        { className: 'reward-title' },
+	        reward.reward_title
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_description
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Estimated delivery ',
+	        reward.reward_delivery_date
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        count
+	      ),
+	      hoverDiv
+	    );
+	  }
+
+	});
+
+	// <div className="reward-select"><h4>Select this reward</h4></div>
+	module.exports = RewardDetail;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(184);
+	var Cloud = __webpack_require__(240);
+	var History = __webpack_require__(188).History;
+	var LinkedStateMixin = __webpack_require__(241);
 	var ProjectStore = __webpack_require__(159);
 
 	var projectForm = React.createClass({
@@ -31847,7 +32051,6 @@
 	  },
 
 	  postImage: function (image) {
-	    debugger;
 	    this.setState({ img_url: image.url });
 	  },
 
@@ -32042,13 +32245,48 @@
 	module.exports = projectForm;
 
 /***/ },
-/* 237 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(238);
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(184);
+
+	var Cloud = React.createClass({
+	  displayName: 'Cloud',
+
+
+	  _uploadPicture: function (event) {
+
+	    event.preventDefault();
+	    cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function (error, results) {
+	      if (!error) {
+	        this.props.postImage(results[0]);
+	      }
+	    }.bind(this));
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'upload-form' },
+	      React.createElement(
+	        'button',
+	        { className: 'button blue', onClick: this._uploadPicture },
+	        'Upload Image'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Cloud;
 
 /***/ },
-/* 238 */
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(242);
+
+/***/ },
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32065,8 +32303,8 @@
 
 	'use strict';
 
-	var ReactLink = __webpack_require__(239);
-	var ReactStateSetters = __webpack_require__(240);
+	var ReactLink = __webpack_require__(243);
+	var ReactStateSetters = __webpack_require__(244);
 
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32089,7 +32327,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32163,7 +32401,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 240 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/**
@@ -32272,14 +32510,14 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 241 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-	var Cloud = __webpack_require__(259);
-	var History = __webpack_require__(186).History;
-	var LinkedStateMixin = __webpack_require__(237);
+	var ApiUtil = __webpack_require__(184);
+	var Cloud = __webpack_require__(240);
+	var History = __webpack_require__(188).History;
+	var LinkedStateMixin = __webpack_require__(241);
 	var ProjectStore = __webpack_require__(159);
 
 	var projectForm = React.createClass({
@@ -32474,22 +32712,21 @@
 	module.exports = projectForm;
 
 /***/ },
-/* 242 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Logo = __webpack_require__(245);
-	var Discover = __webpack_require__(244);
-	var Create = __webpack_require__(243);
-	var Profile = __webpack_require__(246);
-	var SignOut = __webpack_require__(248);
-	var UserStore = __webpack_require__(253);
-	var ApiUtil = __webpack_require__(182);
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(184);
+	var RewardDetail = __webpack_require__(238);
+	var ProjectIndexItem = __webpack_require__(187);
+	var UserRewardTableRows = __webpack_require__(247);
 
-	var History = __webpack_require__(186).History;
+	var History = __webpack_require__(188).History;
 
-	var Menu = React.createClass({
-	  displayName: 'Menu',
+	var ProjectDetail = React.createClass({
+	  displayName: 'ProjectDetail',
 
 	  mixins: [History],
 
@@ -32514,279 +32751,192 @@
 	    this.userListener.remove();
 	  },
 
+	  editRewards: function () {
+	    this.history.push('/editreward/' + this.state.Project.project.id);
+	  },
+
+	  _clickRewardRow: function () {
+	    this.history.push('/project/' + arguments[0]);
+	  },
+
 	  render: function () {
-	    var username = "Options";
+	    var that = this;
+
 	    if (this.state.User != undefined) {
-	      username = this.state.User.username;
+
+	      var backedProjects = this.state.User.backed_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      var createdProjects = this.state.User.authored_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      var rewardRow = this.state.User.rewards.map(function (el) {
+	        return React.createElement(UserRewardTableRows, { reward: el });
+	      });
+	    } else {
+
+	      backedProjects = [];
+	      createdProjects = [];
+	      rewardRow = [];
 	    }
+
+	    if (backedProjects == "") {
+	      backedProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not backed any projects'
+	      );
+	    }
+
+	    if (createdProjects == "") {
+	      var createdProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not created any projects'
+	      );
+	    }
+
 	    return React.createElement(
-	      'nav',
-	      { className: 'navbar navbar-default' },
+	      'div',
+	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        { className: 'row' },
 	        React.createElement(
-	          'div',
-	          { className: 'navbar-header' },
-	          React.createElement(
-	            'button',
-	            {
-	              type: 'button',
-	              className: 'navbar-toggle collapsed',
-	              'data-toggle': 'collapse',
-	              'data-target': '#bs-example-navbar-collapse-1',
-	              'aria-expanded': 'false'
-	            },
-	            React.createElement(
-	              'span',
-	              { className: 'sr-only' },
-	              'Toggle navigation'
-	            ),
-	            React.createElement('span', { className: 'icon-bar' }),
-	            React.createElement('span', { className: 'icon-bar' }),
-	            React.createElement('span', { className: 'icon-bar' })
-	          ),
-	          React.createElement(Logo, { className: 'navbar-brand' })
+	          'h2',
+	          { className: 'userDetailTitle' },
+	          'Backed Projects'
+	        ),
+	        backedProjects
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'userDetailTitle' },
+	          ' Created Projects'
+	        ),
+	        createdProjects
+	      ),
+	      React.createElement(
+	        'table',
+	        { className: 'table table-hover' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Purchase History'
 	        ),
 	        React.createElement(
-	          'div',
-	          {
-	            className: 'collapse navbar-collapse',
-	            id: 'bs-example-navbar-collapse-1'
-	          },
+	          'thead',
+	          null,
 	          React.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav' },
+	            'tr',
+	            null,
 	            React.createElement(
-	              'li',
+	              'th',
 	              null,
-	              React.createElement(Discover, null)
+	              'Reward:'
 	            ),
 	            React.createElement(
-	              'li',
+	              'th',
 	              null,
-	              React.createElement(Create, null)
-	            )
-	          ),
-	          React.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav navbar-right' },
+	              'Price:'
+	            ),
 	            React.createElement(
-	              'li',
-	              { className: 'dropdown' },
-	              React.createElement(
-	                'a',
-	                {
-	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
-	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false'
-	                },
-	                username,
-	                React.createElement('span', { className: 'caret' })
-	              ),
-	              React.createElement(
-	                'ul',
-	                { className: 'dropdown-menu' },
-	                React.createElement(
-	                  'li',
-	                  null,
-	                  React.createElement(
-	                    'a',
-	                    null,
-	                    React.createElement(Profile, null)
-	                  )
-	                ),
-	                React.createElement('li', { role: 'separator', className: 'divider' }),
-	                React.createElement(
-	                  'li',
-	                  null,
-	                  React.createElement(
-	                    'a',
-	                    null,
-	                    React.createElement(SignOut, null)
-	                  )
-	                )
-	              )
+	              'th',
+	              null,
+	              'delivery_date:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'description:'
 	            )
 	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          rewardRow
 	        )
 	      )
 	    );
 	  }
 	});
 
-	// <div className="navbar navbar-fixed-top">
-	//   <div className="container">
-	//     <div className="navbar-header">
-	//       <Logo className="navbar-brand" />
-	//       <button type="button" className="navbar-toggle"
-	//        data-toggle="collapse"data-target=".navbar-collapse">
-	//         <span className="sr-only">Toggle nav</span>
-	//         <span className="icon-bar"></span>
-	//         <span className="icon-bar"></span>
-	//         <span className="icon-bar"></span>
-	//       </button>
-	//     </div>
-	//
-	//     <div className="collapse navbar-collapse">
-	//       <ul className="nav navbar-nav">
-	//         <li><Discover /></li>
-	//         <li><Create /></li>
-	//       </ul>
-	//     </div>
-	//   </div>
-	// </div>
-
-	// <Logo /><Discover /><Create />
-	// <Logo />
-	// <Discover />
-	// <Create />
-	// <Profile />
-	module.exports = Menu;
-
-	// Logo
-	// Discover
-	// Create
-	// Profile
+	module.exports = ProjectDetail;
 
 /***/ },
-/* 243 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(186).History;
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(184);
+	var RewardDetail = __webpack_require__(238);
+	var ProjectIndexItem = __webpack_require__(187);
 
-	var Create = React.createClass({
-	  displayName: 'Create',
+	var History = __webpack_require__(188).History;
 
-	  mixins: [History],
-	  _clickCreate: function () {
-	    this.history.push("/createProject");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'a',
-	      { className: '.navbar-link navbar-create', onClick: this._clickCreate },
-	      'Create'
-	    );
-	  }
-	});
-
-	module.exports = Create;
-
-/***/ },
-/* 244 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(186).History;
-
-	var Discover = React.createClass({
-	  displayName: 'Discover',
+	var userRewardTableRows = React.createClass({
+	  displayName: 'userRewardTableRows',
 
 	  mixins: [History],
-	  _clickDiscover: function () {
-	    this.history.push("/");
+
+	  _clickRewardRow: function () {
+	    this.history.push('/project/' + this.props.reward.project_id);
 	  },
+
 	  render: function () {
+	    var dots = "";
+	    if (this.props.reward.description.length > 37) {
+	      dots = "...";
+	    }
+
 	    return React.createElement(
-	      'a',
-	      { className: '.navbar-link navbar-discover', onClick: this._clickDiscover },
-	      'Discover'
+	      'tr',
+	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
+	      React.createElement(
+	        'th',
+	        { scope: 'row' },
+	        this.props.reward.title
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.cost
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.delivery_date
+	      ),
+	      React.createElement(
+	        'td',
+	        null,
+	        this.props.reward.description.slice(0, 40) + dots
+	      )
 	    );
 	  }
+
 	});
 
-	module.exports = Discover;
+	module.exports = userRewardTableRows;
 
 /***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(186).History;
-
-	var Logo = React.createClass({
-	  displayName: 'Logo',
-
-	  mixins: [History],
-	  _clickLogo: function () {
-	    this.history.push("/");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'logo-icon', onClick: this._clickLogo },
-	      React.createElement('img', { src: '/assets/Underway-icon-color.png', id: 'icon' })
-	    );
-	  }
-	});
-
-	module.exports = Logo;
-
-/***/ },
-/* 246 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(186).History;
-
-	var Profile = React.createClass({
-	  displayName: 'Profile',
-
-	  mixins: [History],
-	  _clickCreate: function () {
-	    this.history.push("/userDetails");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickCreate },
-	      'Profile'
-	    );
-	  }
-	});
-
-	module.exports = Profile;
-
-/***/ },
-/* 247 */,
 /* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-	var History = __webpack_require__(186).History;
-
-	var SignOut = React.createClass({
-	  displayName: 'SignOut',
-
-	  mixins: [History],
-
-	  _clickSignOut: function () {
-	    ApiUtil.signOut();
-	  },
-
-	  render: function () {
-	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickSignOut },
-	      'SignOut'
-	    );
-	  }
-	});
-
-	module.exports = SignOut;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-	var History = __webpack_require__(186).History;
-	var LinkedStateMixin = __webpack_require__(237);
+	var ApiUtil = __webpack_require__(184);
+	var History = __webpack_require__(188).History;
+	var LinkedStateMixin = __webpack_require__(241);
 	var ProjectStore = __webpack_require__(159);
-	var RewardDetail = __webpack_require__(251);
+	var RewardDetail = __webpack_require__(249);
 
 	var rewardForm = React.createClass({
 	  displayName: 'rewardForm',
@@ -33079,243 +33229,144 @@
 	module.exports = rewardForm;
 
 /***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(184);
+
+	var RewardDetail = React.createClass({
+	  displayName: 'RewardDetail',
+
+
+	  _clickerFunc: function () {
+	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
+	      var newBacker = { reward_id: this.props.reward.reward_id };
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
+	        alert(this.props.reward.reward_title + " is sold out!");
+	      } else {
+	        ApiUtil.createBacker(newBacker);
+	      }
+	    }
+	  },
+
+	  render: function () {
+	    var reward = this.props.reward;
+
+	    if (reward.rewards_bought.rewards_bought > 0) {
+	      var count = "You own: " + reward.rewards_bought.rewards_bought;
+	    } else {
+	      count = "";
+	    }
+
+	    if (parseInt(reward.reward_max_count) > 0) {
+	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
+	    } else {
+	      countRemaining = "";
+	    }
+
+	    if (reward.reward_max_count) {
+	      var rewardLimit = "Limited " + reward.number_remaining + " left of " + reward.reward_max_count;
+	    } else {
+	      rewardLimit = "";
+	    }
+
+	    if (this.props.clickerFunc === "expired") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask red-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Funding period over'
+	          )
+	        )
+	      );
+	    } else {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask green-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Select this reward'
+	          )
+	        )
+	      );
+	    }
+
+	    return React.createElement(
+	      'div',
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      React.createElement(
+	        'section',
+	        null,
+	        'Pledge',
+	        " $" + reward.reward_cost
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_number_sold,
+	        ' backers. ',
+	        rewardLimit
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        { className: 'reward-title' },
+	        reward.reward_title
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_description
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Estimated delivery ',
+	        reward.reward_delivery_date
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        count
+	      ),
+	      hoverDiv
+	    );
+	  }
+
+	});
+
+	// <div className="reward-select"><h4>Select this reward</h4></div>
+	module.exports = RewardDetail;
+
+/***/ },
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
+	var Logo = __webpack_require__(251);
+	var Discover = __webpack_require__(252);
+	var Create = __webpack_require__(253);
+	var Profile = __webpack_require__(254);
+	var SignOut = __webpack_require__(255);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(184);
 
-	var RewardDetail = React.createClass({
-	  displayName: 'RewardDetail',
+	var History = __webpack_require__(188).History;
 
-
-	  _clickerFunc: function () {
-	    if (this.props.clickerFunc === "none") {} else {
-	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
-	        alert(this.props.reward.reward_title + " is sold out!");
-	      } else {
-	        ApiUtil.createBacker(newBacker);
-	      }
-	    }
-	  },
-
-	  render: function () {
-	    var reward = this.props.reward;
-	    if (reward.rewards_bought.rewards_bought > 0) {
-	      var count = "You own: " + reward.rewards_bought.rewards_bought;
-	    } else {
-	      count = "";
-	    }
-
-	    if (parseInt(reward.reward_max_count) > 0) {
-	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
-	    } else {
-	      countRemaining = "";
-	    }
-
-	    return React.createElement(
-	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
-	      React.createElement(
-	        'section',
-	        null,
-	        'Pledge',
-	        " $" + reward.reward_cost
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_number_sold,
-	        ' backers. Limited',
-	        reward.reward_number_sold + " left of " + reward.reward_max_count
-	      ),
-	      React.createElement('br', null),
-	      React.createElement(
-	        'section',
-	        { className: 'reward-title' },
-	        reward.reward_title
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_description
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        'Estimated delivery ',
-	        reward.reward_delivery_date
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        count
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'hover' },
-	        React.createElement(
-	          'div',
-	          { className: 'reward-select' },
-	          'Select this reward'
-	        )
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = RewardDetail;
-
-/***/ },
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-
-	var RewardDetail = React.createClass({
-	  displayName: 'RewardDetail',
-
-
-	  _clickerFunc: function () {
-	    if (this.props.clickerFunc === "none") {} else {
-	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
-	        alert(this.props.reward.reward_title + " is sold out!");
-	      } else {
-	        ApiUtil.createBacker(newBacker);
-	      }
-	    }
-	  },
-
-	  render: function () {
-	    var reward = this.props.reward;
-	    if (reward.rewards_bought.rewards_bought > 0) {
-	      var count = "You own: " + reward.rewards_bought.rewards_bought;
-	    } else {
-	      count = "";
-	    }
-
-	    if (parseInt(reward.reward_max_count) > 0) {
-	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
-	    } else {
-	      countRemaining = "";
-	    }
-
-	    return React.createElement(
-	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
-	      React.createElement(
-	        'section',
-	        null,
-	        'Pledge',
-	        " $" + reward.reward_cost
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_number_sold,
-	        ' backers. Limited',
-	        reward.reward_number_sold + " left of " + reward.reward_max_count
-	      ),
-	      React.createElement('br', null),
-	      React.createElement(
-	        'section',
-	        { className: 'reward-title' },
-	        reward.reward_title
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_description
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        'Estimated delivery ',
-	        reward.reward_delivery_date
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        count
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'hover' },
-	        React.createElement(
-	          'div',
-	          { className: 'reward-select' },
-	          'Select this reward'
-	        )
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = RewardDetail;
-
-/***/ },
-/* 252 */
-/***/ function(module, exports) {
-
-	var UserConstants = {
-	  CURRENT_USER_RECIEVED: "CURRENT_USER_RECIEVED"
-	};
-
-	module.exports = UserConstants;
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(160).Store;
-	var AppDispatcher = __webpack_require__(178);
-	var UserConstants = __webpack_require__(252);
-
-	var _user = [];
-
-	var UserStore = new Store(AppDispatcher);
-
-	UserStore.resetUsers = function (newUser) {
-	  _user = [newUser];
-	  return _user;
-	};
-
-	UserStore.currentUser = function () {
-	  return _user[0];
-	};
-
-	UserStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case UserConstants.CURRENT_USER_RECIEVED:
-	      console.log("user aquired", payload.user.username);
-	      this.resetUsers(payload.user);
-	      this.__emitChange();
-	  }
-	};
-
-	module.exports = UserStore;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ProjectStore = __webpack_require__(159);
-	var UserStore = __webpack_require__(253);
-	var ApiUtil = __webpack_require__(182);
-	var RewardDetail = __webpack_require__(250);
-	var ProjectIndexItem = __webpack_require__(185);
-	var UserRewardTableRows = __webpack_require__(255);
-
-	var History = __webpack_require__(186).History;
-
-	var ProjectDetail = React.createClass({
-	  displayName: 'ProjectDetail',
+	var Menu = React.createClass({
+	  displayName: 'Menu',
 
 	  mixins: [History],
 
@@ -33340,220 +33391,267 @@
 	    this.userListener.remove();
 	  },
 
-	  editRewards: function () {
-	    this.history.push('/editreward/' + this.state.Project.project.id);
-	  },
-
-	  _clickRewardRow: function () {
-	    this.history.push('/project/' + arguments[0]);
-	  },
-
 	  render: function () {
-	    var that = this;
-
+	    var username = "Options";
 	    if (this.state.User != undefined) {
-
-	      var backedProjects = this.state.User.backed_projects.map(function (el) {
-	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
-	      });
-
-	      var createdProjects = this.state.User.authored_projects.map(function (el) {
-	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
-	      });
-
-	      var rewardRow = this.state.User.rewards.map(function (el) {
-	        return React.createElement(UserRewardTableRows, { reward: el });
-	      });
-	    } else {
-
-	      backedProjects = [];
-	      createdProjects = [];
-	      rewardRow = [];
+	      username = this.state.User.username;
 	    }
-
-	    if (backedProjects == "") {
-	      backedProjects = React.createElement(
-	        'div',
-	        { className: 'alert alert-warning', role: 'alert' },
-	        'You have not backed any projects'
-	      );
-	    }
-
-	    if (createdProjects == "") {
-	      var createdProjects = React.createElement(
-	        'div',
-	        { className: 'alert alert-warning', role: 'alert' },
-	        'You have not created any projects'
-	      );
-	    }
-
 	    return React.createElement(
-	      'div',
-	      null,
+	      'nav',
+	      { className: 'navbar navbar-default' },
 	      React.createElement(
 	        'div',
-	        { className: 'row' },
+	        { className: 'container-fluid' },
 	        React.createElement(
-	          'h2',
-	          { className: 'userDetailTitle' },
-	          'Backed Projects'
-	        ),
-	        backedProjects
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'h2',
-	          { className: 'userDetailTitle' },
-	          ' Created Projects'
-	        ),
-	        createdProjects
-	      ),
-	      React.createElement(
-	        'table',
-	        { className: 'table table-hover' },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Purchase History'
-	        ),
-	        React.createElement(
-	          'thead',
-	          null,
+	          'div',
+	          { className: 'navbar-header' },
 	          React.createElement(
-	            'tr',
-	            null,
+	            'button',
+	            {
+	              type: 'button',
+	              className: 'navbar-toggle collapsed',
+	              'data-toggle': 'collapse',
+	              'data-target': '#bs-example-navbar-collapse-1',
+	              'aria-expanded': 'false'
+	            },
 	            React.createElement(
-	              'th',
+	              'span',
+	              { className: 'sr-only' },
+	              'Toggle navigation'
+	            ),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' })
+	          ),
+	          React.createElement(Logo, { className: 'navbar-brand' })
+	        ),
+	        React.createElement(
+	          'div',
+	          {
+	            className: 'collapse navbar-collapse',
+	            id: 'bs-example-navbar-collapse-1'
+	          },
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav' },
+	            React.createElement(
+	              'li',
 	              null,
-	              'Reward:'
+	              React.createElement(Discover, null)
 	            ),
 	            React.createElement(
-	              'th',
+	              'li',
 	              null,
-	              'Price:'
-	            ),
+	              React.createElement(Create, null)
+	            )
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav navbar-right' },
 	            React.createElement(
-	              'th',
-	              null,
-	              'delivery_date:'
-	            ),
-	            React.createElement(
-	              'th',
-	              null,
-	              'description:'
+	              'li',
+	              { className: 'dropdown' },
+	              React.createElement(
+	                'a',
+	                {
+	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
+	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false'
+	                },
+	                username,
+	                React.createElement('span', { className: 'caret' })
+	              ),
+	              React.createElement(
+	                'ul',
+	                { className: 'dropdown-menu' },
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    null,
+	                    React.createElement(Profile, null)
+	                  )
+	                ),
+	                React.createElement('li', { role: 'separator', className: 'divider' }),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    null,
+	                    React.createElement(SignOut, null)
+	                  )
+	                )
+	              )
 	            )
 	          )
-	        ),
-	        React.createElement(
-	          'tbody',
-	          null,
-	          rewardRow
 	        )
 	      )
 	    );
 	  }
 	});
 
-	module.exports = ProjectDetail;
+	// <div className="navbar navbar-fixed-top">
+	//   <div className="container">
+	//     <div className="navbar-header">
+	//       <Logo className="navbar-brand" />
+	//       <button type="button" className="navbar-toggle"
+	//        data-toggle="collapse"data-target=".navbar-collapse">
+	//         <span className="sr-only">Toggle nav</span>
+	//         <span className="icon-bar"></span>
+	//         <span className="icon-bar"></span>
+	//         <span className="icon-bar"></span>
+	//       </button>
+	//     </div>
+	//
+	//     <div className="collapse navbar-collapse">
+	//       <ul className="nav navbar-nav">
+	//         <li><Discover /></li>
+	//         <li><Create /></li>
+	//       </ul>
+	//     </div>
+	//   </div>
+	// </div>
+
+	// <Logo /><Discover /><Create />
+	// <Logo />
+	// <Discover />
+	// <Create />
+	// <Profile />
+	module.exports = Menu;
+
+	// Logo
+	// Discover
+	// Create
+	// Profile
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(188).History;
+
+	var Logo = React.createClass({
+	  displayName: 'Logo',
+
+	  mixins: [History],
+	  _clickLogo: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'logo-icon', onClick: this._clickLogo },
+	      React.createElement('img', { src: '/assets/Underway-icon-color.png', id: 'icon' })
+	    );
+	  }
+	});
+
+	module.exports = Logo;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(188).History;
+
+	var Discover = React.createClass({
+	  displayName: 'Discover',
+
+	  mixins: [History],
+	  _clickDiscover: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'a',
+	      { className: '.navbar-link navbar-discover', onClick: this._clickDiscover },
+	      'Discover'
+	    );
+	  }
+	});
+
+	module.exports = Discover;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(188).History;
+
+	var Create = React.createClass({
+	  displayName: 'Create',
+
+	  mixins: [History],
+	  _clickCreate: function () {
+	    this.history.push("/createProject");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'a',
+	      { className: '.navbar-link navbar-create', onClick: this._clickCreate },
+	      'Create'
+	    );
+	  }
+	});
+
+	module.exports = Create;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(188).History;
+
+	var Profile = React.createClass({
+	  displayName: 'Profile',
+
+	  mixins: [History],
+	  _clickCreate: function () {
+	    this.history.push("/userDetails");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickCreate },
+	      'Profile'
+	    );
+	  }
+	});
+
+	module.exports = Profile;
 
 /***/ },
 /* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ProjectStore = __webpack_require__(159);
-	var UserStore = __webpack_require__(253);
-	var ApiUtil = __webpack_require__(182);
-	var RewardDetail = __webpack_require__(250);
-	var ProjectIndexItem = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(184);
+	var History = __webpack_require__(188).History;
 
-	var History = __webpack_require__(186).History;
-
-	var userRewardTableRows = React.createClass({
-	  displayName: 'userRewardTableRows',
+	var SignOut = React.createClass({
+	  displayName: 'SignOut',
 
 	  mixins: [History],
 
-	  _clickRewardRow: function () {
-	    this.history.push('/project/' + this.props.reward.project_id);
+	  _clickSignOut: function () {
+	    ApiUtil.signOut();
 	  },
 
 	  render: function () {
-	    var dots = "";
-	    if (this.props.reward.description.length > 37) {
-	      dots = "...";
-	    }
-
 	    return React.createElement(
-	      'tr',
-	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
-	      React.createElement(
-	        'th',
-	        { scope: 'row' },
-	        this.props.reward.title
-	      ),
-	      React.createElement(
-	        'td',
-	        null,
-	        this.props.reward.cost
-	      ),
-	      React.createElement(
-	        'td',
-	        null,
-	        this.props.reward.delivery_date
-	      ),
-	      React.createElement(
-	        'td',
-	        null,
-	        this.props.reward.description.slice(0, 40) + dots
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = userRewardTableRows;
-
-/***/ },
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(182);
-
-	var Cloud = React.createClass({
-	  displayName: 'Cloud',
-
-
-	  _uploadPicture: function (event) {
-
-	    event.preventDefault();
-	    cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function (error, results) {
-	      if (!error) {
-	        debugger;
-	        this.props.postImage(results[0]);
-	      }
-	    }.bind(this));
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'upload-form' },
-	      React.createElement(
-	        'button',
-	        { className: 'button blue', onClick: this._uploadPicture },
-	        'Upload Image'
-	      )
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickSignOut },
+	      'SignOut'
 	    );
 	  }
 	});
 
-	module.exports = Cloud;
+	module.exports = SignOut;
 
 /***/ }
 /******/ ]);

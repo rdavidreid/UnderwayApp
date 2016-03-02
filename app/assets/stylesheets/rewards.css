@@ -6,32 +6,99 @@
   margin-top: 10px;
   margin-bottom: 10px;
   transition: all 0.4s ease-in-out;
+  box-sizing: padding-box;
 }
 
-.reward-detail:hover {
-  background-color: #33cc33;
-  opacity: 0;
-  position: absolute;
+/*.reward-detail:hover {
+  opacity: 1;
+  z-index: 0;
   width: 100%;
   height: 100%;
-  top: 0;
+}*/
+
+
+
+.mask{
+  /*z-index: -1;*/
+  position: absolute;
+  opacity: 0;
   left: 0;
-  background-color: #2bde73;
-  transform: scale(1.3);
-  background-color: #2bde73;
-  color: #ffffff;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  transition: all 0.4s ease-in-out;
+}
+
+.red-mask{
+  background-color: red;
+}
+
+.green-mask{
+  background-color: green;
+}
+
+.mask:hover{
+  opacity: .8;
 }
 
 .reward-select {
-  display: inline-block;
   vertical-align: middle;
   text-align: center;
-  position: relative;
   overflow: hidden;
+  color: white;
   cursor: pointer;
-
 }
-/*div.reward-box {
+
+.expired-select{
+  vertical-align: middle;
+  text-align: center;
+  overflow: hidden;
+  color: white;
+  cursor: pointer;
+}
+/*
+
+.click-blast:active {
+	opacity: 1;
+	-webkit-animation: flash 1.5s;
+	animation: flash 1.5s;
+}
+
+@-webkit-keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+
+.click-blast {
+	background: #e6ffff;
+}
+
+.reward-title {
+	opacity: 1;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+.click-blast:hover section.reward-title {
+	color: #ffdb4d;
+}
+
+
+
+div.reward-box {
   border: 1px solid #aaaaaa;
   padding: 5%;
   border-radius: 5px;
