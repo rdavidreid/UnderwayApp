@@ -1,0 +1,30 @@
+.category-item{
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px 0;
+  margin: 10px;
+}
+
+#Art{
+  background-color: red;
+}
+
+#Comics{
+  background-color: blue;
+}
+
+#Games{
+  background-color: green;
+}
+
+#Food{
+  background-color: orange;
+}
+
+#Fashion{
+  background-color: purple;
+}
+
+#All{
+  background-color: red;
+}

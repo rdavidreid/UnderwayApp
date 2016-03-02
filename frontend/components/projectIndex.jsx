@@ -5,12 +5,23 @@ var ApiUtil = require('../util/api_util');
 var ProjectIndexItem = require('./ProjectIndexItem');
 
 var ProjectIndex = React.createClass({
+
   getInitialState: function() {
-    return({Projects: ProjectStore.all()});
+    if(this.props.location.query.category){
+      return({Projects: ProjectStore.select(this.props.location.query.category)});
+    }
+    else {
+      return({Projects: ProjectStore.all()});
+    }
   },
 
   _onChange: function() {
-    this.setState({Projects: ProjectStore.all()});
+    if(this.props.location.query.category){
+      this.setState({ Projects: ProjectStore.select(this.props.location.query.category) });
+    }
+    else {
+      this.setState({ Projects: ProjectStore.all() });
+    }
   },
 
   componentDidMount: function() {

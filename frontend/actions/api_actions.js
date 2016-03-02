@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/dispatcher");
 var ProjectConstants= require("../constants/ProjectConstants");
 var UserConstants = require('../constants/UserConstants');
+var CategoryConstants = require('../constants/CategoryConstants');
 
 var ApiActions = {
   recieveAll: function(obj){
@@ -29,6 +30,12 @@ var ApiActions = {
       user: obj
     });
   },
+  recieveAllCategories: function(obj) {
+    Dispatcher.dispatch({
+      actionType: CategoryConstants.ALL_CATEGORIES_RECIEVED,
+      categories: obj
+    });
+  }
 
 };
 

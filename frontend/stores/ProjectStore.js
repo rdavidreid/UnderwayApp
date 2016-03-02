@@ -3,10 +3,22 @@ var AppDispatcher = require('../dispatcher/dispatcher');
 var ProjectConstants = require('../constants/ProjectConstants');
 
 var _projects = [];
+
 var ProjectStore = new Store(AppDispatcher);
 
 ProjectStore.all = function() {
   return _projects.slice(0);
+};
+
+ProjectStore.select = function(id) {
+  var arr = [];
+  _projects.forEach(function(el){
+    if (el.category_id == id) {
+      arr.push(el);
+    }
+  });
+    console.log(arr);
+    return arr.slice(0);
 };
 
 ProjectStore.findById = function(targetId) {
@@ -27,7 +39,8 @@ ProjectStore.__onDispatch = function(payload) {
       this.resetProjects([payload.projects]);
       this.__emitChange();
     case ProjectConstants.REWARD_CREATED:
-      this.__emitChange
+    // TODO: NEED THIS?
+      // this.__emitChange
   }
 };
 

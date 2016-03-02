@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226173037) do
+ActiveRecord::Schema.define(version: 20160302184412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,12 @@ ActiveRecord::Schema.define(version: 20160226173037) do
 
   add_index "backers", ["reward_id"], name: "index_backers_on_reward_id", using: :btree
   add_index "backers", ["user_id"], name: "index_backers_on_user_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "title",                         null: false

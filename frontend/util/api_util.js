@@ -112,7 +112,17 @@ var ApiUtil = {
         ApiActions.recieveUser(data);
       }
     });
-  }
+  },
+
+  fetchAllCategories: function() {
+    $.ajax({
+      url: "/api/categories",
+      // data: bounds,
+      success: function(data) {
+        ApiActions.recieveAllCategories(data);
+      },
+    });
+  },
 
 };
 

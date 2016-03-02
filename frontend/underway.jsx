@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ProjectStore = require('./stores/ProjectStore');
 var UserStore = require('./stores/UserStore');
+var CategoryStore = require('./stores/CategoryStore');
 var ApiUtil = require('./util/api_util');
 var ProjectIndex = require("./components/projectIndex");
 var ProjectDetail = require('./components/projectDetail');
@@ -9,6 +10,7 @@ var ProjectForm = require('./components/projectForm.jsx');
 var ProjectEditForm = require('./components/ProjectEditForm');
 var UserDetail = require('./components/userDetail');
 var RewardForm = require('./components/rewardForm');
+var Discover = require('./components/Discover');
 var Menu = require('./components/Menu');
 
 
@@ -33,7 +35,8 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={ProjectIndex}></IndexRoute>
+    <IndexRoute component={Discover}></IndexRoute>
+    <route path="projects" component={ProjectIndex}></route>
     <Route path="project/:id" component={ProjectDetail} ></Route>
     <Route path="createproject" component={ProjectForm}></Route>
     <Route path="editproject/:id" component={ProjectEditForm}></Route>
@@ -58,6 +61,7 @@ var routes = (
 
 // TODO REMOVE:
 window.ApiUtil = ApiUtil;
+window.CategoryStore = CategoryStore;
 
 document.addEventListener("DOMContentLoaded", function () {
   ReactDOM.render(<Router>{routes}</Router>, document.getElementById('content'));

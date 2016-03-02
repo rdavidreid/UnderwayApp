@@ -39,6 +39,27 @@ User.create!({
   password: "password"
 })
 
+Category.create!({
+  title: "Art"
+})
+
+Category.create!({
+  title: "Comics"
+})
+
+Category.create!({
+  title: "Games"
+})
+
+Category.create!({
+  title: "Food"
+})
+
+Category.create!({
+  title: "Fashion"
+})
+
+
 Project.create!({
 title:              "Flying cat pet",
 blurb:              "Love your feline frined? Give him or her the gift of flight",

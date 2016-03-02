@@ -26,6 +26,8 @@ class Project < ActiveRecord::Base
     class_name: 'User'
   )
 
+  belongs_to :category
+
   has_many :rewards, dependent: :destroy
 
 

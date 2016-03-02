@@ -48,6 +48,7 @@
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
 	var UserStore = __webpack_require__(182);
+	var CategoryStore = __webpack_require__(257);
 	var ApiUtil = __webpack_require__(184);
 	var ProjectIndex = __webpack_require__(186);
 	var ProjectDetail = __webpack_require__(237);
@@ -55,6 +56,7 @@
 	var ProjectEditForm = __webpack_require__(245);
 	var UserDetail = __webpack_require__(246);
 	var RewardForm = __webpack_require__(248);
+	var Discover = __webpack_require__(258);
 	var Menu = __webpack_require__(250);
 
 	var Router = __webpack_require__(188).Router;
@@ -83,7 +85,8 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: ProjectIndex }),
+	  React.createElement(IndexRoute, { component: Discover }),
+	  React.createElement('route', { path: 'projects', component: ProjectIndex }),
 	  React.createElement(Route, { path: 'project/:id', component: ProjectDetail }),
 	  React.createElement(Route, { path: 'createproject', component: ProjectForm }),
 	  React.createElement(Route, { path: 'editproject/:id', component: ProjectEditForm }),
@@ -105,6 +108,7 @@
 
 	// TODO REMOVE:
 	window.ApiUtil = ApiUtil;
+	window.CategoryStore = CategoryStore;
 
 	document.addEventListener("DOMContentLoaded", function () {
 	  ReactDOM.render(React.createElement(
@@ -19724,10 +19728,22 @@
 	var ProjectConstants = __webpack_require__(181);
 
 	var _projects = [];
+
 	var ProjectStore = new Store(AppDispatcher);
 
 	ProjectStore.all = function () {
 	  return _projects.slice(0);
+	};
+
+	ProjectStore.select = function (id) {
+	  var arr = [];
+	  _projects.forEach(function (el) {
+	    if (el.category_id == id) {
+	      arr.push(el);
+	    }
+	  });
+	  console.log(arr);
+	  return arr.slice(0);
 	};
 
 	ProjectStore.findById = function (targetId) {
@@ -19748,7 +19764,8 @@
 	      this.resetProjects([payload.projects]);
 	      this.__emitChange();
 	    case ProjectConstants.REWARD_CREATED:
-	      this.__emitChange;
+	    // TODO: NEED THIS?
+	    // this.__emitChange
 	  }
 	};
 
@@ -26686,6 +26703,16 @@
 	        ApiActions.recieveUser(data);
 	      }
 	    });
+	  },
+
+	  fetchAllCategories: function () {
+	    $.ajax({
+	      url: "/api/categories",
+	      // data: bounds,
+	      success: function (data) {
+	        ApiActions.recieveAllCategories(data);
+	      }
+	    });
 	  }
 
 	};
@@ -26699,6 +26726,7 @@
 	var Dispatcher = __webpack_require__(178);
 	var ProjectConstants = __webpack_require__(181);
 	var UserConstants = __webpack_require__(183);
+	var CategoryConstants = __webpack_require__(256);
 
 	var ApiActions = {
 	  recieveAll: function (obj) {
@@ -26726,6 +26754,12 @@
 	      actionType: UserConstants.CURRENT_USER_RECIEVED,
 	      user: obj
 	    });
+	  },
+	  recieveAllCategories: function (obj) {
+	    Dispatcher.dispatch({
+	      actionType: CategoryConstants.ALL_CATEGORIES_RECIEVED,
+	      categories: obj
+	    });
 	  }
 
 	};
@@ -26745,12 +26779,21 @@
 	var ProjectIndex = React.createClass({
 	  displayName: 'ProjectIndex',
 
+
 	  getInitialState: function () {
-	    return { Projects: ProjectStore.all() };
+	    if (this.props.location.query.category) {
+	      return { Projects: ProjectStore.select(this.props.location.query.category) };
+	    } else {
+	      return { Projects: ProjectStore.all() };
+	    }
 	  },
 
 	  _onChange: function () {
-	    this.setState({ Projects: ProjectStore.all() });
+	    if (this.props.location.query.category) {
+	      this.setState({ Projects: ProjectStore.select(this.props.location.query.category) });
+	    } else {
+	      this.setState({ Projects: ProjectStore.all() });
+	    }
 	  },
 
 	  componentDidMount: function () {
@@ -33652,6 +33695,196 @@
 	});
 
 	module.exports = SignOut;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports) {
+
+	var CategoryConstants = {
+	  ALL_CATEGORIES_RECIEVED: "ALL_CATEGORIES_RECIEVED"
+	};
+
+	module.exports = CategoryConstants;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(160).Store;
+	var AppDispatcher = __webpack_require__(178);
+	var CategoryConstants = __webpack_require__(256);
+
+	var _categories = [];
+	var CategoryStore = new Store(AppDispatcher);
+
+	CategoryStore.all = function () {
+	  return _categories.slice(0);
+	};
+
+	CategoryStore.resetCategories = function (newCategories) {
+	  _categories = newCategories;
+	};
+
+	CategoryStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case CategoryConstants.ALL_CATEGORIES_RECIEVED:
+	      this.resetCategories(payload.categories);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+
+	module.exports = CategoryStore;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDom = __webpack_require__(158);
+	var ApiUtil = __webpack_require__(184);
+	var CategoryStore = __webpack_require__(257);
+	var CategoryItem = __webpack_require__(259);
+
+	var Discover = React.createClass({
+	  displayName: 'Discover',
+
+
+	  getInitialState: function () {
+	    return { categories: CategoryStore.all() };
+	  },
+
+	  _onChange: function () {
+	    this.setState({ categories: CategoryStore.all() });
+	  },
+
+	  componentDidMount: function () {
+	    this.categoryListener = CategoryStore.addListener(this._onChange);
+	    ApiUtil.fetchAllCategories();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.categoryListener.remove();
+	  },
+
+	  render: function () {
+	    var categories = this.state.categories.map(function (el) {
+	      return React.createElement(CategoryItem, { category: el, key: el.id });
+	    });
+	    var all = { title: "All" };
+	    categories.push(React.createElement(CategoryItem, { category: all, key: 99 }));
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { id: 'carousel-example-generic', className: 'carousel slide', 'data-ride': 'carousel' },
+	        React.createElement(
+	          'ol',
+	          { className: 'carousel-indicators' },
+	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '0', className: 'active' }),
+	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '1' }),
+	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '2' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'carousel-inner', role: 'listbox' },
+	          React.createElement(
+	            'div',
+	            { className: 'item active' },
+	            React.createElement('img', { src: 'http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg', alt: '...' }),
+	            React.createElement(
+	              'div',
+	              { className: 'carousel-caption' },
+	              '...'
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'item' },
+	            React.createElement('img', { src: '...', alt: '...' }),
+	            React.createElement(
+	              'div',
+	              { className: 'carousel-caption' },
+	              '...'
+	            )
+	          ),
+	          '...'
+	        ),
+	        React.createElement(
+	          'a',
+	          { className: 'left carousel-control', href: '#carousel-example-generic', role: 'button', 'data-slide': 'prev' },
+	          React.createElement('span', { className: 'glyphicon glyphicon-chevron-left', 'aria-hidden': 'true' }),
+	          React.createElement(
+	            'span',
+	            { className: 'sr-only' },
+	            'Previous'
+	          )
+	        ),
+	        React.createElement(
+	          'a',
+	          { className: 'right carousel-control', href: '#carousel-example-generic', role: 'button', 'data-slide': 'next' },
+	          React.createElement('span', { className: 'glyphicon glyphicon-chevron-right', 'aria-hidden': 'true' }),
+	          React.createElement(
+	            'span',
+	            { className: 'sr-only' },
+	            'Next'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'category-selections' },
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          categories
+	        )
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = Discover;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var ApiUtil = __webpack_require__(184);
+	var History = __webpack_require__(188).History;
+
+	var Category = React.createClass({
+	  displayName: 'Category',
+
+	  mixins: [History],
+
+	  _onClick: function () {
+	    if (this.props.category) {
+	      this.history.pushState(null, "/projects/", { category: this.props.category.id });
+	    } else {
+	      this.history.pushState(null, "/projects/");
+	    }
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      {
+	        className: 'col-sm-3 category-item',
+	        id: this.props.category.title,
+	        onClick: this._onClick },
+	      this.props.category.title
+	    );
+	  }
+
+	});
+
+	module.exports = Category;
 
 /***/ }
 /******/ ]);
