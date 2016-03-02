@@ -27,21 +27,25 @@ var RewardDetail = React.createClass({
     }
 
     if(parseInt(reward.reward_max_count) > 0) {
-      var maxCount = "Quantity: " + reward.reward_max_count;
+      var countRemaining = "Quantity remaining: " + reward.number_remaining;
     } else {
-      maxCount = "";
+      countRemaining = "";
     }
 
     return(
 
-      <div className="col-md-12 reward-detail click-blast" onClick={this._clickerFunc}>
-
+      <div className="col-md-12 reward-detail" onClick={this._clickerFunc}>
+        <section>Pledge{" $" + reward.reward_cost}</section>
+        <section>{reward.reward_number_sold} backers. Limited{reward.reward_number_sold + " left of " + reward.reward_max_count}</section>
+        <br />
         <section className="reward-title">{reward.reward_title}</section>
-        <section>Price: {reward.reward_cost}</section>
         <section>{reward.reward_description}</section>
-        <section>Delivery Date: {reward.reward_delivery_date}</section>
-        <section>{maxCount}</section>
+        <section>Estimated delivery {reward.reward_delivery_date}</section>
         <section>{count}</section>
+
+        <div className="hover">
+          <div className="reward-select">Select this reward</div>
+        </div>
 
       </div>
     );

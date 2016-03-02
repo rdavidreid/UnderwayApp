@@ -26,7 +26,7 @@ json.project do
     json.reward_cost reward.cost
     json.reward_count reward.reward_count
     json.reward_delivery_date reward.delivery_date
-    json.reward_real_count reward.backers.length
+    json.number_remaining (reward.reward_max_count - reward.backers.length)
     json.reward_max_count reward.reward_max_count
     json.reward_number_sold reward.backers.count
 

@@ -15,7 +15,9 @@
     <script type="text/javascript">
       window.CLOUDINARY_OPTIONS = {
         cloud_name: "<%= ENV["cloudinary_api_name"]%>",
-        upload_preset: "<%= ENV['cloudinary_upload_preset'] %>"
+        upload_preset: "<%= ENV['cloudinary_upload_preset'] %>",
+        cropping: 'server',
+        cropping_aspect_ratio: "1.77"
       };
     </script>
 

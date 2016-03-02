@@ -26753,10 +26753,31 @@
 	  },
 
 	  _imgError: function () {
-	    // this.backupImage = (<img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png"></img>);
-	    // console.log("error happend");
 	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
-	    // debugger;
+	  },
+
+	  _formatTime: function (t) {
+
+	    var cd = 24 * 60 * 60 * 1000,
+	        ch = 60 * 60 * 1000,
+	        d = Math.floor(t / cd),
+	        h = Math.floor((t - d * cd) / ch),
+	        m = Math.round((t - d * cd - h * ch) / 60000),
+	        pad = function (n) {
+	      return n < 10 ? '0' + n : n;
+	    };
+	    if (m === 60) {
+	      h++;
+	      m = 0;
+	    }
+	    if (h === 24) {
+	      d++;
+	      h = 0;
+	    }
+	    if (d < 0) {
+	      d = 0;
+	    }
+	    return d;
 	  },
 
 	  render: function () {
@@ -26776,7 +26797,12 @@
 	    fundingAsString = fundingAsString.toString() + "%";
 
 	    fundingStyle = { width: fundingStyle };
-	    // debugger;
+
+	    var timeRemainingInt = Date.parse(this.props.project.campaign_end_date) - new Date();
+	    var daysToGo = this._formatTime(timeRemainingInt);
+
+	    var pleged = "$" + this.props.project.current_funding;
+
 	    return React.createElement(
 	      'div',
 	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
@@ -26823,8 +26849,45 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'itemInfo' },
-	          this.props.project.campaign_end_date - Date.now()
+	          { className: 'index-item-infos' },
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Days to go:'
+	            ),
+	            React.createElement(
+	              'section',
+	              null,
+	              daysToGo
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Funded:'
+	            ),
+	            React.createElement(
+	              'section',
+	              null,
+	              fundingAsString
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Pleged:'
+	            ),
+	            pleged
+	          )
 	        ),
 	        React.createElement('br', null)
 	      )
@@ -31529,6 +31592,22 @@
 	    this.history.push('/editreward/' + this.state.Project.project.id);
 	  },
 
+	  _formatTime: function (t) {
+
+	    var cd = 24 * 60 * 60 * 1000,
+	        ch = 60 * 60 * 1000,
+	        d = Math.floor(t / cd),
+	        h = Math.floor((t - d * cd) / ch),
+	        m = Math.round((t - d * cd - h * ch) / 60000),
+	        pad = function (n) {
+	      return n < 10 ? '0' + n : n;
+	    };
+	    if (d < 0) {
+	      d = 0;
+	    }
+	    return d;
+	  },
+
 	  render: function () {
 
 	    if (this.state.Project === undefined || this.state.Project.project === undefined) {
@@ -31566,6 +31645,7 @@
 	      btnEdit = "";
 	      btnEditRewards = "";
 	    }
+	    debugger;
 
 	    var rewards = "";
 	    if (this.state.Project.project.rewards === undefined) {} else {
@@ -31574,28 +31654,37 @@
 	        return React.createElement(RewardDetail, { reward: el });
 	      });
 	    }
+	    var timeRemainingInt = Date.parse(this.state.Project.project.campaign_end_date) - new Date();
+	    var daysToGo = this._formatTime(timeRemainingInt);
+	    debugger;
 
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
+	        'h2',
+	        { className: 'project-title' },
+	        this.state.Project.project.title
+	      ),
+	      React.createElement(
+	        'h4',
+	        { className: 'project-title' },
+	        "By: " + this.state.Project.project.author.username
+	      ),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement(
 	        'div',
 	        { className: 'row details-top' },
 	        React.createElement(
 	          'div',
-	          { id: 'ProjectDetailPane', className: 'col-md-6' },
-	          React.createElement(
-	            'h3',
-	            null,
-	            'TITLE: ',
-	            this.state.Project.project.title
-	          ),
+	          { id: 'ProjectDetailPane', className: 'col-md-8' },
 	          React.createElement('img', {
 	            className: 'project-detail-image',
 	            src: this.state.Project.project.img_url }),
 	          React.createElement(
 	            'p',
-	            null,
+	            { className: 'blurb' },
 	            'Blurb:',
 	            this.state.Project.project.blurb
 	          ),
@@ -31610,36 +31699,46 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'col-md-6' },
+	          { className: 'col-md-4' },
 	          React.createElement(
-	            'h4',
+	            'h3',
 	            null,
-	            'Funding Goal:'
+	            this.state.Project.project.backers
 	          ),
 	          React.createElement(
 	            'p',
 	            null,
-	            this.state.Project.project.funding_goal
+	            'backers'
 	          ),
 	          React.createElement(
-	            'h4',
+	            'h3',
 	            null,
-	            'Funding Raised:'
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            this.state.Project.project.current_funding
-	          ),
-	          React.createElement(
-	            'h4',
-	            null,
-	            'Campaign end date:'
+	            "$" + this.state.Project.project.current_funding
 	          ),
 	          React.createElement(
 	            'p',
 	            null,
-	            this.state.Project.project.campaign_end_date
+	            'pleged of ',
+	            "$" + this.state.Project.project.funding_goal
+	          ),
+	          React.createElement(
+	            'h3',
+	            null,
+	            daysToGo
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'days to go'
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h6',
+	            null,
+	            'This project will only be funded if at least',
+	            " $" + this.state.Project.project.funding_goal,
+	            ' is raised by',
+	            " " + this.state.Project.project.campaign_end_date
 	          )
 	        )
 	      ),
@@ -31648,7 +31747,7 @@
 	        { className: 'row row details-bottom' },
 	        React.createElement(
 	          'div',
-	          { className: 'col-md-8' },
+	          { className: 'col-sm-8 col-md-8' },
 	          React.createElement(
 	            'p',
 	            null,
@@ -31658,7 +31757,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'col-md-4' },
+	          { className: 'col-sm-4 col-md-4' },
 	          React.createElement('br', null),
 	          rewards
 	        )
@@ -33010,24 +33109,32 @@
 	    }
 
 	    if (parseInt(reward.reward_max_count) > 0) {
-	      var maxCount = "Quantity: " + reward.reward_max_count;
+	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
 	    } else {
-	      maxCount = "";
+	      countRemaining = "";
 	    }
 
 	    return React.createElement(
 	      'div',
-	      { className: 'col-md-12 reward-detail click-blast', onClick: this._clickerFunc },
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
 	      React.createElement(
 	        'section',
-	        { className: 'reward-title' },
-	        reward.reward_title
+	        null,
+	        'Pledge',
+	        " $" + reward.reward_cost
 	      ),
 	      React.createElement(
 	        'section',
 	        null,
-	        'Price: ',
-	        reward.reward_cost
+	        reward.reward_number_sold,
+	        ' backers. Limited',
+	        reward.reward_number_sold + " left of " + reward.reward_max_count
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        { className: 'reward-title' },
+	        reward.reward_title
 	      ),
 	      React.createElement(
 	        'section',
@@ -33037,18 +33144,22 @@
 	      React.createElement(
 	        'section',
 	        null,
-	        'Delivery Date: ',
+	        'Estimated delivery ',
 	        reward.reward_delivery_date
 	      ),
 	      React.createElement(
 	        'section',
 	        null,
-	        maxCount
+	        count
 	      ),
 	      React.createElement(
-	        'section',
-	        null,
-	        count
+	        'div',
+	        { className: 'hover' },
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          'Select this reward'
+	        )
 	      )
 	    );
 	  }
@@ -33088,24 +33199,32 @@
 	    }
 
 	    if (parseInt(reward.reward_max_count) > 0) {
-	      var maxCount = "Quantity: " + reward.reward_max_count;
+	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
 	    } else {
-	      maxCount = "";
+	      countRemaining = "";
 	    }
 
 	    return React.createElement(
 	      'div',
-	      { className: 'col-md-12 reward-detail click-blast', onClick: this._clickerFunc },
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
 	      React.createElement(
 	        'section',
-	        { className: 'reward-title' },
-	        reward.reward_title
+	        null,
+	        'Pledge',
+	        " $" + reward.reward_cost
 	      ),
 	      React.createElement(
 	        'section',
 	        null,
-	        'Price: ',
-	        reward.reward_cost
+	        reward.reward_number_sold,
+	        ' backers. Limited',
+	        reward.reward_number_sold + " left of " + reward.reward_max_count
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        { className: 'reward-title' },
+	        reward.reward_title
 	      ),
 	      React.createElement(
 	        'section',
@@ -33115,18 +33234,22 @@
 	      React.createElement(
 	        'section',
 	        null,
-	        'Delivery Date: ',
+	        'Estimated delivery ',
 	        reward.reward_delivery_date
 	      ),
 	      React.createElement(
 	        'section',
 	        null,
-	        maxCount
+	        count
 	      ),
 	      React.createElement(
-	        'section',
-	        null,
-	        count
+	        'div',
+	        { className: 'hover' },
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          'Select this reward'
+	        )
 	      )
 	    );
 	  }
@@ -33412,6 +33535,7 @@
 	    event.preventDefault();
 	    cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function (error, results) {
 	      if (!error) {
+	        debugger;
 	        this.props.postImage(results[0]);
 	      }
 	    }.bind(this));

@@ -9,10 +9,29 @@ var ProjectIndexItem = React.createClass({
   },
 
   _imgError: function(){
-    // this.backupImage = (<img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png"></img>);
-    // console.log("error happend");
     this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
-    // debugger;
+  },
+
+  _formatTime: function(t){
+
+    var cd = 24 * 60 * 60 * 1000,
+        ch = 60 * 60 * 1000,
+        d = Math.floor(t / cd),
+        h = Math.floor( (t - d * cd) / ch),
+        m = Math.round( (t - d * cd - h * ch) / 60000),
+        pad = function(n){ return n < 10 ? '0' + n : n; };
+    if( m === 60 ){
+      h++;
+      m = 0;
+    }
+    if( h === 24 ){
+      d++;
+      h = 0;
+    }
+    if( d < 0){
+      d = 0;
+    }
+    return d;
   },
 
   render: function() {
@@ -32,7 +51,12 @@ var ProjectIndexItem = React.createClass({
     fundingAsString = fundingAsString.toString() + "%";
 
     fundingStyle = {width: fundingStyle};
-    // debugger;
+
+    var timeRemainingInt = (Date.parse(this.props.project.campaign_end_date) - new Date());
+    var daysToGo = this._formatTime(timeRemainingInt);
+
+    var pleged = ("$" + this.props.project.current_funding);
+
     return(
 
       <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-4"
@@ -68,14 +92,24 @@ var ProjectIndexItem = React.createClass({
                 {fundingAsString}
             </div>
           </div>
+          <div className="index-item-infos">
 
-          <div className="itemInfo">
-            {this.props.project.campaign_end_date - Date.now()}
+            <div className="item-info">
+              <h6>Days to go:</h6>
+              <section>{daysToGo}</section>
+            </div>
+
+            <div className="item-info">
+              <h6>Funded:</h6>
+              <section>{fundingAsString}</section>
+            </div>
+
+            <div className="item-info">
+              <h6>Pleged:</h6>
+              {pleged}
+            </div>
+
           </div>
-
-
-
-
           <br />
         </div>
 

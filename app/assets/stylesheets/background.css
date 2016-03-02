@@ -1,8 +1,9 @@
 #rails-body{
-  background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
+  /*background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: fixed;*/
+  background-color: #fbfafc;
 }
 
 .black-and-white{

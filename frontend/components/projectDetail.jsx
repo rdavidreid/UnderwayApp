@@ -50,7 +50,23 @@ var ProjectDetail = React.createClass({
     this.history.push('/editreward/' + this.state.Project.project.id);
   },
 
+  _formatTime: function(t){
+
+    var cd = 24 * 60 * 60 * 1000,
+        ch = 60 * 60 * 1000,
+        d = Math.floor(t / cd),
+        h = Math.floor( (t - d * cd) / ch),
+        m = Math.round( (t - d * cd - h * ch) / 60000),
+        pad = function(n){ return n < 10 ? '0' + n : n; };
+    if( d < 0){
+      d = 0;
+    }
+    return d;
+  },
+
   render: function() {
+
+
 
     if (this.state.Project === undefined ||
     this.state.Project.project === undefined){
@@ -73,6 +89,7 @@ var ProjectDetail = React.createClass({
       btnEdit = "";
       btnEditRewards = "";
     }
+    debugger;
 
     var rewards = "";
     if (this.state.Project.project.rewards === undefined){
@@ -82,33 +99,47 @@ var ProjectDetail = React.createClass({
         return(<RewardDetail reward={el} />);
       });
     }
+    var timeRemainingInt = (Date.parse(this.state.Project.project.campaign_end_date) - new Date());
+    var daysToGo = this._formatTime(timeRemainingInt);
+    debugger;
 
     return(
     <div>
+      <h2 className="project-title">{this.state.Project.project.title}</h2>
+      <h4 className = "project-title">{"By: " + this.state.Project.project.author.username}</h4>
+
+      <br />
+      <br />
+
       <div className="row details-top">
 
-        <div id="ProjectDetailPane" className="col-md-6">
+        <div id="ProjectDetailPane" className="col-md-8">
 
-          <h3>TITLE: {this.state.Project.project.title}</h3>
           <img
             className="project-detail-image"
             src={this.state.Project.project.img_url}>
           </img>
-          <p>Blurb:{this.state.Project.project.blurb}</p>
+          <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
           <br/>
           {btnEdit} {btnDelete} {btnEditRewards}
           <br/>
           <br/>
         </div>
 
-        <div className="col-md-6">
+        <div className="col-md-4">
 
-          <h4>Funding Goal:</h4>
-          <p>{this.state.Project.project.funding_goal}</p>
-          <h4>Funding Raised:</h4>
-          <p>{this.state.Project.project.current_funding}</p>
-          <h4>Campaign end date:</h4>
-          <p>{this.state.Project.project.campaign_end_date}</p>
+          <h3>{this.state.Project.project.backers}</h3>
+          <p>backers</p>
+          <h3>{"$" + this.state.Project.project.current_funding}</h3>
+          <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
+          <h3>{daysToGo}</h3>
+          <p>days to go</p>
+          <br />
+
+          <h6>This project will only be funded if at least
+            {" $" + this.state.Project.project.funding_goal} is raised by
+            {" " + this.state.Project.project.campaign_end_date}
+          </h6>
 
         </div>
 
@@ -116,11 +147,11 @@ var ProjectDetail = React.createClass({
 
       <div className="row row details-bottom">
 
-        <div className="col-md-8">
+        <div className="col-sm-8 col-md-8">
           <p>details:{this.state.Project.project.details}</p>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-sm-4 col-md-4">
           <br></br>
           {rewards}
         </div>
