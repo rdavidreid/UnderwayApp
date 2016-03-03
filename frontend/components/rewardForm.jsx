@@ -4,6 +4,8 @@ var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 var RewardDetail = require('./rewardDetail');
+var DateTime = require('react-datetime');
+
 
 var rewardForm = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -25,6 +27,11 @@ var rewardForm = React.createClass({
 
   _onChange: function() {
     this.setState(this.getStateFromStore());
+  },
+
+  onDateChange: function(value) {
+    console.log(value);
+    this.state.delivery_date = new Date(value.valueOf());
   },
 
   getInitialState: function() {
@@ -177,12 +184,10 @@ var rewardForm = React.createClass({
           <label htmlFor='delivery_date' className="col-sm-2 control-label" >Delivery Date:
           </label>
           <div className="col-sm-10">
-            <input
-              className="form-control"
-              type="date"
-              id="delivery_date"
-              valueLink={this.linkState("delivery_date")}
-              required
+            <DateTime
+              isValidDate={this.validDate}
+              input={false}
+              onChange={this.onDateChange}
             />
           </div>
         </div>

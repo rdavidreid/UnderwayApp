@@ -126,7 +126,6 @@ var ProjectDetail = React.createClass({
         return(<RewardDetail reward={el} />);
       });
     }
-    debugger;
     return(
     <div>
       <h2 className="project-title">{this.state.Project.project.title}</h2>

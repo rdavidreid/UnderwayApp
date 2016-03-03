@@ -61,7 +61,6 @@ var projectForm = React.createClass({
   // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
-    debugger;
     this.errors = [];
     if(this.state.title === "" || this.state.title === " ") {
       this.errors.push("Title can not be blank");

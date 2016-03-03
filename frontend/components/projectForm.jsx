@@ -5,6 +5,7 @@ var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 var ReactQuill = require('react-quill');
+var DateTime = require('react-datetime');
 
 
 var projectForm = React.createClass({
@@ -41,7 +42,11 @@ var projectForm = React.createClass({
   onTextChange: function(value) {
     // this.setState({details: value});
     this.state.details = value;
+  },
 
+  onDateChange: function(value) {
+    console.log(value);
+    this.state.campaign_end_date = new Date(value.valueOf());
   },
 
   getEditorContents: function() {
@@ -100,6 +105,11 @@ var projectForm = React.createClass({
     this.setState({img_url: image.url});
   },
 
+  validDate: function(current){
+    var today = DateTime.moment();
+    return current.isAfter(today);
+  },
+
   render: function() {
 
     return(
@@ -138,12 +148,10 @@ var projectForm = React.createClass({
           <label htmlFor='project_end_date' className="col-sm-2 control-label">End date:
           </label>
           <div className="col-sm-10">
-            <input
-              type="date"
-              className="form-control"
-              id="project_end_date"
-              valueLink={this.linkState("campaign_end_date")}
-              required
+            <DateTime
+              isValidDate={this.validDate}
+              input={false}
+              onChange={this.onDateChange}
             />
           </div>
         </div>
@@ -186,6 +194,8 @@ var projectForm = React.createClass({
               valueLink={this.linkState("img_url")}
               required
             />
+          <br />
+          <Cloud postImage={this.postImage} />
           </div>
         </div>
 
@@ -200,9 +210,6 @@ var projectForm = React.createClass({
             </ReactQuill>
           </div>
         </div>
-
-
-        <Cloud postImage={this.postImage} />
 
         <div className="form-group">
           <div className="col-sm-10">

@@ -4,6 +4,7 @@ var ApiUtil = require('../util/api_util');
 var CategoryStore = require('../stores/CategoryStore');
 var ProjectStore = require('../stores/ProjectStore');
 var CategoryItem = require('./categoryItem');
+var ProjectIndexItem = require('./projectIndexItem');
 
 var Discover = React.createClass({
 
@@ -31,48 +32,47 @@ var Discover = React.createClass({
     this.projectListener.remove();
   },
 
+  compareByFunding: function(a,b){
+    if (a.current_funding > b.current_funding){
+      return -1;
+    }
+    if (b.current_funding > a.current_funding){
+      return 1;
+    }
+    return 0;
+  },
+
+  selectMostFunding: function() {
+    if(this.state.projects === undefined){
+      return [];
+    }
+    var that = this;
+    var arr = this.state.projects.sort(this.compareByFunding);
+
+
+    if (arr.length >= 3) {
+      return arr.slice(0,3);
+    }
+    else {
+      return [];
+    }
+  },
+
+
   render: function() {
+
+    var mostFundedProjects = this.selectMostFunding();
+
+    mostFundedProjects = mostFundedProjects.map(function(el) {
+      return(<ProjectIndexItem project={el} key={el.id}/>);
+    });
+
     var categories = this.state.categories.map(function(el) {
       var count = ProjectStore.getCategoryCount(el.id);
       return(<CategoryItem category={el} key={el.id} count={count} />);
     });
     var all = {title: "All"};
     categories.push(<CategoryItem category={all} key={99} />);
-
-    // <div id="carousel-example-generic" className="carousel slide" data-ride="carousel">
-    //   <ol className="carousel-indicators">
-    //     <li data-target="#carousel-example-generic" data-slide-to="0" className="active"></li>
-    //     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-    //     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    //   </ol>
-    //
-    //   <div className="carousel-inner" role="listbox">
-    //
-    //     <div className="item active">
-    //       <img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg" alt="..."></img>
-    //       <div className="carousel-caption">
-    //         texttasldfkjasldfj asdf asldjfalksdjf asldf asdf asfdf ff f fasd asdf asdf
-    //       </div>
-    //     </div>
-    //
-    //     <div className="item">
-    //       <img src="..." alt="..."></img>
-    //       <div className="carousel-caption">
-    //         ...
-    //       </div>
-    //     </div>
-    //     this is lower than the others
-    //   </div>
-    //
-    //   <a className="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-    //     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    //     <span className="sr-only">Previous</span>
-    //   </a>
-    //   <a className="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-    //     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    //     <span className="sr-only">Next</span>
-    //   </a>
-    // </div>
 
     return(
 
@@ -100,7 +100,7 @@ var Discover = React.createClass({
       <div className="row">
         <h2 className="trending-title">Trending now:</h2>
       </div>
-
+        {mostFundedProjects}
       </div>
 
     );
@@ -109,3 +109,38 @@ var Discover = React.createClass({
 });
 
 module.exports = Discover;
+
+
+// <div id="carousel-example-generic" className="carousel slide" data-ride="carousel">
+//   <ol className="carousel-indicators">
+//     <li data-target="#carousel-example-generic" data-slide-to="0" className="active"></li>
+//     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+//     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+//   </ol>
+//
+//   <div className="carousel-inner" role="listbox">
+//
+//     <div className="item active">
+//       <img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg" alt="..."></img>
+//       <div className="carousel-caption">
+//       </div>
+//     </div>
+//
+//     <div className="item">
+//       <img src="..." alt="..."></img>
+//       <div className="carousel-caption">
+//         ...
+//       </div>
+//     </div>
+//     this is lower than the others
+//   </div>
+//
+//   <a className="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+//     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+//     <span className="sr-only">Previous</span>
+//   </a>
+//   <a className="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+//     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+//     <span className="sr-only">Next</span>
+//   </a>
+// </div>
