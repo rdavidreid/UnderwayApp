@@ -4,9 +4,11 @@ var Cloud = require('./Cloud');
 var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
+var ReactQuill = require('react-quill');
+
 
 var projectForm = React.createClass({
-  mixins: [LinkedStateMixin, History],
+  mixins: [LinkedStateMixin, History, ReactQuill.Mixin],
 
   inputs: {
     title: "",
@@ -20,6 +22,30 @@ var projectForm = React.createClass({
 
   getInitialState: function() {
     return(this.inputs);
+  },
+
+  componentDidMount: function() {
+  var editor = this.createEditor(
+    this.getEditorElement(),
+    this.getEditorConfig()
+    );
+    this.setState({ editor:editor });
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if ('value' in nextProps && nextProps.value !== this.props.value) {
+      this.setEditorContents(this.state.editor, nextProps.value);
+    }
+  },
+
+  onTextChange: function(value) {
+    // this.setState({details: value});
+    this.state.details = value;
+
+  },
+
+  getEditorContents: function() {
+    this.state.Project.project.details;
   },
 
   // TODO: REFACTOR / CLEAN THIS. add into another file
@@ -123,14 +149,6 @@ var projectForm = React.createClass({
         </div>
 
         <div className="form-group">
-          <label htmlFor='details' className="col-sm-2 control-label">Details:</label>
-          <div className="col-sm-10">
-            <textarea className="form-control" id="details" valueLink={this.linkState("details")}>
-            </textarea>
-          </div>
-        </div>
-
-        <div className="form-group">
           <label htmlFor='category' className="col-sm-2 control-label">Category:</label>
           <div className="col-sm-10">
             <select id="category" valueLink={this.linkState("category_id")}>
@@ -169,8 +187,21 @@ var projectForm = React.createClass({
               required
             />
           </div>
-
         </div>
+
+
+        <div className="form-group">
+          <div className="col-sm-12">
+            <ReactQuill
+              className="quill-component"
+              theme="snow"
+              onChange={this.onTextChange}
+              >
+            </ReactQuill>
+          </div>
+        </div>
+
+
         <Cloud postImage={this.postImage} />
 
         <div className="form-group">

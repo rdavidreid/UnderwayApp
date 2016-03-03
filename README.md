@@ -119,11 +119,11 @@ projects, and change display name / password
 **Objective:** All projects have a category. On project index page, user can
 chose which categories to display, or to display all.
 
-- [ ] create `Category` Model and react component
-- [ ] build association between Categories and Projects
-- [ ] build API and flux loop for Category
-- [ ] add functionality that allows user to sort by category on Discovery page
-- [ ] Style new elements
+- [X] create `Category` Model and react component
+- [X] build association between Categories and Projects
+- [X] build API and flux loop for Category
+- [X] add functionality that allows user to sort by category on Discovery page
+- [X] Style new elements
 
 ### Phase 9: Polish  & Refactor (1 days / 11)
 
@@ -134,7 +134,7 @@ chose which categories to display, or to display all.
  - [ ] add CSS flourishes, transitions, etc.
 
 ### Bonus Features (TBD)
-- [ ] Implement 'quill' for text inputs
+- [X] Implement 'quill' for text inputs
 - [X] implement 'cloudinary' for picture uploading
 - [ ] Author can post updates on authored project
 - [ ] Multiple sessions

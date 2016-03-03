@@ -5,8 +5,10 @@ var History = require('react-router').History;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 
+var ReactQuill = require('react-quill');
+
 var projectForm = React.createClass({
-  mixins: [LinkedStateMixin, History],
+  mixins: [LinkedStateMixin, History, ReactQuill.Mixin],
 
   inputs: {
     title: "",
@@ -27,6 +29,17 @@ var projectForm = React.createClass({
   componentDidMount: function() {
     this.projectListener = ProjectStore.addListener(this._onChange);
     ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+    var editor = this.createEditor(
+      this.getEditorElement(),
+      this.getEditorConfig()
+    );
+    this.setState({editor: editor});
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if ('value' in nextProps && nextProps.value !== this.props.value) {
+      this.setEditorContents(this.state.editor, nextProps.value);
+    }
   },
 
   componentWillUnmount: function() {
@@ -48,6 +61,7 @@ var projectForm = React.createClass({
   // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
+    debugger;
     this.errors = [];
     if(this.state.title === "" || this.state.title === " ") {
       this.errors.push("Title can not be blank");
@@ -92,6 +106,16 @@ var projectForm = React.createClass({
     }
   },
 
+  onTextChange: function(value) {
+    // this.setState({details: value});
+    this.state.details = value;
+
+  },
+
+  getEditorContents: function() {
+    this.state.Project.project.details;
+  },
+
 
   render: function() {
     if(this.state.Project == undefined){
@@ -100,6 +124,7 @@ var projectForm = React.createClass({
 
     return(
       <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+
         <form className="form-horizontal editProjectForm" onSubmit={this.editProject}>
           <h2>Editing: {this.state.Project.project.title}</h2>
 
@@ -118,21 +143,8 @@ var projectForm = React.createClass({
           </div>
 
           <div className="form-group ">
-            <label htmlFor='project_detals' className="col-sm-2 control-label">Edit Details:</label>
-              <div className="col-sm-10">
-              <textarea
-                className="form-control"
-                id="details"
-                valueLink={this.linkState("details")}
-                defaultValue={this.state.Project.project.details}
-                >
-              </textarea>
-            </div>
-          </div>
-
-          <div className="form-group ">
             <label htmlFor='img_url' className="col-sm-2 control-label">Image URL:</label>
-              <div className="col-sm-10">
+            <div className="col-sm-10">
 
               <input
                 className="form-control"
@@ -141,9 +153,22 @@ var projectForm = React.createClass({
                 valueLink={this.linkState("img_url")}
                 defaultValue={this.state.Project.project.img_url}
                 required
-              />
+                />
             </div>
           </div>
+
+          <div className="form-group">
+            <div className="col-sm-12">
+              <ReactQuill
+                className="quill-component"
+                theme="snow"
+                onChange={this.onTextChange}
+                value={this.state.Project.project.details}
+                >
+              </ReactQuill>
+            </div>
+          </div>
+
 
           <Cloud postImage={this.postImage} />
 

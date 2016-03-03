@@ -126,7 +126,7 @@ var ProjectDetail = React.createClass({
         return(<RewardDetail reward={el} />);
       });
     }
-
+    debugger;
     return(
     <div>
       <h2 className="project-title">{this.state.Project.project.title}</h2>
@@ -174,7 +174,9 @@ var ProjectDetail = React.createClass({
       <div className="row row details-bottom">
 
         <div className="col-sm-8 col-md-8">
-          <p>details:{this.state.Project.project.details}</p>
+          <section
+            className="details-body"
+            dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
         </div>
 
         <div className="col-sm-4 col-md-4">

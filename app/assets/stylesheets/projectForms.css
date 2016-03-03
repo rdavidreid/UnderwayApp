@@ -1,0 +1,6 @@
+.quill-component{
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: grey;
+  min-height: 50px;
+}
