@@ -17,11 +17,21 @@ var Category = React.createClass({
 
   render: function() {
     return(
-        <div
-          className="col-sm-3 category-item"
-          id={this.props.category.title}
-          onClick={this._onClick}>
-          {this.props.category.title}
+        <div className="col-sm-3 category-item" onClick={this._onClick}>
+          <section className='slideDown' id={this.props.category.title}>
+
+          <div className="wrapper">
+            <div className="inner-item image1">
+              {this.props.category.title}
+            </div>
+
+            <div className="inner-item inner-hover image2">
+              {this.props.count} Projects
+            </div>
+
+          </div>
+          </section>
+
         </div>
     );
   }

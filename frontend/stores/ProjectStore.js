@@ -17,8 +17,12 @@ ProjectStore.select = function(id) {
       arr.push(el);
     }
   });
-    console.log(arr);
-    return arr.slice(0);
+  return arr.slice(0);
+};
+
+ProjectStore.getCategoryCount = function(id) {
+  var arr = this.select(id);
+  return arr.length;
 };
 
 ProjectStore.findById = function(targetId) {

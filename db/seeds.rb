@@ -1,12 +1,7 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
+####################
+###### USERS #######
+####################
 
 User.create!({
   username: "david",
@@ -39,6 +34,10 @@ User.create!({
   password: "password"
 })
 
+####################
+##### Category #####
+####################
+
 Category.create!({
   title: "Art"
 })
@@ -48,7 +47,15 @@ Category.create!({
 })
 
 Category.create!({
-  title: "Games"
+  title: "Design"
+})
+
+Category.create!({
+  title: "Fashion"
+})
+
+Category.create!({
+  title: "Film"
 })
 
 Category.create!({
@@ -56,9 +63,28 @@ Category.create!({
 })
 
 Category.create!({
-  title: "Fashion"
+  title: "Games"
 })
 
+Category.create!({
+  title: "Music"
+})
+
+Category.create!({
+  title: "Photography"
+})
+
+Category.create!({
+  title: "Technology"
+})
+
+Category.create!({
+  title: "Theater"
+})
+
+####################
+##### Project ######
+####################
 
 Project.create!({
 title:              "Flying cat pet",
@@ -173,6 +199,10 @@ funding_goal:       600000,
 campaign_end_date:  Time.now + 60.days
 })
 
+####################
+###### Reward ######
+####################
+
 Reward.create!({
   title: "Reward 1 for Project 1",
   description: "This is the description of R1 P1 here is a little more text and
@@ -216,6 +246,10 @@ Reward.create!({
   reward_count: 0,
   reward_max_count: 100
 })
+
+####################
+###### Backer ######
+####################
 
 Backer.create!({
   user_id: 2,

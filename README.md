@@ -14,8 +14,8 @@ and React.js. UnderWay allows users to:
 - [X] Explore projects users have created
 - [X] Back projects created by other users
 - [X] Create projects that other users can back.
-- [ ] Projects are funded if enough money is raised in a set amount of time.
-- [ ] Projects are not funded if funding goal is not met by deadline.
+- [X] Projects are funded if enough money is raised in a set amount of time.
+- [X] Projects are not funded if funding goal is not met by deadline.
 
 
 ## Design Docs

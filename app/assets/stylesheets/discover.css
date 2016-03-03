@@ -1,4 +1,20 @@
 .category-selections{
+  margin: 40px auto 0 auto;
+}
+
+.category-intro{
   margin: auto;
-  max-width: 500px;
+}
+
+.inner-category-intro{
+  margin: auto;
+  text-align: center;
+}
+
+.inner-category-selection{
+  margin: auto;
+}
+
+.trending-title{
+  text-align: center;
 }

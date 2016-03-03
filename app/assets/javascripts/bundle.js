@@ -19742,8 +19742,12 @@
 	      arr.push(el);
 	    }
 	  });
-	  console.log(arr);
 	  return arr.slice(0);
+	};
+
+	ProjectStore.getCategoryCount = function (id) {
+	  var arr = this.select(id);
+	  return arr.length;
 	};
 
 	ProjectStore.findById = function (targetId) {
@@ -33776,6 +33780,7 @@
 	var ReactDom = __webpack_require__(158);
 	var ApiUtil = __webpack_require__(184);
 	var CategoryStore = __webpack_require__(257);
+	var ProjectStore = __webpack_require__(159);
 	var CategoryItem = __webpack_require__(259);
 
 	var Discover = React.createClass({
@@ -33786,82 +33791,86 @@
 	    return { categories: CategoryStore.all() };
 	  },
 
-	  _onChange: function () {
+	  _onCategoryChange: function () {
 	    this.setState({ categories: CategoryStore.all() });
 	  },
 
+	  _onProjectChange: function () {
+	    this.setState({ projects: ProjectStore.all() });
+	  },
+
 	  componentDidMount: function () {
-	    this.categoryListener = CategoryStore.addListener(this._onChange);
+	    this.categoryListener = CategoryStore.addListener(this._onCategoryChange);
+	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
 	    ApiUtil.fetchAllCategories();
+	    ApiUtil.fetchAllProjects();
 	  },
 
 	  componentWillUnmount: function () {
 	    this.categoryListener.remove();
+	    this.projectListener.remove();
 	  },
 
 	  render: function () {
 	    var categories = this.state.categories.map(function (el) {
-	      return React.createElement(CategoryItem, { category: el, key: el.id });
+	      var count = ProjectStore.getCategoryCount(el.id);
+	      return React.createElement(CategoryItem, { category: el, key: el.id, count: count });
 	    });
 	    var all = { title: "All" };
 	    categories.push(React.createElement(CategoryItem, { category: all, key: 99 }));
+
+	    // <div id="carousel-example-generic" className="carousel slide" data-ride="carousel">
+	    //   <ol className="carousel-indicators">
+	    //     <li data-target="#carousel-example-generic" data-slide-to="0" className="active"></li>
+	    //     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+	    //     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+	    //   </ol>
+	    //
+	    //   <div className="carousel-inner" role="listbox">
+	    //
+	    //     <div className="item active">
+	    //       <img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg" alt="..."></img>
+	    //       <div className="carousel-caption">
+	    //         texttasldfkjasldfj asdf asldjfalksdjf asldf asdf asfdf ff f fasd asdf asdf
+	    //       </div>
+	    //     </div>
+	    //
+	    //     <div className="item">
+	    //       <img src="..." alt="..."></img>
+	    //       <div className="carousel-caption">
+	    //         ...
+	    //       </div>
+	    //     </div>
+	    //     this is lower than the others
+	    //   </div>
+	    //
+	    //   <a className="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+	    //     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	    //     <span className="sr-only">Previous</span>
+	    //   </a>
+	    //   <a className="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+	    //     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	    //     <span className="sr-only">Next</span>
+	    //   </a>
+	    // </div>
 
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'div',
-	        { id: 'carousel-example-generic', className: 'carousel slide', 'data-ride': 'carousel' },
-	        React.createElement(
-	          'ol',
-	          { className: 'carousel-indicators' },
-	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '0', className: 'active' }),
-	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '1' }),
-	          React.createElement('li', { 'data-target': '#carousel-example-generic', 'data-slide-to': '2' })
-	        ),
+	        { className: 'category-intro' },
 	        React.createElement(
 	          'div',
-	          { className: 'carousel-inner', role: 'listbox' },
+	          { className: 'row' },
 	          React.createElement(
 	            'div',
-	            { className: 'item active' },
-	            React.createElement('img', { src: 'http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg', alt: '...' }),
+	            { className: 'col-sm-6 col-sm-offset-3 inner-category-intro' },
 	            React.createElement(
-	              'div',
-	              { className: 'carousel-caption' },
-	              '...'
+	              'h4',
+	              null,
+	              'Underway is a place where ideas are born. If you have an idea, create a project! You can also join someone else’s voyage below.'
 	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'item' },
-	            React.createElement('img', { src: '...', alt: '...' }),
-	            React.createElement(
-	              'div',
-	              { className: 'carousel-caption' },
-	              '...'
-	            )
-	          ),
-	          '...'
-	        ),
-	        React.createElement(
-	          'a',
-	          { className: 'left carousel-control', href: '#carousel-example-generic', role: 'button', 'data-slide': 'prev' },
-	          React.createElement('span', { className: 'glyphicon glyphicon-chevron-left', 'aria-hidden': 'true' }),
-	          React.createElement(
-	            'span',
-	            { className: 'sr-only' },
-	            'Previous'
-	          )
-	        ),
-	        React.createElement(
-	          'a',
-	          { className: 'right carousel-control', href: '#carousel-example-generic', role: 'button', 'data-slide': 'next' },
-	          React.createElement('span', { className: 'glyphicon glyphicon-chevron-right', 'aria-hidden': 'true' }),
-	          React.createElement(
-	            'span',
-	            { className: 'sr-only' },
-	            'Next'
 	          )
 	        )
 	      ),
@@ -33871,7 +33880,20 @@
 	        React.createElement(
 	          'div',
 	          { className: 'row' },
-	          categories
+	          React.createElement(
+	            'div',
+	            { className: 'inner-category-selection' },
+	            categories
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'trending-title' },
+	          'Trending now:'
 	        )
 	      )
 	    );
@@ -33906,11 +33928,26 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      {
-	        className: 'col-sm-3 category-item',
-	        id: this.props.category.title,
-	        onClick: this._onClick },
-	      this.props.category.title
+	      { className: 'col-sm-3 category-item', onClick: this._onClick },
+	      React.createElement(
+	        'section',
+	        { className: 'slideDown', id: this.props.category.title },
+	        React.createElement(
+	          'div',
+	          { className: 'wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'inner-item image1' },
+	            this.props.category.title
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'inner-item inner-hover image2' },
+	            this.props.count,
+	            ' Projects'
+	          )
+	        )
+	      )
 	    );
 	  }
 
