@@ -64,5 +64,8 @@ window.ApiUtil = ApiUtil;
 window.CategoryStore = CategoryStore;
 
 document.addEventListener("DOMContentLoaded", function () {
-  ReactDOM.render(<Router>{routes}</Router>, document.getElementById('content'));
+  var root = document.getElementById('content');
+  if (root){
+    ReactDOM.render(<Router>{routes}</Router>, root);
+  }
 });

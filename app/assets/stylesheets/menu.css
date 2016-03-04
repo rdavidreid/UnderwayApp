@@ -20,7 +20,7 @@
 
 .navbar-create{
   margin-left: 20px;
-  -webkit-transition: all .6s ease;
+  -webkit-transition: all .3s ease;
 }
 
 .navbar-create:hover{
@@ -33,6 +33,13 @@
 }
 
 .navbar-discover:hover{
+  color: #2ca8d4 !important;
+}
+
+.username-dropdown{
+  -webkit-transition: all .3s ease;
+}
+.username-dropdown:hover{
   color: #2ca8d4 !important;
 }
 

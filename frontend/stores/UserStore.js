@@ -18,7 +18,6 @@ UserStore.currentUser = function() {
 UserStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case UserConstants.CURRENT_USER_RECIEVED:
-    console.log("user aquired", payload.user.username);
       this.resetUsers(payload.user);
       this.__emitChange();
   }

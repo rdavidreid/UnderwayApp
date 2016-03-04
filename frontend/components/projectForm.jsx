@@ -45,7 +45,6 @@ var projectForm = React.createClass({
   },
 
   onDateChange: function(value) {
-    console.log(value);
     this.state.campaign_end_date = new Date(value.valueOf());
   },
 
@@ -161,10 +160,18 @@ var projectForm = React.createClass({
           <div className="col-sm-10">
             <select id="category" valueLink={this.linkState("category_id")}>
               <option value=" ">select:</option>
-              <option value={1}>Category 1</option>
-              <option value={2}>Category 2</option>
-              <option value={3}>Category 3</option>
-              <option value={4}>Category 4</option>
+              <option value={1}>Art</option>
+              <option value={2}>Comics</option>
+              <option value={3}>Design</option>
+              <option value={4}>Fashion</option>
+              <option value={5}>Film</option>
+              <option value={6}>Food</option>
+              <option value={7}>Games</option>
+              <option value={8}>Music</option>
+              <option value={9}>Photography</option>
+              <option value={10}>Technology</option>
+              <option value={11}>Theater</option>
+
             </select>
           </div>
         </div>

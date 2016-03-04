@@ -19,13 +19,13 @@ var userRewardTableRows = React.createClass({
     if(this.props.reward.description.length > 37){
       dots = "...";
     }
-    
+
     return(
         <tr onClick={this._clickRewardRow.bind(this,this.props.reward.project_id)}>
-          <th scope="row">{this.props.reward.title}</th>
-          <td>{this.props.reward.cost}</td>
-          <td>{this.props.reward.delivery_date}</td>
-          <td>{this.props.reward.description.slice(0,40) + dots}</td>
+          <th scope="row" className="user-table-row">{this.props.reward.title}</th>
+          <td className="user-table-row">{this.props.reward.cost}</td>
+          <td className="user-table-row">{this.props.reward.delivery_date}</td>
+          <td className="user-table-row">{this.props.reward.description.slice(0,40) + dots}</td>
         </tr>
       );
 

@@ -30,7 +30,6 @@ var rewardForm = React.createClass({
   },
 
   onDateChange: function(value) {
-    console.log(value);
     this.state.delivery_date = new Date(value.valueOf());
   },
 

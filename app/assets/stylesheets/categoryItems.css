@@ -27,7 +27,7 @@
           opacity: 1;
 }
 
-.wrapper {  
+.wrapper {
   width:100%;
   height: 50px;
   overflow:hidden;
@@ -64,61 +64,61 @@
 }
 
 #Art.slideDown:hover{
-  background-color: red;
+  background-color: #ff33cc;
   transition: all 0.3s ease-in-out;
 }
 
 #Comics.slideDown:hover{
-  background-color: blue;
+  background-color: #ff9966;
   transition: all 0.3s ease-in-out;
 }
 
 #Design.slideDown:hover{
-  background-color: purple;
+  background-color: #ffff99;
   transition: all 0.3s ease-in-out;
 }
 
 #Fashion.slideDown:hover{
-  background-color: pink;
+  background-color: #cc66ff;
   transition: all 0.3s ease-in-out;
 }
 
 #Film.slideDown:hover{
-  background-color: yellow;
+  background-color: #6699ff;
   transition: all 0.3s ease-in-out;
 }
 
 #Food.slideDown:hover{
-  background-color: orange;
+  background-color: #66ffcc;
   transition: all 0.3s ease-in-out;
 }
 
 #Games.slideDown:hover{
-  background-color: green;
+  background-color: #b3c6ff;
   transition: all 0.3s ease-in-out;
 }
 
 #Music.slideDown:hover{
-  background-color: blue;
+  background-color: #99ff33;
   transition: all 0.3s ease-in-out;
 }
 
 #Photography.slideDown:hover{
-  background-color: pink;
+  background-color: #ffbf80;
   transition: all 0.3s ease-in-out;
 }
 
 #Technology.slideDown:hover{
-  background-color: purple;
+  background-color: #99ff99;
   transition: all 0.3s ease-in-out;
 }
 
 #Theater.slideDown:hover{
-  background-color: orange;
+  background-color: #ccccff;
   transition: all 0.3s ease-in-out;
 }
 
 #All.slideDown:hover{
-  background-color: pink;
+  background-color: #ff9999;
   transition: all 0.3s ease-in-out;
 }

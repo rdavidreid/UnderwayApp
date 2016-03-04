@@ -3,7 +3,6 @@ var Logo = require('./menuitems/logo');
 var Discover = require('./menuitems/discover');
 var Create = require('./menuitems/create');
 var Profile = require('./menuitems/profile');
-var SignOut = require('./menuitems/SignOut');
 var UserStore = require('../stores/UserStore');
 var ApiUtil = require('../util/api_util');
 
@@ -33,6 +32,13 @@ var Menu = React.createClass({
     this.userListener.remove();
   },
 
+  _clickSignOut: function() {
+    ApiUtil.signOut();
+  },
+
+  _clickProfile: function() {
+    this.history.push("/userDetails");
+  },
 
   render: function() {
     var username = "Options";
@@ -75,16 +81,17 @@ var Menu = React.createClass({
             <ul className="nav navbar-nav navbar-right">
               <li className="dropdown">
                 <a
-                  href="#" className="dropdown-toggle" data-toggle="dropdown"
-                  role="button" aria-haspopup="true" aria-expanded="false"
+                  href="#" className="dropdown-toggle username-dropdown"
+                  data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                  {username}
+                  <span className="username-dropdown">{username}</span>
                   <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a><Profile /></a></li>
+                  <li><a onClick={this._clickProfile}>Profile</a></li>
                   <li role="separator" className="divider"></li>
-                  <li><a><SignOut /></a></li>
+                  <li><a onClick={this._clickSignOut}>SignOut</a></li>
                 </ul>
               </li>
             </ul>

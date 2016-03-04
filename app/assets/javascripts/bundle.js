@@ -111,11 +111,14 @@
 	window.CategoryStore = CategoryStore;
 
 	document.addEventListener("DOMContentLoaded", function () {
-	  ReactDOM.render(React.createElement(
-	    Router,
-	    null,
-	    routes
-	  ), document.getElementById('content'));
+	  var root = document.getElementById('content');
+	  if (root) {
+	    ReactDOM.render(React.createElement(
+	      Router,
+	      null,
+	      routes
+	    ), root);
+	  }
 	});
 
 /***/ },
@@ -26573,7 +26576,6 @@
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case UserConstants.CURRENT_USER_RECIEVED:
-	      console.log("user aquired", payload.user.username);
 	      this.resetUsers(payload.user);
 	      this.__emitChange();
 	  }
@@ -31701,6 +31703,10 @@
 	    return d;
 	  },
 
+	  _imgError: function () {
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+	  },
+
 	  render: function () {
 
 	    if (this.state.Project === undefined || this.state.Project.project === undefined) {
@@ -31715,7 +31721,7 @@
 	      var btnDelete = React.createElement(
 	        'button',
 	        {
-	          className: 'button blue',
+	          className: 'button blue delete-project-button',
 	          onClick: this.deleteProject },
 	        'Delete'
 	      );
@@ -31811,8 +31817,11 @@
 	          'div',
 	          { id: 'ProjectDetailPane', className: 'col-md-8' },
 	          React.createElement('img', {
+	            ref: 'indexItemImage',
 	            className: 'project-detail-image',
-	            src: this.state.Project.project.img_url }),
+	            src: this.state.Project.project.img_url,
+	            onError: this._imgError
+	          }),
 	          React.createElement(
 	            'p',
 	            { className: 'blurb' },
@@ -32074,7 +32083,6 @@
 	  },
 
 	  onDateChange: function (value) {
-	    console.log(value);
 	    this.state.campaign_end_date = new Date(value.valueOf());
 	  },
 
@@ -32232,22 +32240,57 @@
 	              React.createElement(
 	                'option',
 	                { value: 1 },
-	                'Category 1'
+	                'Art'
 	              ),
 	              React.createElement(
 	                'option',
 	                { value: 2 },
-	                'Category 2'
+	                'Comics'
 	              ),
 	              React.createElement(
 	                'option',
 	                { value: 3 },
-	                'Category 3'
+	                'Design'
 	              ),
 	              React.createElement(
 	                'option',
 	                { value: 4 },
-	                'Category 4'
+	                'Fashion'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 5 },
+	                'Film'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 6 },
+	                'Food'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 7 },
+	                'Games'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 8 },
+	                'Music'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 9 },
+	                'Photography'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 10 },
+	                'Technology'
+	              ),
+	              React.createElement(
+	                'option',
+	                { value: 11 },
+	                'Theater'
 	              )
 	            )
 	          )
@@ -32884,7 +32927,7 @@
 	        'You have not created any projects'
 	      );
 	    }
-
+	    debugger;
 	    return React.createElement(
 	      'div',
 	      null,
@@ -32907,6 +32950,20 @@
 	          ' Created Projects'
 	        ),
 	        createdProjects
+	      ),
+	      React.createElement(
+	        'table',
+	        { className: 'table table-hover' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Stats:'
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          rewardRow
+	        )
 	      ),
 	      React.createElement(
 	        'table',
@@ -32989,22 +33046,22 @@
 	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
 	      React.createElement(
 	        'th',
-	        { scope: 'row' },
+	        { scope: 'row', className: 'user-table-row' },
 	        this.props.reward.title
 	      ),
 	      React.createElement(
 	        'td',
-	        null,
+	        { className: 'user-table-row' },
 	        this.props.reward.cost
 	      ),
 	      React.createElement(
 	        'td',
-	        null,
+	        { className: 'user-table-row' },
 	        this.props.reward.delivery_date
 	      ),
 	      React.createElement(
 	        'td',
-	        null,
+	        { className: 'user-table-row' },
 	        this.props.reward.description.slice(0, 40) + dots
 	      )
 	    );
@@ -33049,7 +33106,6 @@
 	  },
 
 	  onDateChange: function (value) {
-	    console.log(value);
 	    this.state.delivery_date = new Date(value.valueOf());
 	  },
 
@@ -33436,7 +33492,6 @@
 	var Discover = __webpack_require__(252);
 	var Create = __webpack_require__(253);
 	var Profile = __webpack_require__(254);
-	var SignOut = __webpack_require__(255);
 	var UserStore = __webpack_require__(182);
 	var ApiUtil = __webpack_require__(184);
 
@@ -33466,6 +33521,14 @@
 
 	  componentWillUnmount: function () {
 	    this.userListener.remove();
+	  },
+
+	  _clickSignOut: function () {
+	    ApiUtil.signOut();
+	  },
+
+	  _clickProfile: function () {
+	    this.history.push("/userDetails");
 	  },
 
 	  render: function () {
@@ -33531,10 +33594,15 @@
 	              React.createElement(
 	                'a',
 	                {
-	                  href: '#', className: 'dropdown-toggle', 'data-toggle': 'dropdown',
-	                  role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false'
+	                  href: '#', className: 'dropdown-toggle username-dropdown',
+	                  'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true',
+	                  'aria-expanded': 'false'
 	                },
-	                username,
+	                React.createElement(
+	                  'span',
+	                  { className: 'username-dropdown' },
+	                  username
+	                ),
 	                React.createElement('span', { className: 'caret' })
 	              ),
 	              React.createElement(
@@ -33545,8 +33613,8 @@
 	                  null,
 	                  React.createElement(
 	                    'a',
-	                    null,
-	                    React.createElement(Profile, null)
+	                    { onClick: this._clickProfile },
+	                    'Profile'
 	                  )
 	                ),
 	                React.createElement('li', { role: 'separator', className: 'divider' }),
@@ -33555,8 +33623,8 @@
 	                  null,
 	                  React.createElement(
 	                    'a',
-	                    null,
-	                    React.createElement(SignOut, null)
+	                    { onClick: this._clickSignOut },
+	                    'SignOut'
 	                  )
 	                )
 	              )
@@ -33688,13 +33756,13 @@
 	  displayName: 'Profile',
 
 	  mixins: [History],
-	  _clickCreate: function () {
+	  _clickProfile: function () {
 	    this.history.push("/userDetails");
 	  },
 	  render: function () {
 	    return React.createElement(
 	      'span',
-	      { className: '.navbar-link', onClick: this._clickCreate },
+	      { className: '.navbar-link', onClick: this._clickProfile },
 	      'Profile'
 	    );
 	  }
@@ -33703,34 +33771,7 @@
 	module.exports = Profile;
 
 /***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var History = __webpack_require__(188).History;
-
-	var SignOut = React.createClass({
-	  displayName: 'SignOut',
-
-	  mixins: [History],
-
-	  _clickSignOut: function () {
-	    ApiUtil.signOut();
-	  },
-
-	  render: function () {
-	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickSignOut },
-	      'SignOut'
-	    );
-	  }
-	});
-
-	module.exports = SignOut;
-
-/***/ },
+/* 255 */,
 /* 256 */
 /***/ function(module, exports) {
 
@@ -33827,8 +33868,8 @@
 	    var that = this;
 	    var arr = this.state.projects.sort(this.compareByFunding);
 
-	    if (arr.length >= 3) {
-	      return arr.slice(0, 3);
+	    if (arr.length >= 2) {
+	      return arr.slice(0, 4);
 	    } else {
 	      return [];
 	    }

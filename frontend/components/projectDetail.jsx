@@ -41,7 +41,7 @@ var ProjectDetail = React.createClass({
     var confirm = window.confirm(
       "Are you sure you want to delete this project?"
     );
-    
+
     if(confirm) {
       ApiUtil.destroyProject(this.state.Project);
       this.history.push('/');
@@ -70,6 +70,10 @@ var ProjectDetail = React.createClass({
     return d;
   },
 
+  _imgError: function(){
+    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+  },
+
   render: function() {
 
 
@@ -81,7 +85,7 @@ var ProjectDetail = React.createClass({
 
     if (UserStore.currentUser().user_id == this.state.Project.project.author_id){
       var btnDelete = (<button
-        className="button blue"
+        className="button blue delete-project-button"
         onClick={this.deleteProject}>Delete</button>);
       var btnEdit =   (<button
         className="button blue"
@@ -145,8 +149,11 @@ var ProjectDetail = React.createClass({
         <div id="ProjectDetailPane" className="col-md-8">
 
           <img
+            ref="indexItemImage"
             className="project-detail-image"
-            src={this.state.Project.project.img_url}>
+            src={this.state.Project.project.img_url}
+            onError={this._imgError}
+            >
           </img>
           <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
           <br/>

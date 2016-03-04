@@ -50,8 +50,8 @@ var Discover = React.createClass({
     var arr = this.state.projects.sort(this.compareByFunding);
 
 
-    if (arr.length >= 3) {
-      return arr.slice(0,3);
+    if (arr.length >= 2) {
+      return arr.slice(0,4);
     }
     else {
       return [];

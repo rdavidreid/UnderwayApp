@@ -78,7 +78,7 @@ var ProjectDetail = React.createClass({
         You have not created any projects
       </div>);
     }
-
+    debugger;
     return (
       <div>
 
@@ -91,6 +91,13 @@ var ProjectDetail = React.createClass({
           <h2 className="userDetailTitle"> Created Projects</h2>
           {createdProjects}
         </div>
+
+        <table className="table table-hover">
+          <h2>Stats:</h2>
+          <tbody>
+            {rewardRow}
+          </tbody>
+        </table>
 
         <table className="table table-hover">
           <h2>Purchase History</h2>
