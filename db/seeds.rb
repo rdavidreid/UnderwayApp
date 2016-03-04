@@ -106,7 +106,7 @@ cats and cats and cats and cats and cats"
 Project.create!({
 title:              "Project 2",
 blurb:              "The blurb of Project 2",
-img_url:            "http://lorempixel.com/200/200/cats/",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png",
 details:            "These are the details of Project Two. This could contain
 a very large amount of text. text text text text text text text text text text
 text text text text text text text text text texttext text text text text text
@@ -126,7 +126,7 @@ campaign_end_date:  Time.now + 20.days
 Project.create!({
 title:              "Project 3",
 blurb:              "The blurb of Project 3",
-img_url:            "http://lorempixel.com/200/200/cats/",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png",
 details:            "These are the details of Project Three. This could contain
 a very large amount of text. text text text text text text text text text text
 text text text text text text text text text texttext text text text text text
@@ -145,7 +145,7 @@ campaign_end_date:  Time.now + 30.days
 Project.create!({
 title:              "Project 4",
 blurb:              "The blurb of Project 4",
-img_url:            "http://lorempixel.com/200/200/cats/",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png",
 details:            "These are the details of Project Four. This could contain
 a very large amount of text. text text text text text text text text text text
 text text text text text text text text text texttext text text text text text
@@ -164,7 +164,7 @@ campaign_end_date:  Time.now + 40.days
 Project.create!({
 title:              "Project 5",
 blurb:              "The blurb of Project 5",
-img_url:            "http://lorempixel.com/200/200/cats/",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png",
 details:            "These are the details of Project Five. This could contain
 a very large amount of text. text text text text text text text text text text
 text text text text text text text text text texttext text text text text text
@@ -183,7 +183,7 @@ campaign_end_date:  Time.now + 50.days
 Project.create!({
 title:              "Project 6",
 blurb:              "The blurb of Project 6",
-img_url:            "http://lorempixel.com/200/200/cats/",
+img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png",
 details:            "These are the details of Project Six. This could contain
 a very large amount of text. text text text text text text text text text text
 text text text text text text text text text texttext text text text text text
