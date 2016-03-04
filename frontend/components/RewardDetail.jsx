@@ -1,5 +1,7 @@
 var React = require('react');
 var ApiUtil = require('../util/api_util');
+var Modal = require('react-modal');
+
 
 
 var RewardDetail = React.createClass({
@@ -16,13 +18,41 @@ var RewardDetail = React.createClass({
         alert(this.props.reward.reward_title + " is sold out!");
       } else {
         ApiUtil.createBacker(newBacker);
-        alert(this.props.reward.reward_title + "purchased!");
+        this.openModal();
       }
     }
   },
 
+  getInitialState: function() {
+    return({modalIsOpen: false});
+
+  },
+
+  openModal: function() {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function() {
+    this.setState({modalIsOpen: false});
+  },
+
 
   render: function() {
+    Modal.setAppElement(document.body);
+    var customStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        borderRadius          : '10px',
+        backgroundColor       : "#33cc33",
+      }
+    };
+
+
     var reward = this.props.reward;
 
     if(reward.rewards_bought.rewards_bought > 0) {
@@ -81,7 +111,20 @@ var RewardDetail = React.createClass({
 
         {hoverDiv}
 
+        <Modal
+          className="reward-modal"
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles} >
+
+          <h2>Purchase Success</h2>
+          <div className="reward-modal-msg">Thankyou for your support!</div>
+        </Modal>
+
+
       </div>
+
+
     );
   }
 

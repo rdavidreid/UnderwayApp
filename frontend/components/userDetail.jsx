@@ -78,7 +78,6 @@ var ProjectDetail = React.createClass({
         You have not created any projects
       </div>);
     }
-    debugger;
     return (
       <div>
 

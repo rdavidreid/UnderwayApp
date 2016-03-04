@@ -10,9 +10,28 @@
   border-radius: 2px;
 }
 
+.button.red{
+  -webkit-box-shadow: #ccc 0px 4px 5px 0px;
+  -moz-box-shadow: #ccc 0px 4px 5px 0px;
+  box-shadow: #ccc 0px 4px 5px 0px;
+  background: #ff3333;
+  color:#ffffff;
+  transition: all 0.3s ease 0s;
+  border: none;
+  border-radius: 2px;
+}
+
 .button.blue.hover, .button.blue:hover {
   color: #ffdb4d;
   background:#2ca8d4;
+  -webkit-box-shadow: #bbb 0px 4px 5px 0px;
+  -moz-box-shadow: #bbb 0px 4px 5px 0px;
+  box-shadow: #bbb 0px 4px 5px 0px;
+}
+
+.button.red.hover, .button.red:hover {
+  color: #ffffff;
+  background:#ff0000;
   -webkit-box-shadow: #bbb 0px 4px 5px 0px;
   -moz-box-shadow: #bbb 0px 4px 5px 0px;
   box-shadow: #bbb 0px 4px 5px 0px;

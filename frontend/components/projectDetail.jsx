@@ -3,17 +3,28 @@ var ProjectStore = require('../stores/ProjectStore');
 var ApiUtil = require('../util/api_util');
 var RewardDetail = require('./RewardDetail');
 var UserStore = require('../stores/UserStore');
+var Modal = require('react-modal');
 var History = require('react-router').History;
 
+// var appElement = document.getElementById('content');
 
 
 var ProjectDetail = React.createClass({
   mixins: [History],
 
   getStateFromStore: function() {
-    return({Project: ProjectStore.findById(
-      parseInt(this.props.params.id)
-    )});
+    return({
+      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+      modalIsOpen: false
+    });
+  },
+
+  openModal: function() {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function() {
+    this.setState({modalIsOpen: false});
   },
 
   _onChange: function() {
@@ -38,14 +49,8 @@ var ProjectDetail = React.createClass({
   },
 
   deleteProject: function() {
-    var confirm = window.confirm(
-      "Are you sure you want to delete this project?"
-    );
-
-    if(confirm) {
-      ApiUtil.destroyProject(this.state.Project);
-      this.history.push('/');
-    }
+    ApiUtil.destroyProject(this.state.Project);
+    this.history.push('/');
   },
 
   editProject: function() {
@@ -75,7 +80,18 @@ var ProjectDetail = React.createClass({
   },
 
   render: function() {
-
+    Modal.setAppElement(document.body);
+    var customStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        borderRadius          : '10px'
+      }
+    };
 
 
     if (this.state.Project === undefined ||
@@ -85,7 +101,8 @@ var ProjectDetail = React.createClass({
 
     if (UserStore.currentUser().user_id == this.state.Project.project.author_id){
       var btnDelete = (<button
-        className="button blue delete-project-button"
+        className="button red confirm-delete-project-button"
+        data-dismiss="modal"
         onClick={this.deleteProject}>Delete</button>);
       var btnEdit =   (<button
         className="button blue"
@@ -93,6 +110,14 @@ var ProjectDetail = React.createClass({
       var btnEditRewards = (<button
         className="button blue"
         onClick={this.editRewards}>Add Rewards</button>);
+      var btnModalDelete = (<button
+        type="button"
+        className="button blue delete-project-button"
+        onClick={this.openModal}>Delete</button>);
+      var btnDoNotDelete = (<button
+        type="button"
+        className="button blue delete-project-button"
+        onClick={this.closeModal}>Go Back</button>);
     }
     else {
       btnDelete = "";
@@ -157,7 +182,22 @@ var ProjectDetail = React.createClass({
           </img>
           <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
           <br/>
-          {btnEdit} {btnDelete} {btnEditRewards}
+          {btnEdit}{btnModalDelete}{btnEditRewards}
+
+          <Modal
+            className="reward-modal"
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+            style={customStyles} >
+
+            <h2>Delete Project</h2>
+            <div className="delete-modal-msg">Are you sure?</div>
+            <br />
+            <div className="modal-buttons">
+              {btnDoNotDelete}{btnDelete}
+            </div>
+          </Modal>
+
           <br/>
           <br/>
         </div>
@@ -197,9 +237,140 @@ var ProjectDetail = React.createClass({
         </div>
 
       </div>
+
     </div>
     );
   }
 });
 
 module.exports = ProjectDetail;
+// <div>
+//   <h2 className="project-title">{this.state.Project.project.title}</h2>
+//   <h4 className = "project-title">{"By: " + this.state.Project.project.author.username}</h4>
+//
+//   <br />
+//   <br />
+//
+//   <div className="row details-top">
+//
+//     <div id="ProjectDetailPane" className="col-md-8">
+//
+//       <img
+//         ref="indexItemImage"
+//         className="project-detail-image"
+//         src={this.state.Project.project.img_url}
+//         onError={this._imgError}
+//         >
+//       </img>
+//       <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
+//       <br/>
+//       {btnEdit}{btnModalDelete}{btnEditRewards}
+//
+//       <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+//         <div className="modal-dialog" role="document">
+//           <div className="modal-content">
+//             <div className="modal-header">
+//               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+//               <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
+//             </div>
+//
+//             <div className="modal-footer">
+//               <button type="button" className="button blue" data-dismiss="modal">No</button>
+//               {btnDelete}
+//
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+          // <Modal
+          //   isOpen={this.state.modalIsOpen}
+          //   onRequestClose={this.closeModal}
+          //   style={customStyles} >
+          //
+          //   <h2>Hello</h2>
+          //   <button onClick={this.closeModal}>close</button>
+          //   <div>I am a modal</div>
+          //   <form>
+          //     <input />
+          //     <button>tab navigation</button>
+          //     <button>stays</button>
+          //     <button>inside</button>
+          //     <button>the modal</button>
+          //   </form>
+          // </Modal>
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//       <br/>
+//       <br/>
+//     </div>
+//
+//     <div className="col-md-4">
+//
+//       <h3>{this.state.Project.project.backers}</h3>
+//       <p>backers</p>
+//       <h3>{"$" + this.state.Project.project.current_funding}</h3>
+//       <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
+//       <h3>{daysToGo}</h3>
+//       <p>days to go</p>
+//       <br />
+//
+//       <h6>This project will only be funded if at least
+//         {" $" + this.state.Project.project.funding_goal} is raised by
+//         {" " + this.state.Project.project.campaign_end_date}
+//       </h6>
+//
+//       {endOfFundingMsg}
+//
+//     </div>
+//
+//   </div>
+//
+//   <div className="row row details-bottom">
+//
+//     <div className="col-sm-8 col-md-8">
+//       <section
+//         className="details-body"
+//         dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
+//     </div>
+//
+//     <div className="col-sm-4 col-md-4">
+//       <br></br>
+//       {rewards}
+//     </div>
+//
+//   </div>
+//
+// </div>
+
+
+
+
+// <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+//   <div className="modal-dialog" role="document">
+//     <div className="modal-content">
+//       <div className="modal-header">
+//         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+//         <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
+//       </div>
+//
+//       <div className="modal-footer">
+//         <button type="button" className="button blue" data-dismiss="modal">No</button>
+//         {btnDelete}
+//
+//       </div>
+//     </div>
+//   </div>
+// </div>
