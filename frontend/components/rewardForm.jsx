@@ -56,28 +56,19 @@ var rewardForm = React.createClass({
   // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
-    // this.errors = [];
-    // if(this.state.title === "" || this.state.title === " ") {
-    //   this.errors.push("Title can not be blank");
-    // }
-    // if(this.state.blurb ==="" || this.state.title === " ") {
-    //   this.errors.push("blurb cannot be blank");
-    // }
-    // if(this.state.campaign_end_date === "" || this.state.title === " ") {
-    //   this.errors.push("date cannot be blank");
-    // }
-    // if(this.state.details === "" || this.state.title === " ") {
-    //   this.errors.push("details cannot be blank");
-    // }
-    // if(this.state.category_id ==="" || this.state.title === " ") {
-    //   this.errors.push("you must select a category!");
-    // }
-    // if(this.state.funding_goal === "" || this.state.title === " ") {
-    //   this.errors.push("You must have a funding goal");
-    // }
-    // if (this.errors.length > 0) {
-    //   return false;
-    // }
+    this.errors = [];
+    if(this.state.title ==="") {
+      this.errors.push("Title can not be blank");
+    }
+    if(this.state.description ==="") {
+      this.errors.push("blurb cannot be blank");
+    }
+    if(this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
+      this.errors.push("Invalid cost");
+    }
+    if (this.errors.length > 0) {
+      return false;
+    }
     return true;
   },
 
@@ -202,17 +193,21 @@ var rewardForm = React.createClass({
               id="reward_max_count"
               valueLink={this.linkState("reward_max_count")}
             />
+          <h6 className="quantity-explanation">
+            Want to limit how many of these rewards are available? Just enter a
+            number above!
+          </h6>
           </div>
         </div>
 
         <div className="form-group">
           <div className="col-sm-10">
-            <button className="button blue">Create Reward</button>
+            <button className="button blue" onClick={this.backToProject}>Back to Project</button>
+            <button className="button blue push-left">Create Reward</button>
           </div>
         </div>
 
       </form>
-      <button className="button blue" onClick={this.backToProject}>Back to Project</button>
     </div>
     <div className="col-sm-12 col-md-4">
       <h2 className="create-form-title">Existing Rewards</h2>
@@ -223,19 +218,5 @@ var rewardForm = React.createClass({
     );
   }
 });
-
-// <div className="form-group">
-//   <label htmlFor='img_url' className="col-sm-2 control-label">Image URL (optional):
-//   </label>
-//     <div className="col-sm-10">
-//     <input
-//       className="form-control"
-//       type="text"
-//       id="img_url"
-//       valueLink={this.linkState("img_url")}
-//     />
-//   </div>
-// </div>
-
 
 module.exports = rewardForm;

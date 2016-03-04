@@ -30,8 +30,9 @@ var projectForm = React.createClass({
     this.projectListener = ProjectStore.addListener(this._onChange);
     ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
     var editor = this.createEditor(
-      this.getEditorElement(),
-      this.getEditorConfig()
+      // TODO: removed these thursday 3:30pm
+      // this.getEditorElement(),
+      // this.getEditorConfig()
     );
     this.setState({editor: editor});
   },
@@ -58,27 +59,14 @@ var projectForm = React.createClass({
     this.setState({img_url: image.url});
   },
 
-  // TODO: REFACTOR / CLEAN THIS. add into another file
-
   validateInput: function() {
     this.errors = [];
-    if(this.state.title === "" || this.state.title === " ") {
-      this.errors.push("Title can not be blank");
-    }
-    if(this.state.blurb ==="" || this.state.title === " ") {
+
+    if(this.state.blurb ==="") {
       this.errors.push("blurb cannot be blank");
     }
-    if(this.state.campaign_end_date === "" || this.state.title === " ") {
-      this.errors.push("date cannot be blank");
-    }
-    if(this.state.details === "" || this.state.title === " ") {
+    if(this.state.details === "") {
       this.errors.push("details cannot be blank");
-    }
-    if(this.state.category_id ==="" || this.state.title === " ") {
-      this.errors.push("you must select a category!");
-    }
-    if(this.state.funding_goal === "" || this.state.title === " ") {
-      this.errors.push("You must have a funding goal");
     }
     if (this.errors.length > 0) {
       return false;
@@ -95,6 +83,7 @@ var projectForm = React.createClass({
     Object.keys(this.state).forEach(function(key){
       project[key] = this.state[key];
     }.bind(this));
+
     var valid = this.validateInput();
     if (valid) {
       ApiUtil.updateProject(project, function(id) {
@@ -106,14 +95,13 @@ var projectForm = React.createClass({
   },
 
   onTextChange: function(value) {
-    // this.setState({details: value});
     this.state.details = value;
 
   },
 
-  getEditorContents: function() {
-    this.state.Project.project.details;
-  },
+  // getEditorContents: function() {
+  //   this.state.Project.project.details;
+  // },
 
 
   render: function() {
@@ -151,8 +139,9 @@ var projectForm = React.createClass({
                 id="img_url"
                 valueLink={this.linkState("img_url")}
                 defaultValue={this.state.Project.project.img_url}
-                required
                 />
+              <br />
+              <Cloud className="image-upload" postImage={this.postImage} />
             </div>
           </div>
 
@@ -169,7 +158,6 @@ var projectForm = React.createClass({
           </div>
 
 
-          <Cloud postImage={this.postImage} />
 
           <div className="form-group">
             <div className="col-sm-10">

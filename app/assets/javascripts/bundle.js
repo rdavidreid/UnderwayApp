@@ -26842,7 +26842,7 @@
 	  },
 
 	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
 	  },
 
 	  _formatTime: function (t) {
@@ -26894,7 +26894,7 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
+	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
 	        onClick: this.showDetails,
 	        key: parseInt(this.props.project.id) },
 	      React.createElement(
@@ -31669,8 +31669,12 @@
 	  },
 
 	  deleteProject: function () {
-	    ApiUtil.destroyProject(this.state.Project);
-	    this.history.push('/');
+	    var confirm = window.confirm("Are you sure you want to delete this project?");
+
+	    if (confirm) {
+	      ApiUtil.destroyProject(this.state.Project);
+	      this.history.push('/');
+	    }
 	  },
 
 	  editProject: function () {
@@ -31911,6 +31915,7 @@
 	        alert(this.props.reward.reward_title + " is sold out!");
 	      } else {
 	        ApiUtil.createBacker(newBacker);
+	        alert(this.props.reward.reward_title + "purchased!");
 	      }
 	    }
 	  },
@@ -31951,6 +31956,8 @@
 	          )
 	        )
 	      );
+	    } else if (this.props.clickerFunc === "none") {
+	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
 	    } else {
 	      var hoverDiv = React.createElement(
 	        'div',
@@ -32048,7 +32055,10 @@
 	  },
 
 	  componentDidMount: function () {
-	    var editor = this.createEditor(this.getEditorElement(), this.getEditorConfig());
+	    var editor = this.createEditor();
+
+	    // this.getEditorElement(),
+	    // this.getEditorConfig()
 	    this.setState({ editor: editor });
 	  },
 
@@ -32277,8 +32287,7 @@
 	              className: 'form-control',
 	              type: 'text',
 	              id: 'img_url',
-	              valueLink: this.linkState("img_url"),
-	              required: true
+	              valueLink: this.linkState("img_url")
 	            }),
 	            React.createElement('br', null),
 	            React.createElement(Cloud, { postImage: this.postImage })
@@ -32617,7 +32626,11 @@
 	  componentDidMount: function () {
 	    this.projectListener = ProjectStore.addListener(this._onChange);
 	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
-	    var editor = this.createEditor(this.getEditorElement(), this.getEditorConfig());
+	    var editor = this.createEditor();
+
+	    // TODO: removed these thursday 3:30pm
+	    // this.getEditorElement(),
+	    // this.getEditorConfig()
 	    this.setState({ editor: editor });
 	  },
 
@@ -32643,27 +32656,14 @@
 	    this.setState({ img_url: image.url });
 	  },
 
-	  // TODO: REFACTOR / CLEAN THIS. add into another file
-
 	  validateInput: function () {
 	    this.errors = [];
-	    if (this.state.title === "" || this.state.title === " ") {
-	      this.errors.push("Title can not be blank");
-	    }
-	    if (this.state.blurb === "" || this.state.title === " ") {
+
+	    if (this.state.blurb === "") {
 	      this.errors.push("blurb cannot be blank");
 	    }
-	    if (this.state.campaign_end_date === "" || this.state.title === " ") {
-	      this.errors.push("date cannot be blank");
-	    }
-	    if (this.state.details === "" || this.state.title === " ") {
+	    if (this.state.details === "") {
 	      this.errors.push("details cannot be blank");
-	    }
-	    if (this.state.category_id === "" || this.state.title === " ") {
-	      this.errors.push("you must select a category!");
-	    }
-	    if (this.state.funding_goal === "" || this.state.title === " ") {
-	      this.errors.push("You must have a funding goal");
 	    }
 	    if (this.errors.length > 0) {
 	      return false;
@@ -32680,6 +32680,7 @@
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state[key];
 	    }.bind(this));
+
 	    var valid = this.validateInput();
 	    if (valid) {
 	      ApiUtil.updateProject(project, function (id) {
@@ -32691,13 +32692,12 @@
 	  },
 
 	  onTextChange: function (value) {
-	    // this.setState({details: value});
 	    this.state.details = value;
 	  },
 
-	  getEditorContents: function () {
-	    this.state.Project.project.details;
-	  },
+	  // getEditorContents: function() {
+	  //   this.state.Project.project.details;
+	  // },
 
 	  render: function () {
 	    if (this.state.Project == undefined) {
@@ -32757,9 +32757,10 @@
 	              type: 'text',
 	              id: 'img_url',
 	              valueLink: this.linkState("img_url"),
-	              defaultValue: this.state.Project.project.img_url,
-	              required: true
-	            })
+	              defaultValue: this.state.Project.project.img_url
+	            }),
+	            React.createElement('br', null),
+	            React.createElement(Cloud, { className: 'image-upload', postImage: this.postImage })
 	          )
 	        ),
 	        React.createElement(
@@ -32776,7 +32777,6 @@
 	            })
 	          )
 	        ),
-	        React.createElement(Cloud, { postImage: this.postImage }),
 	        React.createElement(
 	          'div',
 	          { className: 'form-group' },
@@ -33075,28 +33075,19 @@
 	  // TODO: REFACTOR / CLEAN THIS. add into another file
 
 	  validateInput: function () {
-	    // this.errors = [];
-	    // if(this.state.title === "" || this.state.title === " ") {
-	    //   this.errors.push("Title can not be blank");
-	    // }
-	    // if(this.state.blurb ==="" || this.state.title === " ") {
-	    //   this.errors.push("blurb cannot be blank");
-	    // }
-	    // if(this.state.campaign_end_date === "" || this.state.title === " ") {
-	    //   this.errors.push("date cannot be blank");
-	    // }
-	    // if(this.state.details === "" || this.state.title === " ") {
-	    //   this.errors.push("details cannot be blank");
-	    // }
-	    // if(this.state.category_id ==="" || this.state.title === " ") {
-	    //   this.errors.push("you must select a category!");
-	    // }
-	    // if(this.state.funding_goal === "" || this.state.title === " ") {
-	    //   this.errors.push("You must have a funding goal");
-	    // }
-	    // if (this.errors.length > 0) {
-	    //   return false;
-	    // }
+	    this.errors = [];
+	    if (this.state.title === "") {
+	      this.errors.push("Title can not be blank");
+	    }
+	    if (this.state.description === "") {
+	      this.errors.push("blurb cannot be blank");
+	    }
+	    if (this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
+	      this.errors.push("Invalid cost");
+	    }
+	    if (this.errors.length > 0) {
+	      return false;
+	    }
 	    return true;
 	  },
 
@@ -33267,7 +33258,12 @@
 	                type: 'text',
 	                id: 'reward_max_count',
 	                valueLink: this.linkState("reward_max_count")
-	              })
+	              }),
+	              React.createElement(
+	                'h6',
+	                { className: 'quantity-explanation' },
+	                'Want to limit how many of these rewards are available? Just enter a number above!'
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -33278,16 +33274,16 @@
 	              { className: 'col-sm-10' },
 	              React.createElement(
 	                'button',
-	                { className: 'button blue' },
+	                { className: 'button blue', onClick: this.backToProject },
+	                'Back to Project'
+	              ),
+	              React.createElement(
+	                'button',
+	                { className: 'button blue push-left' },
 	                'Create Reward'
 	              )
 	            )
 	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'button blue', onClick: this.backToProject },
-	          'Back to Project'
 	        )
 	      ),
 	      React.createElement(
@@ -33303,19 +33299,6 @@
 	    );
 	  }
 	});
-
-	// <div className="form-group">
-	//   <label htmlFor='img_url' className="col-sm-2 control-label">Image URL (optional):
-	//   </label>
-	//     <div className="col-sm-10">
-	//     <input
-	//       className="form-control"
-	//       type="text"
-	//       id="img_url"
-	//       valueLink={this.linkState("img_url")}
-	//     />
-	//   </div>
-	// </div>
 
 	module.exports = rewardForm;
 
@@ -33337,6 +33320,7 @@
 	        alert(this.props.reward.reward_title + " is sold out!");
 	      } else {
 	        ApiUtil.createBacker(newBacker);
+	        alert(this.props.reward.reward_title + "purchased!");
 	      }
 	    }
 	  },
@@ -33377,6 +33361,8 @@
 	          )
 	        )
 	      );
+	    } else if (this.props.clickerFunc === "none") {
+	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
 	    } else {
 	      var hoverDiv = React.createElement(
 	        'div',
@@ -45360,7 +45346,7 @@
 	  },
 
 	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
 	  },
 
 	  _formatTime: function (t) {
@@ -45412,7 +45398,7 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-4',
+	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
 	        onClick: this.showDetails,
 	        key: parseInt(this.props.project.id) },
 	      React.createElement(

@@ -9,7 +9,7 @@ var ProjectIndexItem = React.createClass({
   },
 
   _imgError: function(){
-    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456796305/fsx6ruo0qqkl97f4lzrm.png";
+    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
   },
 
   _formatTime: function(t){
@@ -59,7 +59,7 @@ var ProjectIndexItem = React.createClass({
 
     return(
 
-      <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-4"
+      <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-3"
         onClick={this.showDetails}
         key={parseInt(this.props.project.id)} >
 

@@ -27,8 +27,8 @@ var projectForm = React.createClass({
 
   componentDidMount: function() {
   var editor = this.createEditor(
-    this.getEditorElement(),
-    this.getEditorConfig()
+    // this.getEditorElement(),
+    // this.getEditorConfig()
     );
     this.setState({ editor:editor });
   },
@@ -192,7 +192,6 @@ var projectForm = React.createClass({
               type="text"
               id="img_url"
               valueLink={this.linkState("img_url")}
-              required
             />
           <br />
           <Cloud postImage={this.postImage} />

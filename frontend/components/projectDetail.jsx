@@ -38,8 +38,14 @@ var ProjectDetail = React.createClass({
   },
 
   deleteProject: function() {
-    ApiUtil.destroyProject(this.state.Project);
-    this.history.push('/');
+    var confirm = window.confirm(
+      "Are you sure you want to delete this project?"
+    );
+    
+    if(confirm) {
+      ApiUtil.destroyProject(this.state.Project);
+      this.history.push('/');
+    }
   },
 
   editProject: function() {

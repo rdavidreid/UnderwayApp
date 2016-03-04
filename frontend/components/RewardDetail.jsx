@@ -16,6 +16,7 @@ var RewardDetail = React.createClass({
         alert(this.props.reward.reward_title + " is sold out!");
       } else {
         ApiUtil.createBacker(newBacker);
+        alert(this.props.reward.reward_title + "purchased!");
       }
     }
   },
@@ -48,6 +49,12 @@ var RewardDetail = React.createClass({
           <br />
             <div className="reward-select"><h4>Funding period over</h4></div>
         </div>
+      );
+    }
+    else if(this.props.clickerFunc === "none") {
+      var hoverDiv = (
+      <div className="no-mask">
+      </div>
       );
     }
     else {
