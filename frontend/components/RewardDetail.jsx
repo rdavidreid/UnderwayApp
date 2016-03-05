@@ -14,9 +14,22 @@ var RewardDetail = React.createClass({
     else {
       var newBacker = {reward_id: this.props.reward.reward_id};
       if (this.props.reward.reward_max_count &&
-        this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
-        alert(this.props.reward.reward_title + " is sold out!");
+        this.props.reward.reward_number_sold >= this.props.reward.reward_max_count) {
+
+          var background = this.state.customStyles;
+          this.state.modalTitle = "Sold Out!";
+          this.state.modalMsg = "Please select a different reward";
+          background.content.backgroundColor = "#ffff00";
+          this.setState({customStyles: background});
+          this.openModal();
+
       } else {
+
+        var background = this.state.customStyles;
+        this.state.modalTitle = "Purchase Success!";
+        this.state.modalMsg = "Thankyou for your support";
+        background.content.backgroundColor = "#33cc33";
+        this.setState({customStyles: background});
         ApiUtil.createBacker(newBacker);
         this.openModal();
       }
@@ -24,8 +37,28 @@ var RewardDetail = React.createClass({
   },
 
   getInitialState: function() {
-    return({modalIsOpen: false});
-
+    return({modalIsOpen: false,
+            customStyles: {
+              content : {
+                top                   : '50%',
+                left                  : '50%',
+                right                 : 'auto',
+                bottom                : 'auto',
+                marginRight           : '-50%',
+                transform             : 'translate(-50%, -50%)',
+                borderRadius          : '10px',
+                border                : '1px solid black'
+              },
+              overlay : {
+               position          : 'fixed',
+               top               : 0,
+               left              : 0,
+               right             : 0,
+               bottom            : 0,
+               backgroundColor   : 'rgba(0, 0, 0, 0.5)'
+             }
+          }
+    });
   },
 
   openModal: function() {
@@ -36,22 +69,8 @@ var RewardDetail = React.createClass({
     this.setState({modalIsOpen: false});
   },
 
-
   render: function() {
     Modal.setAppElement(document.body);
-    var customStyles = {
-      content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-        borderRadius          : '10px',
-        backgroundColor       : "#33cc33",
-      }
-    };
-
 
     var reward = this.props.reward;
 
@@ -95,6 +114,8 @@ var RewardDetail = React.createClass({
           </div>
         );
     }
+    var modalTitle = "";
+    var modalMsg = "";
 
     return(
 
@@ -115,12 +136,10 @@ var RewardDetail = React.createClass({
           className="reward-modal"
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
-          style={customStyles} >
-
-          <h2>Purchase Success</h2>
-          <div className="reward-modal-msg">Thankyou for your support!</div>
+          style={this.state.customStyles} >
+          <h2 className="reward-modal-title">{this.state.modalTitle}</h2>
+          <div className="reward-modal-msg">{this.state.modalMsg}</div>
         </Modal>
-
 
       </div>
 

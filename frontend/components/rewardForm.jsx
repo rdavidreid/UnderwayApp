@@ -5,7 +5,7 @@ var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 var RewardDetail = require('./rewardDetail');
 var DateTime = require('react-datetime');
-
+var Modal = require('react-modal');
 
 var rewardForm = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -19,14 +19,42 @@ var rewardForm = React.createClass({
     reward_max_count: ""
   },
 
-  getStateFromStore: function() {
-    return({Project: ProjectStore.findById(
-      parseInt(this.props.params.id)
-    )});
+  getNewState: function() {
+    return({
+      title: "",
+      description: "",
+      cost: "",
+      project_id: "",
+      delivery_date: "",
+      reward_max_count: "",
+      modalIsOpen: false,
+      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+      customStyles: {
+        content : {
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)',
+          borderRadius          : '10px',
+          border                : '1px solid black',
+          backgroundColor       : "#ffff00"
+        },
+        overlay : {
+          position               : 'fixed',
+          top                    : 0,
+          left                   : 0,
+          right                  : 0,
+          bottom                 : 0,
+          backgroundColor        : 'rgba(0, 0, 0, 0.5)'
+        }
+      },
+    });
   },
 
   _onChange: function() {
-    this.setState(this.getStateFromStore());
+    this.setState(this.getNewState());
   },
 
   onDateChange: function(value) {
@@ -34,9 +62,7 @@ var rewardForm = React.createClass({
   },
 
   getInitialState: function() {
-    this.state = {};
-    this.state.inputs = this.inputs;
-    return this.getStateFromStore();
+    return this.getNewState();
   },
 
   componentWillReceiveProps: function(newProps) {
@@ -52,6 +78,14 @@ var rewardForm = React.createClass({
     this.projectListener.remove();
   },
 
+  openModal: function() {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function() {
+    this.setState({modalIsOpen: false});
+  },
+
   // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
@@ -60,10 +94,29 @@ var rewardForm = React.createClass({
       this.errors.push("Title can not be blank");
     }
     if(this.state.description ==="") {
-      this.errors.push("blurb cannot be blank");
+      this.errors.push("description cannot be blank");
     }
     if(this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
-      this.errors.push("Invalid cost");
+      this.errors.push("invalid cost");
+    }
+    if(this.state.cost <= 0) {
+      this.errors.push("Cost must be above 0");
+    }
+    if(typeof parseInt(this.state.cost) !=='number' ||
+              (parseInt(this.state.cost) % 1) !== 0){
+      this.errors.push("Cost must be a number");
+    }
+    if(this.state.reward_max_count != "") {
+      if(typeof parseInt(this.state.reward_max_count) !=='number' ||
+      (parseInt(this.state.reward_max_count) % 1) !== 0){
+        this.errors.push("Quantity must be a number");
+      }
+      if(this.state.reward_max_count <= 0) {
+        this.errors.push("Quantity cannot be negative");
+      }
+    }
+    if(this.state.delivery_date === undefined) {
+      this.errors.push("Must sellect delivery date");
     }
     if (this.errors.length > 0) {
       return false;
@@ -75,28 +128,31 @@ var rewardForm = React.createClass({
 
     event.preventDefault();
     this.state.project_id = this.props.params.id;
-    var project = {};
+    var reward = {};
 
     //TODO EDIT THIS
 
-    Object.keys(this.state).forEach(function(key){
-      project[key] = this.state.key;
+    Object.keys(this.inputs).forEach(function(key){
+      reward[key] = this.state[key];
     }.bind(this));
 
     var valid = this.validateInput();
     if (valid) {
-      ApiUtil.createReward(this.state, function(id) {});
+      ApiUtil.createReward(reward, function(id) {});
       this.setState({
         title: "",
         description: "",
         cost: "",
         project_id: "",
-        delivery_date: "",
+        // delivery_date: "",
         img_url: "",
         reward_max_count: "",
       });
     } else{
-      alert(this.errors.join("\n"));
+      this.errorList = this.errors.map(function(el) {
+        return (<li>{el}</li>);
+      });
+      this.openModal();
     }
   },
 
@@ -105,6 +161,7 @@ var rewardForm = React.createClass({
   },
 
   render: function() {
+    Modal.setAppElement(document.body);
     var msg = "";
     var rewards = "";
 
@@ -212,6 +269,14 @@ var rewardForm = React.createClass({
       <h2 className="create-form-title">Existing Rewards</h2>
       {rewards}
     </div>
+    <Modal
+      className="reward-modal"
+      isOpen={this.state.modalIsOpen}
+      onRequestClose={this.closeModal}
+      style={this.state.customStyles} >
+      <h2 className="reward-modal-title">Errors:</h2>
+      <div className="reward-modal-msg">{this.errorList}</div>
+    </Modal>
     </div>
 
     );

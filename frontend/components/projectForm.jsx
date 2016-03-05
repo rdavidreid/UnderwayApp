@@ -6,6 +6,8 @@ var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ProjectStore = require('../stores/ProjectStore');
 var ReactQuill = require('react-quill');
 var DateTime = require('react-datetime');
+var Modal = require('react-modal');
+
 
 
 var projectForm = React.createClass({
@@ -22,7 +24,37 @@ var projectForm = React.createClass({
   },
 
   getInitialState: function() {
-    return(this.inputs);
+    return({
+      title: "",
+      blurb: "",
+      campaign_end_date: "",
+      details: "",
+      category_id: "",
+      funding_goal: "",
+      img_url: "",
+      modalIsOpen: false,
+      customStyles: {
+        content : {
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)',
+          borderRadius          : '10px',
+          border                : '1px solid black',
+          backgroundColor       : "#ffff00"
+        },
+        overlay : {
+          position               : 'fixed',
+          top                    : 0,
+          left                   : 0,
+          right                  : 0,
+          bottom                 : 0,
+          backgroundColor        : 'rgba(0, 0, 0, 0.5)'
+        }
+      },
+    });
   },
 
   componentDidMount: function() {
@@ -48,6 +80,14 @@ var projectForm = React.createClass({
     this.state.campaign_end_date = new Date(value.valueOf());
   },
 
+  openModal: function() {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function() {
+    this.setState({modalIsOpen: false});
+  },
+
   getEditorContents: function() {
     this.state.Project.project.details;
   },
@@ -56,23 +96,30 @@ var projectForm = React.createClass({
 
   validateInput: function() {
     this.errors = [];
-    if(this.state.title === "" || this.state.title === " ") {
+    if(this.state.title === "") {
       this.errors.push("Title can not be blank");
     }
-    if(this.state.blurb ==="" || this.state.title === " ") {
+    if(this.state.blurb ==="") {
       this.errors.push("blurb cannot be blank");
     }
-    if(this.state.campaign_end_date === "" || this.state.title === " ") {
+    if(this.state.campaign_end_date === "") {
       this.errors.push("date cannot be blank");
     }
-    if(this.state.details === "" || this.state.title === " ") {
+    if(this.state.details === "") {
       this.errors.push("details cannot be blank");
     }
-    if(this.state.category_id ==="" || this.state.title === " ") {
-      this.errors.push("you must select a category!");
+    if(this.state.category_id ==="") {
+      this.errors.push("you must select a category");
     }
-    if(this.state.funding_goal === "" || this.state.title === " ") {
+    if(this.state.funding_goal === "") {
       this.errors.push("You must have a funding goal");
+    }
+    if(typeof parseInt(this.state.funding_goal) !=='number' ||
+              (parseInt(this.state.funding_goal) % 1) !== 0){
+      this.errors.push("Funding goal must be a number");
+    }
+    if(parseInt(this.state.funding_goal) <= 0) {
+      this.errors.push("Funding goal must be positive");
     }
     if (this.errors.length > 0) {
       return false;
@@ -86,17 +133,19 @@ var projectForm = React.createClass({
 
     //TODO EDIT THIS
 
-    Object.keys(this.state).forEach(function(key){
-      project[key] = this.state.key;
+    Object.keys(this.inputs).forEach(function(key){
+      project[key] = this.state[key];
     }.bind(this));
-
     var valid = this.validateInput();
     if (valid) {
-      ApiUtil.createProject(this.state, function(id) {
+      ApiUtil.createProject(project, function(id) {
         this.history.pushState(null, "/editreward/" + id, {new: true});
       }.bind(this));
     } else{
-      alert(this.errors.join("\n"));
+      this.errorList = this.errors.map(function(el) {
+        return (<li>{el}</li>);
+      });
+      this.openModal();
     }
   },
 
@@ -110,6 +159,7 @@ var projectForm = React.createClass({
   },
 
   render: function() {
+    Modal.setAppElement(document.body);
 
     return(
       <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
@@ -180,13 +230,16 @@ var projectForm = React.createClass({
           <label htmlFor='funding_goal' className="col-sm-2 control-label" >Funding Goal:
           </label>
           <div className="col-sm-10">
-            <input
-              className="form-control"
-              type="text"
-              id="funding_goal"
-              valueLink={this.linkState("funding_goal")}
-              required
-            />
+            <div className="left-inner-addon">
+              <span>$</span>
+              <input
+                className="form-control"
+                type="text"
+                id="funding_goal"
+                valueLink={this.linkState("funding_goal")}
+                required
+              />
+            </div>
           </div>
         </div>
 
@@ -205,8 +258,9 @@ var projectForm = React.createClass({
           </div>
         </div>
 
-
         <div className="form-group">
+          <div className="col-sm-12"><h3 className="details-title">Details</h3></div>
+          <div clssName="col-sm-12"><h5 className="details-title">Describe your project in detail! More details = more funding</h5></div>
           <div className="col-sm-12">
             <ReactQuill
               className="quill-component"
@@ -224,6 +278,15 @@ var projectForm = React.createClass({
         </div>
 
       </form>
+
+      <Modal
+        className="reward-modal"
+        isOpen={this.state.modalIsOpen}
+        onRequestClose={this.closeModal}
+        style={this.state.customStyles} >
+        <h2 className="reward-modal-title">Errors:</h2>
+        <div className="reward-modal-msg">{this.errorList}</div>
+      </Modal>
     </div>
 
     );

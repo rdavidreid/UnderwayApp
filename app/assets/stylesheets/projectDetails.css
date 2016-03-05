@@ -30,5 +30,25 @@
 }
 
 .confirm-delete-project-button{
-  margin-left: 30px;
+  margin-left: 35px;
+}
+
+.details-title{
+  text-align: center;
+}
+
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 22px;
+}
+.left-inner-addon span {
+    position: absolute;
+    padding: 7px 12px;
+    pointer-events: none;
+}
+
+.delete-modal-msg{
+  text-align: center;
 }

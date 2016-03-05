@@ -31728,6 +31728,14 @@
 	        marginRight: '-50%',
 	        transform: 'translate(-50%, -50%)',
 	        borderRadius: '10px'
+	      },
+	      overlay: {
+	        position: 'fixed',
+	        top: 0,
+	        left: 0,
+	        right: 0,
+	        bottom: 0,
+	        backgroundColor: 'rgba(0, 0, 0, 0.5)'
 	      }
 	    };
 
@@ -31881,12 +31889,7 @@
 	            React.createElement(
 	              'h2',
 	              null,
-	              'Delete Project'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'delete-modal-msg' },
-	              'Are you sure?'
+	              'Delete Project?'
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
@@ -32109,9 +32112,21 @@
 	  _clickerFunc: function () {
 	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
-	        alert(this.props.reward.reward_title + " is sold out!");
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold >= this.props.reward.reward_max_count) {
+
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Sold Out!";
+	        this.state.modalMsg = "Please select a different reward";
+	        background.content.backgroundColor = "#ffff00";
+	        this.setState({ customStyles: background });
+	        this.openModal();
 	      } else {
+
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Purchase Success!";
+	        this.state.modalMsg = "Thankyou for your support";
+	        background.content.backgroundColor = "#33cc33";
+	        this.setState({ customStyles: background });
 	        ApiUtil.createBacker(newBacker);
 	        this.openModal();
 	      }
@@ -32119,7 +32134,28 @@
 	  },
 
 	  getInitialState: function () {
-	    return { modalIsOpen: false };
+	    return { modalIsOpen: false,
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black'
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
 	  },
 
 	  openModal: function () {
@@ -32132,18 +32168,6 @@
 
 	  render: function () {
 	    Modal.setAppElement(document.body);
-	    var customStyles = {
-	      content: {
-	        top: '50%',
-	        left: '50%',
-	        right: 'auto',
-	        bottom: 'auto',
-	        marginRight: '-50%',
-	        transform: 'translate(-50%, -50%)',
-	        borderRadius: '10px',
-	        backgroundColor: "#33cc33"
-	      }
-	    };
 
 	    var reward = this.props.reward;
 
@@ -32198,6 +32222,8 @@
 	        )
 	      );
 	    }
+	    var modalTitle = "";
+	    var modalMsg = "";
 
 	    return React.createElement(
 	      'div',
@@ -32244,16 +32270,16 @@
 	          className: 'reward-modal',
 	          isOpen: this.state.modalIsOpen,
 	          onRequestClose: this.closeModal,
-	          style: customStyles },
+	          style: this.state.customStyles },
 	        React.createElement(
 	          'h2',
-	          null,
-	          'Purchase Success'
+	          { className: 'reward-modal-title' },
+	          this.state.modalTitle
 	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'reward-modal-msg' },
-	          'Thankyou for your support!'
+	          this.state.modalMsg
 	        )
 	      )
 	    );
@@ -32276,6 +32302,7 @@
 	var ProjectStore = __webpack_require__(159);
 	var ReactQuill = __webpack_require__(260);
 	var DateTime = __webpack_require__(268);
+	var Modal = __webpack_require__(374);
 
 	var projectForm = React.createClass({
 	  displayName: 'projectForm',
@@ -32293,7 +32320,37 @@
 	  },
 
 	  getInitialState: function () {
-	    return this.inputs;
+	    return {
+	      title: "",
+	      blurb: "",
+	      campaign_end_date: "",
+	      details: "",
+	      category_id: "",
+	      funding_goal: "",
+	      img_url: "",
+	      modalIsOpen: false,
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black',
+	          backgroundColor: "#ffff00"
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
 	  },
 
 	  componentDidMount: function () {
@@ -32319,6 +32376,14 @@
 	    this.state.campaign_end_date = new Date(value.valueOf());
 	  },
 
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+
 	  getEditorContents: function () {
 	    this.state.Project.project.details;
 	  },
@@ -32327,23 +32392,29 @@
 
 	  validateInput: function () {
 	    this.errors = [];
-	    if (this.state.title === "" || this.state.title === " ") {
+	    if (this.state.title === "") {
 	      this.errors.push("Title can not be blank");
 	    }
-	    if (this.state.blurb === "" || this.state.title === " ") {
+	    if (this.state.blurb === "") {
 	      this.errors.push("blurb cannot be blank");
 	    }
-	    if (this.state.campaign_end_date === "" || this.state.title === " ") {
+	    if (this.state.campaign_end_date === "") {
 	      this.errors.push("date cannot be blank");
 	    }
-	    if (this.state.details === "" || this.state.title === " ") {
+	    if (this.state.details === "") {
 	      this.errors.push("details cannot be blank");
 	    }
-	    if (this.state.category_id === "" || this.state.title === " ") {
-	      this.errors.push("you must select a category!");
+	    if (this.state.category_id === "") {
+	      this.errors.push("you must select a category");
 	    }
-	    if (this.state.funding_goal === "" || this.state.title === " ") {
+	    if (this.state.funding_goal === "") {
 	      this.errors.push("You must have a funding goal");
+	    }
+	    if (typeof parseInt(this.state.funding_goal) !== 'number' || parseInt(this.state.funding_goal) % 1 !== 0) {
+	      this.errors.push("Funding goal must be a number");
+	    }
+	    if (parseInt(this.state.funding_goal) <= 0) {
+	      this.errors.push("Funding goal must be positive");
 	    }
 	    if (this.errors.length > 0) {
 	      return false;
@@ -32357,17 +32428,23 @@
 
 	    //TODO EDIT THIS
 
-	    Object.keys(this.state).forEach(function (key) {
-	      project[key] = this.state.key;
+	    Object.keys(this.inputs).forEach(function (key) {
+	      project[key] = this.state[key];
 	    }.bind(this));
-
 	    var valid = this.validateInput();
 	    if (valid) {
-	      ApiUtil.createProject(this.state, function (id) {
+	      ApiUtil.createProject(project, function (id) {
 	        this.history.pushState(null, "/editreward/" + id, { new: true });
 	      }.bind(this));
 	    } else {
-	      alert(this.errors.join("\n"));
+	      this.errorList = this.errors.map(function (el) {
+	        return React.createElement(
+	          'li',
+	          null,
+	          el
+	        );
+	      });
+	      this.openModal();
 	    }
 	  },
 
@@ -32381,6 +32458,7 @@
 	  },
 
 	  render: function () {
+	    Modal.setAppElement(document.body);
 
 	    return React.createElement(
 	      'div',
@@ -32539,13 +32617,22 @@
 	          React.createElement(
 	            'div',
 	            { className: 'col-sm-10' },
-	            React.createElement('input', {
-	              className: 'form-control',
-	              type: 'text',
-	              id: 'funding_goal',
-	              valueLink: this.linkState("funding_goal"),
-	              required: true
-	            })
+	            React.createElement(
+	              'div',
+	              { className: 'left-inner-addon' },
+	              React.createElement(
+	                'span',
+	                null,
+	                '$'
+	              ),
+	              React.createElement('input', {
+	                className: 'form-control',
+	                type: 'text',
+	                id: 'funding_goal',
+	                valueLink: this.linkState("funding_goal"),
+	                required: true
+	              })
+	            )
 	          )
 	        ),
 	        React.createElement(
@@ -32575,6 +32662,24 @@
 	          React.createElement(
 	            'div',
 	            { className: 'col-sm-12' },
+	            React.createElement(
+	              'h3',
+	              { className: 'details-title' },
+	              'Details'
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { clssName: 'col-sm-12' },
+	            React.createElement(
+	              'h5',
+	              { className: 'details-title' },
+	              'Describe your project in detail! More details = more funding'
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
 	            React.createElement(ReactQuill, {
 	              className: 'quill-component',
 	              theme: 'snow',
@@ -32594,6 +32699,24 @@
 	              'Create Project'
 	            )
 	          )
+	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'reward-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: this.state.customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'reward-modal-title' },
+	          'Errors:'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-modal-msg' },
+	          this.errorList
 	        )
 	      )
 	    );
@@ -33314,6 +33437,7 @@
 	var ProjectStore = __webpack_require__(159);
 	var RewardDetail = __webpack_require__(249);
 	var DateTime = __webpack_require__(268);
+	var Modal = __webpack_require__(374);
 
 	var rewardForm = React.createClass({
 	  displayName: 'rewardForm',
@@ -33329,12 +33453,42 @@
 	    reward_max_count: ""
 	  },
 
-	  getStateFromStore: function () {
-	    return { Project: ProjectStore.findById(parseInt(this.props.params.id)) };
+	  getNewState: function () {
+	    return {
+	      title: "",
+	      description: "",
+	      cost: "",
+	      project_id: "",
+	      delivery_date: "",
+	      reward_max_count: "",
+	      modalIsOpen: false,
+	      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black',
+	          backgroundColor: "#ffff00"
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
 	  },
 
 	  _onChange: function () {
-	    this.setState(this.getStateFromStore());
+	    this.setState(this.getNewState());
 	  },
 
 	  onDateChange: function (value) {
@@ -33342,9 +33496,7 @@
 	  },
 
 	  getInitialState: function () {
-	    this.state = {};
-	    this.state.inputs = this.inputs;
-	    return this.getStateFromStore();
+	    return this.getNewState();
 	  },
 
 	  componentWillReceiveProps: function (newProps) {
@@ -33360,6 +33512,14 @@
 	    this.projectListener.remove();
 	  },
 
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+
 	  // TODO: REFACTOR / CLEAN THIS. add into another file
 
 	  validateInput: function () {
@@ -33368,10 +33528,27 @@
 	      this.errors.push("Title can not be blank");
 	    }
 	    if (this.state.description === "") {
-	      this.errors.push("blurb cannot be blank");
+	      this.errors.push("description cannot be blank");
 	    }
 	    if (this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
-	      this.errors.push("Invalid cost");
+	      this.errors.push("invalid cost");
+	    }
+	    if (this.state.cost <= 0) {
+	      this.errors.push("Cost must be above 0");
+	    }
+	    if (typeof parseInt(this.state.cost) !== 'number' || parseInt(this.state.cost) % 1 !== 0) {
+	      this.errors.push("Cost must be a number");
+	    }
+	    if (this.state.reward_max_count != "") {
+	      if (typeof parseInt(this.state.reward_max_count) !== 'number' || parseInt(this.state.reward_max_count) % 1 !== 0) {
+	        this.errors.push("Quantity must be a number");
+	      }
+	      if (this.state.reward_max_count <= 0) {
+	        this.errors.push("Quantity cannot be negative");
+	      }
+	    }
+	    if (this.state.delivery_date === undefined) {
+	      this.errors.push("Must sellect delivery date");
 	    }
 	    if (this.errors.length > 0) {
 	      return false;
@@ -33383,28 +33560,35 @@
 
 	    event.preventDefault();
 	    this.state.project_id = this.props.params.id;
-	    var project = {};
+	    var reward = {};
 
 	    //TODO EDIT THIS
 
-	    Object.keys(this.state).forEach(function (key) {
-	      project[key] = this.state.key;
+	    Object.keys(this.inputs).forEach(function (key) {
+	      reward[key] = this.state[key];
 	    }.bind(this));
 
 	    var valid = this.validateInput();
 	    if (valid) {
-	      ApiUtil.createReward(this.state, function (id) {});
+	      ApiUtil.createReward(reward, function (id) {});
 	      this.setState({
 	        title: "",
 	        description: "",
 	        cost: "",
 	        project_id: "",
-	        delivery_date: "",
+	        // delivery_date: "",
 	        img_url: "",
 	        reward_max_count: ""
 	      });
 	    } else {
-	      alert(this.errors.join("\n"));
+	      this.errorList = this.errors.map(function (el) {
+	        return React.createElement(
+	          'li',
+	          null,
+	          el
+	        );
+	      });
+	      this.openModal();
 	    }
 	  },
 
@@ -33413,6 +33597,7 @@
 	  },
 
 	  render: function () {
+	    Modal.setAppElement(document.body);
 	    var msg = "";
 	    var rewards = "";
 
@@ -33583,6 +33768,24 @@
 	          'Existing Rewards'
 	        ),
 	        rewards
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'reward-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: this.state.customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'reward-modal-title' },
+	          'Errors:'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-modal-msg' },
+	          this.errorList
+	        )
 	      )
 	    );
 	  }
@@ -33605,9 +33808,21 @@
 	  _clickerFunc: function () {
 	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
 	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold > this.props.reward.reward_max_count) {
-	        alert(this.props.reward.reward_title + " is sold out!");
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold >= this.props.reward.reward_max_count) {
+
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Sold Out!";
+	        this.state.modalMsg = "Please select a different reward";
+	        background.content.backgroundColor = "#ffff00";
+	        this.setState({ customStyles: background });
+	        this.openModal();
 	      } else {
+
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Purchase Success!";
+	        this.state.modalMsg = "Thankyou for your support";
+	        background.content.backgroundColor = "#33cc33";
+	        this.setState({ customStyles: background });
 	        ApiUtil.createBacker(newBacker);
 	        this.openModal();
 	      }
@@ -33615,7 +33830,28 @@
 	  },
 
 	  getInitialState: function () {
-	    return { modalIsOpen: false };
+	    return { modalIsOpen: false,
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black'
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
 	  },
 
 	  openModal: function () {
@@ -33628,18 +33864,6 @@
 
 	  render: function () {
 	    Modal.setAppElement(document.body);
-	    var customStyles = {
-	      content: {
-	        top: '50%',
-	        left: '50%',
-	        right: 'auto',
-	        bottom: 'auto',
-	        marginRight: '-50%',
-	        transform: 'translate(-50%, -50%)',
-	        borderRadius: '10px',
-	        backgroundColor: "#33cc33"
-	      }
-	    };
 
 	    var reward = this.props.reward;
 
@@ -33694,6 +33918,8 @@
 	        )
 	      );
 	    }
+	    var modalTitle = "";
+	    var modalMsg = "";
 
 	    return React.createElement(
 	      'div',
@@ -33740,16 +33966,16 @@
 	          className: 'reward-modal',
 	          isOpen: this.state.modalIsOpen,
 	          onRequestClose: this.closeModal,
-	          style: customStyles },
+	          style: this.state.customStyles },
 	        React.createElement(
 	          'h2',
-	          null,
-	          'Purchase Success'
+	          { className: 'reward-modal-title' },
+	          this.state.modalTitle
 	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'reward-modal-msg' },
-	          'Thankyou for your support!'
+	          this.state.modalMsg
 	        )
 	      )
 	    );

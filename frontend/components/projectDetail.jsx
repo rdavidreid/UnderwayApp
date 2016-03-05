@@ -90,6 +90,14 @@ var ProjectDetail = React.createClass({
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
         borderRadius          : '10px'
+      },
+        overlay : {
+        position          : 'fixed',
+        top               : 0,
+        left              : 0,
+        right             : 0,
+        bottom            : 0,
+        backgroundColor   : 'rgba(0, 0, 0, 0.5)'
       }
     };
 
@@ -190,8 +198,7 @@ var ProjectDetail = React.createClass({
             onRequestClose={this.closeModal}
             style={customStyles} >
 
-            <h2>Delete Project</h2>
-            <div className="delete-modal-msg">Are you sure?</div>
+            <h2>Delete Project?</h2>
             <br />
             <div className="modal-buttons">
               {btnDoNotDelete}{btnDelete}

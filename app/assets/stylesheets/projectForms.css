@@ -4,3 +4,6 @@
   border-color: grey;
   min-height: 50px;
 }
+.ql-editor{
+  min-height: 300px !important;
+}
