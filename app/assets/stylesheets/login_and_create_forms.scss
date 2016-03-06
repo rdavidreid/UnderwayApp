@@ -1,17 +1,3 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-.userDetailTitle{
-  text-align: center;
-}
-
-// #login-background {
-//   background-image: url("/assets/sunrise-sailboats-color.jpg") !important;
-//   width: 100%;
-//   height: 100%;
-// }
-
 #logo{
   display: block;
   margin: auto;
@@ -19,7 +5,7 @@
   max-width: 400px;
 }
 
-#account_form{
+#account-form{
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
   background: white;
   opacity: .8;
@@ -27,7 +13,7 @@
   transition: all 0.3s ease 0s;
 }
 
-#account_form:hover{
+#account-form:hover{
   -webkit-box-shadow: 0 0 7px #4dc3ff;
           box-shadow: 0 0 7px #4dc3ff;
           opacity: .9;

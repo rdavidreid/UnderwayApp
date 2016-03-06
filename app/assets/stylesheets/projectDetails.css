@@ -1,19 +1,49 @@
+.details-top {
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border: 1px solid grey;
+  background: white;
+  opacity: .9;
+  transition: all 0.3s ease 0s;
+}
+
+.details-top:hover {
+  -webkit-box-shadow: 0 0 7px #4dc3ff;
+          box-shadow: 0 0 7px #4dc3ff;
+          opacity: 1;
+}
+
+.details-bottom {
+  margin-top: 20px;
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border: 1px solid grey;
+  background: white;
+  opacity: .9;
+  transition: all 0.3s ease 0s;
+}
+
+.details-bottom:hover {
+  -webkit-box-shadow: 0 0 7px #4dc3ff;
+          box-shadow: 0 0 7px #4dc3ff;
+          opacity: 1;
+}
+
 .project-detail-image{
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
 }
 
 .project-title{
   text-align: center;
   word-wrap: break-word;
-
 }
 
 .blurb{
   margin-top: 10px;
   word-wrap: break-word;
-
 }
 
 .funding-success{
@@ -44,9 +74,11 @@
 .left-inner-addon {
     position: relative;
 }
+
 .left-inner-addon input {
     padding-left: 22px;
 }
+
 .left-inner-addon span {
     position: absolute;
     padding: 7px 12px;

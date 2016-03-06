@@ -4,6 +4,18 @@
   border-color: grey;
   min-height: 50px;
 }
+
 .ql-editor{
   min-height: 300px !important;
+}
+
+.preview-image{
+  margin: auto;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+
+.create-form{
+  background-color: white;
+  opacity: .8;
 }

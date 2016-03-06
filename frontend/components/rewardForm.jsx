@@ -259,7 +259,7 @@ var rewardForm = React.createClass({
         <div className="form-group">
           <div className="col-sm-10">
             <button className="button blue" onClick={this.backToProject}>Back to Project</button>
-            <button className="button blue push-left">Create Reward</button>
+            <button className="button blue reward-create">Create Reward</button>
           </div>
         </div>
 

@@ -86,8 +86,8 @@ var ProjectIndexItem = React.createClass({
 
           <br />
 
-          <div className="index-blerb">
-            <p>Blurb: {this.props.project.blurb}</p>
+          <div className="index-blurb">
+            <p>{this.props.project.blurb}</p>
           </div>
 
           <div className="progress">

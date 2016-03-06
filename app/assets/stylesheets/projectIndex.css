@@ -1,9 +1,7 @@
-
 .project-index-category{
   margin-bottom: 30px;
   text-align: center;
 }
-
 
 #Art-index{
   color: #ff33cc;
@@ -52,65 +50,3 @@
 #All-index{
   color: #ff9999;
 }
-
-
-/*.valign-middle {
-    display: table;
-}
-
-.valign-middle .columns {
-    display: table-cell;
-    vertical-align: middle;
-}*/
-
-/*.valign-middle .columns,
-.valign-middle [class*="column"] + [class*="column"]:last-child {
-    float: none;*/
-
-/*
-@media (max-width: 767px) {
-    .portfolio>.clear:nth-child(2n)::before {
-      content: '';
-      display: table;
-      clear: both;
-    }
-}
-@media (min-width: 768px) and (max-width: 1199px) {
-    .portfolio>.clear:nth-child(2n)::before {
-      content: '';
-      display: table;
-      clear: both;
-    }
-}
-@media (min-width: 1200px) {
-    .portfolio>.clear:nth-child(1n)::before {
-      content: '';
-      display: table;
-      clear: both;
-    }
-}*/
-/*
-*, *:before, *:after {box-sizing:  border-box !important;}
-
-.row {
- -moz-column-width: 18em;
- -webkit-column-width: 18em;
- -moz-column-gap: 1em;
- -webkit-column-gap: 1em;
-}
-
-.menu-category {
- display: inline-block;
- margin:  0.25rem;
- padding:  1rem;
- width:  100%;
-}*/
-
-/*.row{
-    overflow: hidden;
-}
-
-[class*="col-"]{
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
-}*/

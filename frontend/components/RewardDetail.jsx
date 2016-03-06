@@ -139,6 +139,7 @@ var RewardDetail = React.createClass({
         <br />
         <section className="reward-title">{reward.reward_title}</section>
         <section>{reward.reward_description}</section>
+        <br />
         <section>Estimated delivery {reward.reward_delivery_date}</section>
         <section>{count}</section>
 

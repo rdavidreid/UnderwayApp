@@ -7,7 +7,6 @@
     -webkit-filter: grayscale(0%);
     filter: none;
     cursor: pointer;
-
 }
 
 #icon{
@@ -15,9 +14,9 @@
     height: 50px;
     margin-left: 20px;
     filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);  /* For Webkit browsers */
-    filter: gray;  /* For IE 6 - 9 */
-    -webkit-transition: all .6s ease;  /* Transition for Webkit browsers */
+    -webkit-filter: grayscale(100%);
+    filter: gray;
+    -webkit-transition: all .6s ease;
 }
 
 .navbar-create{

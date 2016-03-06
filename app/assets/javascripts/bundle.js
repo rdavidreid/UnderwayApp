@@ -26951,11 +26951,10 @@
 	        React.createElement('br', null),
 	        React.createElement(
 	          'div',
-	          { className: 'index-blerb' },
+	          { className: 'index-blurb' },
 	          React.createElement(
 	            'p',
 	            null,
-	            'Blurb: ',
 	            this.props.project.blurb
 	          )
 	        ),
@@ -32332,6 +32331,7 @@
 	        null,
 	        reward.reward_description
 	      ),
+	      React.createElement('br', null),
 	      React.createElement(
 	        'section',
 	        null,
@@ -32734,12 +32734,20 @@
 	            { className: 'col-sm-10' },
 	            React.createElement('input', {
 	              className: 'form-control',
-	              type: 'text',
+	              type: 'hidden',
 	              id: 'img_url',
 	              valueLink: this.linkState("img_url")
 	            }),
-	            React.createElement('br', null),
 	            React.createElement(Cloud, { postImage: this.postImage })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
+	            React.createElement('img', { className: 'preview-image center-block', src: this.state.img_url })
 	          )
 	        ),
 	        React.createElement(
@@ -33239,13 +33247,21 @@
 	            { className: 'col-sm-10' },
 	            React.createElement('input', {
 	              className: 'form-control',
-	              type: 'text',
+	              type: 'hidden',
 	              id: 'img_url',
 	              valueLink: this.linkState("img_url"),
 	              defaultValue: this.state.Project.project.img_url
 	            }),
-	            React.createElement('br', null),
 	            React.createElement(Cloud, { className: 'image-upload', postImage: this.postImage })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
+	            React.createElement('img', { className: 'preview-image center-block', src: this.state.img_url })
 	          )
 	        ),
 	        React.createElement(
@@ -33377,7 +33393,7 @@
 	        { className: 'row' },
 	        React.createElement(
 	          'h2',
-	          { className: 'userDetailTitle' },
+	          { className: 'user-detail-title' },
 	          'Backed Projects'
 	        ),
 	        backedProjects
@@ -33387,7 +33403,7 @@
 	        { className: 'row' },
 	        React.createElement(
 	          'h2',
-	          { className: 'userDetailTitle' },
+	          { className: 'user-detail-title' },
 	          ' Created Projects'
 	        ),
 	        createdProjects
@@ -33831,7 +33847,7 @@
 	              ),
 	              React.createElement(
 	                'button',
-	                { className: 'button blue push-left' },
+	                { className: 'button blue reward-create' },
 	                'Create Reward'
 	              )
 	            )
@@ -34050,6 +34066,7 @@
 	        null,
 	        reward.reward_description
 	      ),
+	      React.createElement('br', null),
 	      React.createElement(
 	        'section',
 	        null,
@@ -34503,13 +34520,14 @@
 	    mostFundedProjects = mostFundedProjects.map(function (el) {
 	      return React.createElement(ProjectIndexItem, { project: el, key: el.id });
 	    });
-
+	    var totalCategories = 0;
 	    var categories = this.state.categories.map(function (el) {
 	      var count = ProjectStore.getCategoryCount(el.id);
+	      totalCategories += count;
 	      return React.createElement(CategoryItem, { category: el, key: el.id, count: count });
 	    });
 	    var all = { title: "All" };
-	    categories.push(React.createElement(CategoryItem, { category: all, key: 99 }));
+	    categories.push(React.createElement(CategoryItem, { category: all, key: 99, count: totalCategories }));
 
 	    return React.createElement(
 	      'div',
@@ -34618,12 +34636,17 @@
 	  },
 
 	  render: function () {
+	    if (this.props.count === 1) {
+	      var projects = ' Project';
+	    } else {
+	      projects = ' Projects';
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'col-sm-3 category-item', onClick: this._onClick },
 	      React.createElement(
 	        'section',
-	        { className: 'slideDown', id: this.props.category.title },
+	        { className: 'slide-down', id: this.props.category.title },
 	        React.createElement(
 	          'div',
 	          { className: 'wrapper' },
@@ -34636,7 +34659,8 @@
 	            'div',
 	            { className: 'inner-item inner-hover image2' },
 	            this.props.count,
-	            ' Projects'
+	            ' ',
+	            projects
 	          )
 	        )
 	      )
@@ -46088,11 +46112,10 @@
 	        React.createElement('br', null),
 	        React.createElement(
 	          'div',
-	          { className: 'index-blerb' },
+	          { className: 'index-blurb' },
 	          React.createElement(
 	            'p',
 	            null,
-	            'Blurb: ',
 	            this.props.project.blurb
 	          )
 	        ),

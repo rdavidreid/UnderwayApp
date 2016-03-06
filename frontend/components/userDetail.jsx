@@ -82,12 +82,12 @@ var ProjectDetail = React.createClass({
       <div>
 
         <div className="row">
-          <h2 className="userDetailTitle">Backed Projects</h2>
+          <h2 className="user-detail-title">Backed Projects</h2>
           {backedProjects}
         </div>
 
         <div className="row">
-          <h2 className="userDetailTitle"> Created Projects</h2>
+          <h2 className="user-detail-title"> Created Projects</h2>
           {createdProjects}
         </div>
 

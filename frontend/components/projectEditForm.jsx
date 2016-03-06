@@ -135,13 +135,18 @@ var projectForm = React.createClass({
 
               <input
                 className="form-control"
-                type="text"
+                type="hidden"
                 id="img_url"
                 valueLink={this.linkState("img_url")}
                 defaultValue={this.state.Project.project.img_url}
                 />
-              <br />
               <Cloud className="image-upload" postImage={this.postImage} />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <div className="col-sm-12">
+              <img className="preview-image center-block" src={this.state.img_url}></img>
             </div>
           </div>
 

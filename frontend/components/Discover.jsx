@@ -70,13 +70,14 @@ var Discover = React.createClass({
     mostFundedProjects = mostFundedProjects.map(function(el) {
       return(<ProjectIndexItem project={el} key={el.id}/>);
     });
-
+    var totalCategories = 0;
     var categories = this.state.categories.map(function(el) {
       var count = ProjectStore.getCategoryCount(el.id);
+      totalCategories += count;
       return(<CategoryItem category={el} key={el.id} count={count} />);
     });
     var all = {title: "All"};
-    categories.push(<CategoryItem category={all} key={99} />);
+    categories.push(<CategoryItem category={all} key={99} count={totalCategories} />);
 
     return(
 

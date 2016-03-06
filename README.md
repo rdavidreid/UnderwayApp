@@ -129,9 +129,9 @@ chose which categories to display, or to display all.
 
 **Objective:** Make site as clean and presentable as possible
 
- - [ ] get feedback on UI
+ - [X] get feedback on UI
  - [ ] Refactor all things that need to be refactored
- - [ ] add CSS flourishes, transitions, etc.
+ - [X] add CSS flourishes, transitions, etc.
 
 ### Bonus Features (TBD)
 - [X] Implement 'quill' for text inputs
