@@ -26837,7 +26837,7 @@
 	        { className: 'row' },
 	        React.createElement(
 	          'h2',
-	          { className: 'project-index-category', id: this.state.Category + "-index" },
+	          { className: 'project-index-category' },
 	          'You are exploring: ',
 	          this.state.Category
 	        )
@@ -26871,7 +26871,7 @@
 	  },
 
 	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
 	  },
 
 	  _formatTime: function (t) {
@@ -26921,6 +26921,14 @@
 
 	    var pleged = "$" + this.props.project.current_funding;
 
+	    var project_title = this.props.project.title;
+
+	    if (this.props.project.title.length > 20) {
+	      project_title = this.props.project.title.slice(0, 20) + "...";
+	    } else {
+	      project_title = this.props.project.title;
+	    }
+
 	    return React.createElement(
 	      'div',
 	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
@@ -26938,7 +26946,7 @@
 	        React.createElement(
 	          'h3',
 	          { className: 'project-index-item-title' },
-	          this.props.project.title
+	          project_title
 	        ),
 	        React.createElement('br', null),
 	        React.createElement(
@@ -31741,7 +31749,7 @@
 	  },
 
 	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
 	  },
 
 	  _sortRewards: function (rewards) {
@@ -31884,7 +31892,7 @@
 	      sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 
 	      rewards = sortedRewards.map(function (el) {
-	        if (el.reward_number_sold >= el.reward_max_count) {
+	        if (el.reward_max_count !== null & el.reward_number_sold >= el.reward_max_count) {
 	          return React.createElement(RewardDetail, { reward: el, clickerFunc: 'soldout' });
 	        } else {
 	          return React.createElement(RewardDetail, { reward: el });
@@ -32233,7 +32241,15 @@
 	    }
 
 	    if (reward.reward_max_count) {
-	      var rewardLimit = "Limited " + reward.number_remaining + " left of " + reward.reward_max_count;
+	      var rewardLimit = React.createElement(
+	        'span',
+	        { className: 'reward-limit' },
+	        'Limited ',
+	        " " + reward.number_remaining + " ",
+	        ' left of',
+	        " " + reward.reward_max_count,
+	        ';'
+	      );
 	    } else {
 	      rewardLimit = "";
 	    }
@@ -32459,8 +32475,14 @@
 	    if (this.state.title === "") {
 	      this.errors.push("Title can not be blank");
 	    }
+	    if (this.state.title.length > 50) {
+	      this.errors.push("Title is too long");
+	    }
 	    if (this.state.blurb === "") {
 	      this.errors.push("blurb cannot be blank");
+	    }
+	    if (this.state.blurb.length > 150) {
+	      this.errors.push("blurb is too long");
 	    }
 	    if (this.state.campaign_end_date === "") {
 	      this.errors.push("date cannot be blank");
@@ -33937,7 +33959,15 @@
 	    }
 
 	    if (reward.reward_max_count) {
-	      var rewardLimit = "Limited " + reward.number_remaining + " left of " + reward.reward_max_count;
+	      var rewardLimit = React.createElement(
+	        'span',
+	        { className: 'reward-limit' },
+	        'Limited ',
+	        " " + reward.number_remaining + " ",
+	        ' left of',
+	        " " + reward.reward_max_count,
+	        ';'
+	      );
 	    } else {
 	      rewardLimit = "";
 	    }
@@ -45978,7 +46008,7 @@
 	  },
 
 	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
 	  },
 
 	  _formatTime: function (t) {
@@ -46028,6 +46058,14 @@
 
 	    var pleged = "$" + this.props.project.current_funding;
 
+	    var project_title = this.props.project.title;
+
+	    if (this.props.project.title.length > 20) {
+	      project_title = this.props.project.title.slice(0, 20) + "...";
+	    } else {
+	      project_title = this.props.project.title;
+	    }
+
 	    return React.createElement(
 	      'div',
 	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
@@ -46045,7 +46083,7 @@
 	        React.createElement(
 	          'h3',
 	          { className: 'project-index-item-title' },
-	          this.props.project.title
+	          project_title
 	        ),
 	        React.createElement('br', null),
 	        React.createElement(

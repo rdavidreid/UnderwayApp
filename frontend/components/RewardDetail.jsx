@@ -87,7 +87,11 @@ var RewardDetail = React.createClass({
     }
 
     if (reward.reward_max_count){
-      var rewardLimit = "Limited " + reward.number_remaining + " left of " + reward.reward_max_count;
+      var rewardLimit = (
+        <span className="reward-limit">
+          Limited {" " + reward.number_remaining+ " "} left of
+          {" " + reward.reward_max_count};
+        </span>);
     } else {
       rewardLimit = "";
     }

@@ -76,7 +76,7 @@ var ProjectDetail = React.createClass({
   },
 
   _imgError: function(){
-    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
   },
 
   _sortRewards: function(rewards) {
@@ -184,7 +184,7 @@ var ProjectDetail = React.createClass({
       sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 
       rewards = sortedRewards.map(function(el) {
-        if (el.reward_number_sold >= el.reward_max_count){
+        if (el.reward_max_count !== null & el.reward_number_sold >= el.reward_max_count){
           return(<RewardDetail reward={el} clickerFunc="soldout" />);
         } else {
           return(<RewardDetail reward={el} />);

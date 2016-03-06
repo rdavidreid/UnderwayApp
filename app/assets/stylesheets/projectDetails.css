@@ -6,10 +6,14 @@
 
 .project-title{
   text-align: center;
+  word-wrap: break-word;
+
 }
 
 .blurb{
   margin-top: 10px;
+  word-wrap: break-word;
+
 }
 
 .funding-success{

@@ -54,7 +54,7 @@ var ProjectIndex = React.createClass({
     return(
       <div>
         <div className="row">
-          <h2 className="project-index-category" id={this.state.Category + "-index"}>You are exploring: {this.state.Category}</h2>
+          <h2 className="project-index-category">You are exploring: {this.state.Category}</h2>
         </div>
         <div className="row">
           {arrProjects}

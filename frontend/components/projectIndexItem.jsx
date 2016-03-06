@@ -9,7 +9,7 @@ var ProjectIndexItem = React.createClass({
   },
 
   _imgError: function(){
-    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
+    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
   },
 
   _formatTime: function(t){
@@ -57,6 +57,14 @@ var ProjectIndexItem = React.createClass({
 
     var pleged = ("$" + this.props.project.current_funding);
 
+    var project_title = this.props.project.title;
+
+    if(this.props.project.title.length > 20) {
+      project_title = this.props.project.title.slice(0,20) + "...";
+    } else{
+      project_title = this.props.project.title;
+    }
+
     return(
 
       <div className="index-item col-xs-12 col-sm-6 col-md-4 col-lg-3"
@@ -73,7 +81,7 @@ var ProjectIndexItem = React.createClass({
             >
           </img>
 
-          <h3 className="project-index-item-title">{this.props.project.title}
+          <h3 className="project-index-item-title">{project_title}
           </h3>
 
           <br />

@@ -97,8 +97,14 @@ var projectForm = React.createClass({
     if(this.state.title === "") {
       this.errors.push("Title can not be blank");
     }
+    if(this.state.title.length > 50) {
+      this.errors.push("Title is too long");
+    }
     if(this.state.blurb ==="") {
       this.errors.push("blurb cannot be blank");
+    }
+    if(this.state.blurb.length > 150) {
+      this.errors.push("blurb is too long");
     }
     if(this.state.campaign_end_date === "") {
       this.errors.push("date cannot be blank");
