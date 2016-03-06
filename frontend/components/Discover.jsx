@@ -48,10 +48,14 @@ var Discover = React.createClass({
     }
     var that = this;
     var arr = this.state.projects.sort(this.compareByFunding);
-
-
-    if (arr.length >= 2) {
-      return arr.slice(0,4);
+    var sortedArr = [];
+    arr.forEach(function(el) {
+      if (new Date(el.campaign_end_date) > new Date()){
+        sortedArr.push(el);
+      }
+    });
+    if (sortedArr.length >= 2) {
+      return sortedArr.slice(0,4);
     }
     else {
       return [];

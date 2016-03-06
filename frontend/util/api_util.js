@@ -74,7 +74,7 @@ var ApiUtil = {
       // data: currentProject,
       // data: bounds,
       success: function() {
-        window.location.reload();
+        window.location.href = ("/session/new");
       },
     });
   },

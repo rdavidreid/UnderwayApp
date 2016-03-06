@@ -6,6 +6,8 @@
     filter: grayscale(0%);
     -webkit-filter: grayscale(0%);
     filter: none;
+    cursor: pointer;
+
 }
 
 #icon{
@@ -25,6 +27,7 @@
 
 .navbar-create:hover{
   color: #ffdb4d !important;
+  cursor: pointer;
 }
 
 .navbar-discover{
@@ -34,6 +37,7 @@
 
 .navbar-discover:hover{
   color: #2ca8d4 !important;
+  cursor: pointer;
 }
 
 .username-dropdown{
@@ -41,6 +45,7 @@
 }
 .username-dropdown:hover{
   color: #2ca8d4 !important;
+  cursor: pointer;
 }
 
 .child{

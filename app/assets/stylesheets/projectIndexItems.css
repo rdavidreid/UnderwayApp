@@ -74,6 +74,7 @@
 .index-item {
   border-radius: 20px;
   margin: auto;
+  cursor: pointer;
 }
 
 .inner-box {

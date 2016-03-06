@@ -37,7 +37,7 @@ var ProjectIndexItem = React.createClass({
   render: function() {
 
     var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
-    var fundingAsString = Math.round(fundingAsPercent);
+    var fundingAsString = Math.round(fundingAsPercent * 100);
 
     if(fundingAsString == Infinity){
       fundingAsString = 0;

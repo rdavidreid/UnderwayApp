@@ -79,6 +79,21 @@ var ProjectDetail = React.createClass({
     this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
   },
 
+  _sortRewards: function(rewards) {
+    var sorted = rewards.sort(this._compareByCost);
+    return sorted;
+  },
+
+  _compareByCost: function(a,b){
+    if (a.reward_cost > b.reward_cost){
+      return 1;
+    }
+    if (b.reward_cost > a.reward_cost){
+      return -1;
+    }
+    return 0;
+  },
+
   render: function() {
     Modal.setAppElement(document.body);
     var customStyles = {
@@ -158,15 +173,22 @@ var ProjectDetail = React.createClass({
             <p>This project did not reach its goal in the provided time limit</p>
           </div>);
       }
-      rewards = [];
-      rewards = this.state.Project.project.rewards.map(function(el) {
+      // rewards = [];
+      var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
+      rewards = sortedRewards.map(function(el) {
         return(<RewardDetail reward={el} clickerFunc="expired"/>);
       });
     }
     else {
-      rewards = [];
-      rewards = this.state.Project.project.rewards.map(function(el) {
-        return(<RewardDetail reward={el} />);
+      // rewards = [];
+      sortedRewards = this._sortRewards(this.state.Project.project.rewards);
+
+      rewards = sortedRewards.map(function(el) {
+        if (el.reward_number_sold >= el.reward_max_count){
+          return(<RewardDetail reward={el} clickerFunc="soldout" />);
+        } else {
+          return(<RewardDetail reward={el} />);
+        }
       });
     }
     return(

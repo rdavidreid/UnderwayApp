@@ -1,5 +1,57 @@
 
+.project-index-category{
+  margin-bottom: 30px;
+  text-align: center;
+}
 
+
+#Art-index{
+  color: #ff33cc;
+}
+
+#Comics-index{
+  color: #ff9966;
+}
+
+#Design-index{
+  color: #ffff99;
+}
+
+#Fashion-index{
+  color: #cc66ff;
+}
+
+#Film-index{
+  color: #6699ff;
+}
+
+#Food-index{
+  color: #66ffcc;
+}
+
+#Games-index{
+  color: #b3c6ff;
+}
+
+#Music-index{
+  color: #99ff33;
+}
+
+#Photography-index{
+  color: #ffbf80;
+}
+
+#Technology-index{
+  color: #99ff99;
+}
+
+#Theater-index{
+  color: #ccccff;
+}
+
+#All-index{
+  color: #ff9999;
+}
 
 
 /*.valign-middle {

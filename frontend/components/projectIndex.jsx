@@ -3,24 +3,37 @@ var ReactDOM = require('react-dom');
 var ProjectStore = require('../stores/ProjectStore');
 var ApiUtil = require('../util/api_util');
 var ProjectIndexItem = require('./ProjectIndexItem');
+var CategoryStore = require('../stores/CategoryStore');
 
 var ProjectIndex = React.createClass({
 
   getInitialState: function() {
     if(this.props.location.query.category){
-      return({Projects: ProjectStore.select(this.props.location.query.category)});
+      return({
+        Projects: ProjectStore.select(this.props.location.query.category),
+        Category: CategoryStore.idCategory(this.props.location.query.category)
+      });
     }
     else {
-      return({Projects: ProjectStore.all()});
+      return({
+        Projects: ProjectStore.all(),
+        Category: "All"
+      });
     }
   },
 
   _onChange: function() {
     if(this.props.location.query.category){
-      this.setState({ Projects: ProjectStore.select(this.props.location.query.category) });
+      this.setState({
+        Projects: ProjectStore.select(this.props.location.query.category),
+        Category: CategoryStore.idCategory(this.props.location.query.category)
+      });
     }
     else {
-      this.setState({ Projects: ProjectStore.all() });
+      this.setState({
+        Projects: ProjectStore.all(),
+        Category: "All"
+      });
     }
   },
 
@@ -39,9 +52,13 @@ var ProjectIndex = React.createClass({
     });
 
     return(
-
-      <div className="row">
-        {arrProjects}
+      <div>
+        <div className="row">
+          <h2 className="project-index-category" id={this.state.Category + "-index"}>You are exploring: {this.state.Category}</h2>
+        </div>
+        <div className="row">
+          {arrProjects}
+        </div>
       </div>
 
     );

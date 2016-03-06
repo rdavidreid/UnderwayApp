@@ -91,12 +91,6 @@ var ProjectDetail = React.createClass({
           {createdProjects}
         </div>
 
-        <table className="table table-hover">
-          <h2>Stats:</h2>
-          <tbody>
-            {rewardRow}
-          </tbody>
-        </table>
 
         <table className="table table-hover">
           <h2>Purchase History</h2>
@@ -118,3 +112,10 @@ var ProjectDetail = React.createClass({
 });
 
 module.exports = ProjectDetail;
+
+// <table className="table table-hover">
+//   <h2>Stats:</h2>
+//   <tbody>
+//     {rewardRow}
+//   </tbody>
+// </table>

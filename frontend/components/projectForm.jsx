@@ -8,8 +8,6 @@ var ReactQuill = require('react-quill');
 var DateTime = require('react-datetime');
 var Modal = require('react-modal');
 
-
-
 var projectForm = React.createClass({
   mixins: [LinkedStateMixin, History, ReactQuill.Mixin],
 

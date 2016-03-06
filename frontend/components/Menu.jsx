@@ -26,6 +26,7 @@ var Menu = React.createClass({
   componentDidMount: function() {
     this.userListener = UserStore.addListener(this._onChange);
     ApiUtil.fetchCurrentUser();
+    ApiUtil.fetchAllCategories();
   },
 
   componentWillUnmount: function() {

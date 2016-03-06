@@ -106,6 +106,14 @@ var RewardDetail = React.createClass({
       </div>
       );
     }
+    else if(this.props.clickerFunc === "soldout") {
+      var hoverDiv = (
+      <div className="mask yellow-mask">
+        <br />
+        <div className="reward-select"><h4>Reward is sold out</h4></div>
+      </div>
+      );
+    }
     else {
       var hoverDiv = (
         <div className="mask green-mask">

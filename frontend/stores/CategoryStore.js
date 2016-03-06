@@ -13,6 +13,16 @@ CategoryStore.resetCategories = function(newCategories) {
   _categories = newCategories;
 };
 
+CategoryStore.idCategory = function(id){
+  var ans = undefined;
+  _categories.forEach(function(el){
+    if(el.id === parseInt(id)) {
+      ans = el.title;
+    }
+  });
+  return ans;
+};
+
 CategoryStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case CategoryConstants.ALL_CATEGORIES_RECIEVED:

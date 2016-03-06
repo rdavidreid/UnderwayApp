@@ -26672,7 +26672,7 @@
 	      // data: currentProject,
 	      // data: bounds,
 	      success: function () {
-	        window.location.reload();
+	        window.location.href = "/session/new";
 	      }
 	    });
 	  },
@@ -26781,6 +26781,7 @@
 	var ProjectStore = __webpack_require__(159);
 	var ApiUtil = __webpack_require__(184);
 	var ProjectIndexItem = __webpack_require__(187);
+	var CategoryStore = __webpack_require__(257);
 
 	var ProjectIndex = React.createClass({
 	  displayName: 'ProjectIndex',
@@ -26788,17 +26789,29 @@
 
 	  getInitialState: function () {
 	    if (this.props.location.query.category) {
-	      return { Projects: ProjectStore.select(this.props.location.query.category) };
+	      return {
+	        Projects: ProjectStore.select(this.props.location.query.category),
+	        Category: CategoryStore.idCategory(this.props.location.query.category)
+	      };
 	    } else {
-	      return { Projects: ProjectStore.all() };
+	      return {
+	        Projects: ProjectStore.all(),
+	        Category: "All"
+	      };
 	    }
 	  },
 
 	  _onChange: function () {
 	    if (this.props.location.query.category) {
-	      this.setState({ Projects: ProjectStore.select(this.props.location.query.category) });
+	      this.setState({
+	        Projects: ProjectStore.select(this.props.location.query.category),
+	        Category: CategoryStore.idCategory(this.props.location.query.category)
+	      });
 	    } else {
-	      this.setState({ Projects: ProjectStore.all() });
+	      this.setState({
+	        Projects: ProjectStore.all(),
+	        Category: "All"
+	      });
 	    }
 	  },
 
@@ -26818,8 +26831,22 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'row' },
-	      arrProjects
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'project-index-category', id: this.state.Category + "-index" },
+	          'You are exploring: ',
+	          this.state.Category
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        arrProjects
+	      )
 	    );
 	  }
 
@@ -26874,7 +26901,7 @@
 	  render: function () {
 
 	    var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
-	    var fundingAsString = Math.round(fundingAsPercent);
+	    var fundingAsString = Math.round(fundingAsPercent * 100);
 
 	    if (fundingAsString == Infinity) {
 	      fundingAsString = 0;
@@ -31717,6 +31744,21 @@
 	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457053272/icgwgkmu2r7k05echr1q.png";
 	  },
 
+	  _sortRewards: function (rewards) {
+	    var sorted = rewards.sort(this._compareByCost);
+	    return sorted;
+	  },
+
+	  _compareByCost: function (a, b) {
+	    if (a.reward_cost > b.reward_cost) {
+	      return 1;
+	    }
+	    if (b.reward_cost > a.reward_cost) {
+	      return -1;
+	    }
+	    return 0;
+	  },
+
 	  render: function () {
 	    Modal.setAppElement(document.body);
 	    var customStyles = {
@@ -31832,14 +31874,21 @@
 	          )
 	        );
 	      }
-	      rewards = [];
-	      rewards = this.state.Project.project.rewards.map(function (el) {
+	      // rewards = [];
+	      var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
+	      rewards = sortedRewards.map(function (el) {
 	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'expired' });
 	      });
 	    } else {
-	      rewards = [];
-	      rewards = this.state.Project.project.rewards.map(function (el) {
-	        return React.createElement(RewardDetail, { reward: el });
+	      // rewards = [];
+	      sortedRewards = this._sortRewards(this.state.Project.project.rewards);
+
+	      rewards = sortedRewards.map(function (el) {
+	        if (el.reward_number_sold >= el.reward_max_count) {
+	          return React.createElement(RewardDetail, { reward: el, clickerFunc: 'soldout' });
+	        } else {
+	          return React.createElement(RewardDetail, { reward: el });
+	        }
 	      });
 	    }
 	    return React.createElement(
@@ -32206,6 +32255,21 @@
 	      );
 	    } else if (this.props.clickerFunc === "none") {
 	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
+	    } else if (this.props.clickerFunc === "soldout") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask yellow-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Reward is sold out'
+	          )
+	        )
+	      );
 	    } else {
 	      var hoverDiv = React.createElement(
 	        'div',
@@ -33312,20 +33376,6 @@
 	        React.createElement(
 	          'h2',
 	          null,
-	          'Stats:'
-	        ),
-	        React.createElement(
-	          'tbody',
-	          null,
-	          rewardRow
-	        )
-	      ),
-	      React.createElement(
-	        'table',
-	        { className: 'table table-hover' },
-	        React.createElement(
-	          'h2',
-	          null,
 	          'Purchase History'
 	        ),
 	        React.createElement(
@@ -33367,6 +33417,13 @@
 	});
 
 	module.exports = ProjectDetail;
+
+	// <table className="table table-hover">
+	//   <h2>Stats:</h2>
+	//   <tbody>
+	//     {rewardRow}
+	//   </tbody>
+	// </table>
 
 /***/ },
 /* 247 */
@@ -33902,6 +33959,21 @@
 	      );
 	    } else if (this.props.clickerFunc === "none") {
 	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
+	    } else if (this.props.clickerFunc === "soldout") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask yellow-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Reward is sold out'
+	          )
+	        )
+	      );
 	    } else {
 	      var hoverDiv = React.createElement(
 	        'div',
@@ -34020,6 +34092,7 @@
 	  componentDidMount: function () {
 	    this.userListener = UserStore.addListener(this._onChange);
 	    ApiUtil.fetchCurrentUser();
+	    ApiUtil.fetchAllCategories();
 	  },
 
 	  componentWillUnmount: function () {
@@ -34303,6 +34376,16 @@
 	  _categories = newCategories;
 	};
 
+	CategoryStore.idCategory = function (id) {
+	  var ans = undefined;
+	  _categories.forEach(function (el) {
+	    if (el.id === parseInt(id)) {
+	      ans = el.title;
+	    }
+	  });
+	  return ans;
+	};
+
 	CategoryStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case CategoryConstants.ALL_CATEGORIES_RECIEVED:
@@ -34370,9 +34453,14 @@
 	    }
 	    var that = this;
 	    var arr = this.state.projects.sort(this.compareByFunding);
-
-	    if (arr.length >= 2) {
-	      return arr.slice(0, 4);
+	    var sortedArr = [];
+	    arr.forEach(function (el) {
+	      if (new Date(el.campaign_end_date) > new Date()) {
+	        sortedArr.push(el);
+	      }
+	    });
+	    if (sortedArr.length >= 2) {
+	      return sortedArr.slice(0, 4);
 	    } else {
 	      return [];
 	    }
@@ -45920,7 +46008,7 @@
 	  render: function () {
 
 	    var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
-	    var fundingAsString = Math.round(fundingAsPercent);
+	    var fundingAsString = Math.round(fundingAsPercent * 100);
 
 	    if (fundingAsString == Infinity) {
 	      fundingAsString = 0;
