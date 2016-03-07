@@ -96,6 +96,9 @@ var rewardForm = React.createClass({
     if(this.state.description ==="") {
       this.errors.push("description cannot be blank");
     }
+    if(this.state.delivery_date ==="") {
+      this.errors.push("You must chose a delivery date");
+    }
     if(this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
       this.errors.push("invalid cost");
     }

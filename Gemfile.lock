@@ -96,6 +96,7 @@ GEM
     minitest (5.8.4)
     multi_json (1.11.2)
     netrc (0.11.0)
+    newrelic_rpm (3.15.0.314)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     pg (0.18.4)
@@ -191,6 +192,7 @@ DEPENDENCIES
   figaro
   jbuilder (~> 2.0)
   jquery-rails
+  newrelic_rpm
   pg (~> 0.15)
   pry-rails
   rails (= 4.2.5)
