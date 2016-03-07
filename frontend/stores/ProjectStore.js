@@ -25,7 +25,7 @@ ProjectStore.getCategoryCount = function(id) {
   return arr.length;
 };
 
-ProjectStore.findById = function(targetId) {
+ProjectStore.singleProject = function() {
   return _projects[0];
 };
 

@@ -12,10 +12,13 @@ var Cloud = React.createClass({
       }
     }.bind(this));
   },
+
   render: function () {
     return (
       <div className="upload-form">
-        <button className="button blue" onClick={this._uploadPicture}>Upload Image</button>
+        <button className="button blue" onClick={this._uploadPicture}>
+          Upload Image
+        </button>
       </div>
     );
   }

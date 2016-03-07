@@ -1,12 +1,12 @@
 class Api::RewardsController < ApplicationController
 
-  def index
-    @rewards = Reward.all
-  end
-
-  def show
-    @reward = Reward.find_by_id(params[:id])
-  end
+  # def index
+  #   @rewards = Reward.all
+  # end
+  #
+  # def show
+  #   @reward = Reward.find_by_id(params[:id])
+  # end
 
   def create
     @reward = Reward.new(reward_params)

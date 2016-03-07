@@ -6,15 +6,12 @@ var UserStore = require('../stores/UserStore');
 var Modal = require('react-modal');
 var History = require('react-router').History;
 
-// var appElement = document.getElementById('content');
-
-
 var ProjectDetail = React.createClass({
   mixins: [History],
 
   getStateFromStore: function() {
     return({
-      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+      Project: ProjectStore.singleProject(),
       modalIsOpen: false
     });
   },
@@ -148,7 +145,10 @@ var ProjectDetail = React.createClass({
       btnEditRewards = "";
     }
 
-    var timeRemainingInt = (Date.parse(this.state.Project.project.campaign_end_date) - new Date());
+    var timeRemainingInt = (Date.parse(
+      this.state.Project.project.campaign_end_date
+    ) - new Date());
+
     var daysToGo = this._formatTime(timeRemainingInt);
 
     var rewards = "";
@@ -158,7 +158,9 @@ var ProjectDetail = React.createClass({
       return null;
     }
     else if(timeRemainingInt <= 0) {
-      if (this.state.Project.project.current_funding > this.state.Project.project.funding_goal){
+      if (this.state.Project.project.current_funding >
+        this.state.Project.project.funding_goal){
+
         endOfFundingMsg = (
           <div className="funding-over">
             <h3 className="funding-success">Success!</h3>
@@ -170,236 +172,112 @@ var ProjectDetail = React.createClass({
         endOfFundingMsg =(
           <div className="funding-over">
             <h3 className="funding-failure">Unsuccessful</h3>
-            <p>This project did not reach its goal in the provided time limit</p>
+            <p>
+              This project did not reach its goal within the provided time limit
+            </p>
           </div>);
       }
-      // rewards = [];
       var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
       rewards = sortedRewards.map(function(el) {
         return(<RewardDetail reward={el} clickerFunc="expired"/>);
       });
     }
     else {
-      // rewards = [];
       sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 
       rewards = sortedRewards.map(function(el) {
-        if (el.reward_max_count !== null & el.reward_number_sold >= el.reward_max_count){
+        if (el.reward_max_count !== null &&
+            el.reward_number_sold >= el.reward_max_count){
+
           return(<RewardDetail reward={el} clickerFunc="soldout" />);
-        } else {
+        }
+        else {
           return(<RewardDetail reward={el} />);
         }
       });
     }
+
     return(
-    <div>
-      <h2 className="project-title">{this.state.Project.project.title}</h2>
-      <h4 className = "project-title">{"By: " + this.state.Project.project.author.username}</h4>
+      <div>
+        <h2 className="project-title">{this.state.Project.project.title}</h2>
+        <h4 className = "project-title">
+          {"By: " + this.state.Project.project.author.username}
+        </h4>
 
-      <br />
-      <br />
+        <br />
+        <br />
 
-      <div className="row details-top">
+        <div className="row details-top">
 
-        <div id="ProjectDetailPane" className="col-md-8">
+          <div id="ProjectDetailPane" className="col-md-8">
 
-          <img
-            ref="indexItemImage"
-            className="project-detail-image"
-            src={this.state.Project.project.img_url}
-            onError={this._imgError}
-            >
-          </img>
-          <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
-          <br/>
-          {btnEdit}{btnModalDelete}{btnEditRewards}
+            <img
+              ref="indexItemImage"
+              className="project-detail-image"
+              src={this.state.Project.project.img_url}
+              onError={this._imgError}
+              >
+            </img>
+            <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
+            <br/>
+            {btnEdit}{btnModalDelete}{btnEditRewards}
 
-          <Modal
-            className="reward-modal"
-            isOpen={this.state.modalIsOpen}
-            onRequestClose={this.closeModal}
-            style={customStyles} >
+            <Modal
+              className="reward-modal"
+              isOpen={this.state.modalIsOpen}
+              onRequestClose={this.closeModal}
+              style={customStyles} >
 
-            <h2>Delete Project?</h2>
+              <h2>Delete Project?</h2>
+              <br />
+              <div className="modal-buttons">
+                {btnDoNotDelete}{btnDelete}
+              </div>
+            </Modal>
+
+            <br/>
+            <br/>
+          </div>
+
+          <div className="col-md-4">
+
+            <h3>{this.state.Project.project.backers}</h3>
+            <p>backers</p>
+            <h3>{"$" + this.state.Project.project.current_funding}</h3>
+            <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
+            <h3>{daysToGo}</h3>
+            <p>days to go</p>
             <br />
-            <div className="modal-buttons">
-              {btnDoNotDelete}{btnDelete}
-            </div>
-          </Modal>
 
-          <br/>
-          <br/>
-        </div>
+            <h6>This project will only be funded if at least
+              {" $" + this.state.Project.project.funding_goal} is raised by
+              {" " + this.state.Project.project.campaign_end_date}
+            </h6>
 
-        <div className="col-md-4">
+            {endOfFundingMsg}
 
-          <h3>{this.state.Project.project.backers}</h3>
-          <p>backers</p>
-          <h3>{"$" + this.state.Project.project.current_funding}</h3>
-          <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
-          <h3>{daysToGo}</h3>
-          <p>days to go</p>
-          <br />
-
-          <h6>This project will only be funded if at least
-            {" $" + this.state.Project.project.funding_goal} is raised by
-            {" " + this.state.Project.project.campaign_end_date}
-          </h6>
-
-          {endOfFundingMsg}
+          </div>
 
         </div>
 
-      </div>
+        <div className="row row details-bottom">
 
-      <div className="row row details-bottom">
+          <div className="col-sm-8 col-md-8">
+            <section
+              className="details-body"
+              dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
+          </div>
 
-        <div className="col-sm-8 col-md-8">
-          <section
-            className="details-body"
-            dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
-        </div>
+          <div className="col-sm-4 col-md-4">
+            <br></br>
+            {rewards}
+          </div>
 
-        <div className="col-sm-4 col-md-4">
-          <br></br>
-          {rewards}
         </div>
 
       </div>
-
-    </div>
     );
   }
 });
 
 module.exports = ProjectDetail;
-// <div>
-//   <h2 className="project-title">{this.state.Project.project.title}</h2>
-//   <h4 className = "project-title">{"By: " + this.state.Project.project.author.username}</h4>
-//
-//   <br />
-//   <br />
-//
-//   <div className="row details-top">
-//
-//     <div id="ProjectDetailPane" className="col-md-8">
-//
-//       <img
-//         ref="indexItemImage"
-//         className="project-detail-image"
-//         src={this.state.Project.project.img_url}
-//         onError={this._imgError}
-//         >
-//       </img>
-//       <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
-//       <br/>
-//       {btnEdit}{btnModalDelete}{btnEditRewards}
-//
-//       <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-//         <div className="modal-dialog" role="document">
-//           <div className="modal-content">
-//             <div className="modal-header">
-//               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-//               <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
-//             </div>
-//
-//             <div className="modal-footer">
-//               <button type="button" className="button blue" data-dismiss="modal">No</button>
-//               {btnDelete}
-//
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-          // <Modal
-          //   isOpen={this.state.modalIsOpen}
-          //   onRequestClose={this.closeModal}
-          //   style={customStyles} >
-          //
-          //   <h2>Hello</h2>
-          //   <button onClick={this.closeModal}>close</button>
-          //   <div>I am a modal</div>
-          //   <form>
-          //     <input />
-          //     <button>tab navigation</button>
-          //     <button>stays</button>
-          //     <button>inside</button>
-          //     <button>the modal</button>
-          //   </form>
-          // </Modal>
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//       <br/>
-//       <br/>
-//     </div>
-//
-//     <div className="col-md-4">
-//
-//       <h3>{this.state.Project.project.backers}</h3>
-//       <p>backers</p>
-//       <h3>{"$" + this.state.Project.project.current_funding}</h3>
-//       <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
-//       <h3>{daysToGo}</h3>
-//       <p>days to go</p>
-//       <br />
-//
-//       <h6>This project will only be funded if at least
-//         {" $" + this.state.Project.project.funding_goal} is raised by
-//         {" " + this.state.Project.project.campaign_end_date}
-//       </h6>
-//
-//       {endOfFundingMsg}
-//
-//     </div>
-//
-//   </div>
-//
-//   <div className="row row details-bottom">
-//
-//     <div className="col-sm-8 col-md-8">
-//       <section
-//         className="details-body"
-//         dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
-//     </div>
-//
-//     <div className="col-sm-4 col-md-4">
-//       <br></br>
-//       {rewards}
-//     </div>
-//
-//   </div>
-//
-// </div>
-
-
-
-
-// <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-//   <div className="modal-dialog" role="document">
-//     <div className="modal-content">
-//       <div className="modal-header">
-//         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-//         <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
-//       </div>
-//
-//       <div className="modal-footer">
-//         <button type="button" className="button blue" data-dismiss="modal">No</button>
-//         {btnDelete}
-//
-//       </div>
-//     </div>
-//   </div>
-// </div>

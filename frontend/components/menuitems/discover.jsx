@@ -12,7 +12,7 @@ var Discover = React.createClass({
       <a className=".navbar-link navbar-discover" onClick={this._clickDiscover}>
         Discover
       </a>
-      
+
     );
   }
 });

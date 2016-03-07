@@ -70,14 +70,20 @@ var Discover = React.createClass({
     mostFundedProjects = mostFundedProjects.map(function(el) {
       return(<ProjectIndexItem project={el} key={el.id}/>);
     });
+
     var totalCategories = 0;
+
     var categories = this.state.categories.map(function(el) {
       var count = ProjectStore.getCategoryCount(el.id);
       totalCategories += count;
       return(<CategoryItem category={el} key={el.id} count={count} />);
     });
+
     var all = {title: "All"};
-    categories.push(<CategoryItem category={all} key={99} count={totalCategories} />);
+    categories.push(<CategoryItem category={all}
+                                  key={99}
+                                  count={totalCategories} />
+    );
 
     return(
 
@@ -114,38 +120,3 @@ var Discover = React.createClass({
 });
 
 module.exports = Discover;
-
-
-// <div id="carousel-example-generic" className="carousel slide" data-ride="carousel">
-//   <ol className="carousel-indicators">
-//     <li data-target="#carousel-example-generic" data-slide-to="0" className="active"></li>
-//     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-//     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-//   </ol>
-//
-//   <div className="carousel-inner" role="listbox">
-//
-//     <div className="item active">
-//       <img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg" alt="..."></img>
-//       <div className="carousel-caption">
-//       </div>
-//     </div>
-//
-//     <div className="item">
-//       <img src="..." alt="..."></img>
-//       <div className="carousel-caption">
-//         ...
-//       </div>
-//     </div>
-//     this is lower than the others
-//   </div>
-//
-//   <a className="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-//     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-//     <span className="sr-only">Previous</span>
-//   </a>
-//   <a className="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-//     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-//     <span className="sr-only">Next</span>
-//   </a>
-// </div>

@@ -56,10 +56,7 @@ var projectForm = React.createClass({
   },
 
   componentDidMount: function() {
-  var editor = this.createEditor(
-    // this.getEditorElement(),
-    // this.getEditorConfig()
-    );
+  var editor = this.createEditor();
     this.setState({ editor:editor });
   },
 
@@ -70,7 +67,6 @@ var projectForm = React.createClass({
   },
 
   onTextChange: function(value) {
-    // this.setState({details: value});
     this.state.details = value;
   },
 
@@ -89,8 +85,6 @@ var projectForm = React.createClass({
   getEditorContents: function() {
     this.state.Project.project.details;
   },
-
-  // TODO: REFACTOR / CLEAN THIS. add into another file
 
   validateInput: function() {
     this.errors = [];
@@ -134,8 +128,6 @@ var projectForm = React.createClass({
   createProject: function(event) {
     event.preventDefault();
     var project = {};
-
-    //TODO EDIT THIS
 
     Object.keys(this.inputs).forEach(function(key){
       project[key] = this.state[key];

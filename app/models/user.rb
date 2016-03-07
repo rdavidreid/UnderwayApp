@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   has_many(:backers)
-
   has_many(:rewards, through: :backers)
 
   def authored_projects
@@ -30,7 +29,6 @@ class User < ActiveRecord::Base
     end
     arr
   end
-
 
   def backed_projects
     arr = []
@@ -46,10 +44,6 @@ class User < ActiveRecord::Base
       arr.push(reward)
     end
     arr.uniq
-  end
-
-  def money spent
-
   end
 
   def self.generate_session_token

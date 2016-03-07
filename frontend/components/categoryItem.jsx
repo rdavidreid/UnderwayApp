@@ -8,7 +8,11 @@ var Category = React.createClass({
 
   _onClick: function() {
     if (this.props.category) {
-      this.history.pushState(null, "/projects/", {category: this.props.category.id});
+      this.history.pushState(
+        null,
+        "/projects/",
+        {category: this.props.category.id}
+      );
     }
     else {
       this.history.pushState(null, "/projects/");
@@ -22,10 +26,11 @@ var Category = React.createClass({
       projects = ' Projects';
     }
     return(
-        <div className="col-sm-3 category-item" onClick={this._onClick}>
-          <section className='slide-down' id={this.props.category.title}>
+      <div className="col-sm-3 category-item" onClick={this._onClick}>
+        <section className='slide-down' id={this.props.category.title}>
 
           <div className="wrapper">
+
             <div className="inner-item image1">
               {this.props.category.title}
             </div>
@@ -35,9 +40,9 @@ var Category = React.createClass({
             </div>
 
           </div>
-          </section>
 
-        </div>
+        </section>
+      </div>
     );
   }
 

@@ -30,18 +30,13 @@ class Project < ActiveRecord::Base
 
   has_many :rewards, dependent: :destroy
 
-
-
   has_many(
     :backers,
     through: :rewards,
-    )
+  )
 
-    def add_to_funding(amt)
-      self.current_funding += amt
-    end
-
-
-
+  def add_to_funding(amt)
+    self.current_funding += amt
+  end
 
 end

@@ -13,7 +13,7 @@ var Menu = React.createClass({
 
   getStateFromStore: function() {
     return({User: UserStore.currentUser()});
-},
+  },
 
   getInitialState: function() {
     return this.getStateFromStore();
@@ -43,9 +43,11 @@ var Menu = React.createClass({
 
   render: function() {
     var username = "Options";
+
     if (this.state.User != undefined) {
       username = this.state.User.username;
     }
+
     return(
 
       <nav className="navbar navbar-default">
@@ -66,6 +68,7 @@ var Menu = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
+
             <Logo className="navbar-brand" />
           </div>
 
@@ -103,38 +106,4 @@ var Menu = React.createClass({
   }
 });
 
-
-
-// <div className="navbar navbar-fixed-top">
-//   <div className="container">
-//     <div className="navbar-header">
-//       <Logo className="navbar-brand" />
-//       <button type="button" className="navbar-toggle"
-//        data-toggle="collapse"data-target=".navbar-collapse">
-//         <span className="sr-only">Toggle nav</span>
-//         <span className="icon-bar"></span>
-//         <span className="icon-bar"></span>
-//         <span className="icon-bar"></span>
-//       </button>
-//     </div>
-//
-//     <div className="collapse navbar-collapse">
-//       <ul className="nav navbar-nav">
-//         <li><Discover /></li>
-//         <li><Create /></li>
-//       </ul>
-//     </div>
-//   </div>
-// </div>
-
-// <Logo /><Discover /><Create />
-// <Logo />
-// <Discover />
-// <Create />
-// <Profile />
 module.exports = Menu;
-
-// Logo
-// Discover
-// Create
-// Profile

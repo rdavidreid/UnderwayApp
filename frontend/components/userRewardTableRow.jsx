@@ -28,8 +28,6 @@ var userRewardTableRows = React.createClass({
           <td className="user-table-row">{this.props.reward.description.slice(0,40) + dots}</td>
         </tr>
       );
-
-
   }
 
 });

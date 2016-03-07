@@ -22,7 +22,4 @@ class Backer < ActiveRecord::Base
     end
   end
 
-
-
-
 end

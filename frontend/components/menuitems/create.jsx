@@ -12,7 +12,7 @@ var Create = React.createClass({
       <a className=".navbar-link navbar-create" onClick={this._clickCreate}>
         Create
       </a>
-      
+
     );
   }
 });

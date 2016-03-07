@@ -21,7 +21,7 @@ var projectForm = React.createClass({
   },
 
   getStateFromStore: function() {
-    return({Project: ProjectStore.findById(
+    return({Project: ProjectStore.singleProject(
       parseInt(this.props.params.id)
     )});
   },
@@ -29,11 +29,7 @@ var projectForm = React.createClass({
   componentDidMount: function() {
     this.projectListener = ProjectStore.addListener(this._onChange);
     ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
-    var editor = this.createEditor(
-      // TODO: removed these thursday 3:30pm
-      // this.getEditorElement(),
-      // this.getEditorConfig()
-    );
+    var editor = this.createEditor();
     this.setState({editor: editor});
   },
 
@@ -78,8 +74,6 @@ var projectForm = React.createClass({
     event.preventDefault();
     var project = {};
 
-    //TODO EDIT THIS
-
     Object.keys(this.state).forEach(function(key){
       project[key] = this.state[key];
     }.bind(this));
@@ -96,13 +90,7 @@ var projectForm = React.createClass({
 
   onTextChange: function(value) {
     this.state.details = value;
-
   },
-
-  // getEditorContents: function() {
-  //   this.state.Project.project.details;
-  // },
-
 
   render: function() {
     if(this.state.Project == undefined){
@@ -110,13 +98,21 @@ var projectForm = React.createClass({
     }
 
     return(
-      <div className="create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+      <div className="create-form
+        col-sm-12 col-md-10
+        col-md-offset-1 col-lg-10
+        col-lg-offset-1">
 
-        <form className="form-horizontal editProjectForm" onSubmit={this.editProject}>
+        <form className="form-horizontal editProjectForm"
+              onSubmit={this.editProject}>
+
           <h2>Editing: {this.state.Project.project.title}</h2>
 
           <div className="form-group ">
-            <label htmlFor='project_blurb' className="col-sm-2 control-label">Edit Blurb:</label>
+            <label htmlFor='project_blurb' className="col-sm-2 control-label">
+              Edit Blurb:
+            </label>
+
             <div className="col-sm-10">
               <input
                 className="form-control"
@@ -130,7 +126,10 @@ var projectForm = React.createClass({
           </div>
 
           <div className="form-group ">
-            <label htmlFor='img_url' className="col-sm-2 control-label">Image URL:</label>
+            <label htmlFor='img_url' className="col-sm-2 control-label">
+              Image URL:
+            </label>
+
             <div className="col-sm-10">
 
               <input
@@ -140,13 +139,16 @@ var projectForm = React.createClass({
                 valueLink={this.linkState("img_url")}
                 defaultValue={this.state.Project.project.img_url}
                 />
+
               <Cloud className="image-upload" postImage={this.postImage} />
             </div>
           </div>
 
           <div className="form-group">
             <div className="col-sm-12">
-              <img className="preview-image center-block" src={this.state.img_url}></img>
+              <img className="preview-image center-block"
+                   src={this.state.img_url}>
+              </img>
             </div>
           </div>
 

@@ -19753,7 +19753,7 @@
 	  return arr.length;
 	};
 
-	ProjectStore.findById = function (targetId) {
+	ProjectStore.singleProject = function () {
 	  return _projects[0];
 	};
 
@@ -26761,6 +26761,7 @@
 	      user: obj
 	    });
 	  },
+
 	  recieveAllCategories: function (obj) {
 	    Dispatcher.dispatch({
 	      actionType: CategoryConstants.ALL_CATEGORIES_RECIEVED,
@@ -31675,8 +31676,6 @@
 	var Modal = __webpack_require__(374);
 	var History = __webpack_require__(188).History;
 
-	// var appElement = document.getElementById('content');
-
 	var ProjectDetail = React.createClass({
 	  displayName: 'ProjectDetail',
 
@@ -31684,7 +31683,7 @@
 
 	  getStateFromStore: function () {
 	    return {
-	      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+	      Project: ProjectStore.singleProject(),
 	      modalIsOpen: false
 	    };
 	  },
@@ -31842,6 +31841,7 @@
 	    }
 
 	    var timeRemainingInt = Date.parse(this.state.Project.project.campaign_end_date) - new Date();
+
 	    var daysToGo = this._formatTime(timeRemainingInt);
 
 	    var rewards = "";
@@ -31851,6 +31851,7 @@
 	      return null;
 	    } else if (timeRemainingInt <= 0) {
 	      if (this.state.Project.project.current_funding > this.state.Project.project.funding_goal) {
+
 	        endOfFundingMsg = React.createElement(
 	          'div',
 	          { className: 'funding-over' },
@@ -31877,27 +31878,27 @@
 	          React.createElement(
 	            'p',
 	            null,
-	            'This project did not reach its goal in the provided time limit'
+	            'This project did not reach its goal within the provided time limit'
 	          )
 	        );
 	      }
-	      // rewards = [];
 	      var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 	      rewards = sortedRewards.map(function (el) {
 	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'expired' });
 	      });
 	    } else {
-	      // rewards = [];
 	      sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 
 	      rewards = sortedRewards.map(function (el) {
-	        if (el.reward_max_count !== null & el.reward_number_sold >= el.reward_max_count) {
+	        if (el.reward_max_count !== null && el.reward_number_sold >= el.reward_max_count) {
+
 	          return React.createElement(RewardDetail, { reward: el, clickerFunc: 'soldout' });
 	        } else {
 	          return React.createElement(RewardDetail, { reward: el });
 	        }
 	      });
 	    }
+
 	    return React.createElement(
 	      'div',
 	      null,
@@ -32026,132 +32027,6 @@
 	});
 
 	module.exports = ProjectDetail;
-	// <div>
-	//   <h2 className="project-title">{this.state.Project.project.title}</h2>
-	//   <h4 className = "project-title">{"By: " + this.state.Project.project.author.username}</h4>
-	//
-	//   <br />
-	//   <br />
-	//
-	//   <div className="row details-top">
-	//
-	//     <div id="ProjectDetailPane" className="col-md-8">
-	//
-	//       <img
-	//         ref="indexItemImage"
-	//         className="project-detail-image"
-	//         src={this.state.Project.project.img_url}
-	//         onError={this._imgError}
-	//         >
-	//       </img>
-	//       <p className="blurb">Blurb:{this.state.Project.project.blurb}</p>
-	//       <br/>
-	//       {btnEdit}{btnModalDelete}{btnEditRewards}
-	//
-	//       <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	//         <div className="modal-dialog" role="document">
-	//           <div className="modal-content">
-	//             <div className="modal-header">
-	//               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	//               <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
-	//             </div>
-	//
-	//             <div className="modal-footer">
-	//               <button type="button" className="button blue" data-dismiss="modal">No</button>
-	//               {btnDelete}
-	//
-	//             </div>
-	//           </div>
-	//         </div>
-	//       </div>
-
-	// <Modal
-	//   isOpen={this.state.modalIsOpen}
-	//   onRequestClose={this.closeModal}
-	//   style={customStyles} >
-	//
-	//   <h2>Hello</h2>
-	//   <button onClick={this.closeModal}>close</button>
-	//   <div>I am a modal</div>
-	//   <form>
-	//     <input />
-	//     <button>tab navigation</button>
-	//     <button>stays</button>
-	//     <button>inside</button>
-	//     <button>the modal</button>
-	//   </form>
-	// </Modal>
-
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//       <br/>
-	//       <br/>
-	//     </div>
-	//
-	//     <div className="col-md-4">
-	//
-	//       <h3>{this.state.Project.project.backers}</h3>
-	//       <p>backers</p>
-	//       <h3>{"$" + this.state.Project.project.current_funding}</h3>
-	//       <p>pleged of {"$" + this.state.Project.project.funding_goal}</p>
-	//       <h3>{daysToGo}</h3>
-	//       <p>days to go</p>
-	//       <br />
-	//
-	//       <h6>This project will only be funded if at least
-	//         {" $" + this.state.Project.project.funding_goal} is raised by
-	//         {" " + this.state.Project.project.campaign_end_date}
-	//       </h6>
-	//
-	//       {endOfFundingMsg}
-	//
-	//     </div>
-	//
-	//   </div>
-	//
-	//   <div className="row row details-bottom">
-	//
-	//     <div className="col-sm-8 col-md-8">
-	//       <section
-	//         className="details-body"
-	//         dangerouslySetInnerHTML={{__html: this.state.Project.project.details}} />
-	//     </div>
-	//
-	//     <div className="col-sm-4 col-md-4">
-	//       <br></br>
-	//       {rewards}
-	//     </div>
-	//
-	//   </div>
-	//
-	// </div>
-
-	// <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	//   <div className="modal-dialog" role="document">
-	//     <div className="modal-content">
-	//       <div className="modal-header">
-	//         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	//         <h4 className="modal-title" id="myModalLabel">Delete {this.state.Project.project.title} ?</h4>
-	//       </div>
-	//
-	//       <div className="modal-footer">
-	//         <button type="button" className="button blue" data-dismiss="modal">No</button>
-	//         {btnDelete}
-	//
-	//       </div>
-	//     </div>
-	//   </div>
-	// </div>
 
 /***/ },
 /* 238 */
@@ -32435,9 +32310,6 @@
 
 	  componentDidMount: function () {
 	    var editor = this.createEditor();
-
-	    // this.getEditorElement(),
-	    // this.getEditorConfig()
 	    this.setState({ editor: editor });
 	  },
 
@@ -32448,7 +32320,6 @@
 	  },
 
 	  onTextChange: function (value) {
-	    // this.setState({details: value});
 	    this.state.details = value;
 	  },
 
@@ -32467,8 +32338,6 @@
 	  getEditorContents: function () {
 	    this.state.Project.project.details;
 	  },
-
-	  // TODO: REFACTOR / CLEAN THIS. add into another file
 
 	  validateInput: function () {
 	    this.errors = [];
@@ -32511,8 +32380,6 @@
 	  createProject: function (event) {
 	    event.preventDefault();
 	    var project = {};
-
-	    //TODO EDIT THIS
 
 	    Object.keys(this.inputs).forEach(function (key) {
 	      project[key] = this.state[key];
@@ -32839,6 +32706,7 @@
 	      }
 	    }.bind(this));
 	  },
+
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -33113,17 +32981,13 @@
 	  },
 
 	  getStateFromStore: function () {
-	    return { Project: ProjectStore.findById(parseInt(this.props.params.id)) };
+	    return { Project: ProjectStore.singleProject(parseInt(this.props.params.id)) };
 	  },
 
 	  componentDidMount: function () {
 	    this.projectListener = ProjectStore.addListener(this._onChange);
 	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
 	    var editor = this.createEditor();
-
-	    // TODO: removed these thursday 3:30pm
-	    // this.getEditorElement(),
-	    // this.getEditorConfig()
 	    this.setState({ editor: editor });
 	  },
 
@@ -33168,8 +33032,6 @@
 	    event.preventDefault();
 	    var project = {};
 
-	    //TODO EDIT THIS
-
 	    Object.keys(this.state).forEach(function (key) {
 	      project[key] = this.state[key];
 	    }.bind(this));
@@ -33188,10 +33050,6 @@
 	    this.state.details = value;
 	  },
 
-	  // getEditorContents: function() {
-	  //   this.state.Project.project.details;
-	  // },
-
 	  render: function () {
 	    if (this.state.Project == undefined) {
 	      return React.createElement(
@@ -33206,7 +33064,8 @@
 	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
 	      React.createElement(
 	        'form',
-	        { className: 'form-horizontal editProjectForm', onSubmit: this.editProject },
+	        { className: 'form-horizontal editProjectForm',
+	          onSubmit: this.editProject },
 	        React.createElement(
 	          'h2',
 	          null,
@@ -33261,7 +33120,8 @@
 	          React.createElement(
 	            'div',
 	            { className: 'col-sm-12' },
-	            React.createElement('img', { className: 'preview-image center-block', src: this.state.img_url })
+	            React.createElement('img', { className: 'preview-image center-block',
+	              src: this.state.img_url })
 	          )
 	        ),
 	        React.createElement(
@@ -33456,13 +33316,6 @@
 
 	module.exports = ProjectDetail;
 
-	// <table className="table table-hover">
-	//   <h2>Stats:</h2>
-	//   <tbody>
-	//     {rewardRow}
-	//   </tbody>
-	// </table>
-
 /***/ },
 /* 247 */
 /***/ function(module, exports, __webpack_require__) {
@@ -33557,7 +33410,7 @@
 	      delivery_date: "",
 	      reward_max_count: "",
 	      modalIsOpen: false,
-	      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+	      Project: ProjectStore.singleProject(parseInt(this.props.params.id)),
 	      customStyles: {
 	        content: {
 	          top: '50%',
@@ -33671,7 +33524,6 @@
 	        description: "",
 	        cost: "",
 	        project_id: "",
-	        // delivery_date: "",
 	        img_url: "",
 	        reward_max_count: ""
 	      });
@@ -33699,7 +33551,6 @@
 	    if (this.state.Project !== undefined && this.state.Project.project !== undefined) {
 	      rewards = [];
 	      rewards = this.state.Project.project.rewards.map(function (el) {
-	        // rewards.push(el.reward_title);
 	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'none' });
 	      });
 	    }
@@ -34156,9 +34007,11 @@
 
 	  render: function () {
 	    var username = "Options";
+
 	    if (this.state.User != undefined) {
 	      username = this.state.User.username;
 	    }
+
 	    return React.createElement(
 	      'nav',
 	      { className: 'navbar navbar-default' },
@@ -34259,39 +34112,7 @@
 	  }
 	});
 
-	// <div className="navbar navbar-fixed-top">
-	//   <div className="container">
-	//     <div className="navbar-header">
-	//       <Logo className="navbar-brand" />
-	//       <button type="button" className="navbar-toggle"
-	//        data-toggle="collapse"data-target=".navbar-collapse">
-	//         <span className="sr-only">Toggle nav</span>
-	//         <span className="icon-bar"></span>
-	//         <span className="icon-bar"></span>
-	//         <span className="icon-bar"></span>
-	//       </button>
-	//     </div>
-	//
-	//     <div className="collapse navbar-collapse">
-	//       <ul className="nav navbar-nav">
-	//         <li><Discover /></li>
-	//         <li><Create /></li>
-	//       </ul>
-	//     </div>
-	//   </div>
-	// </div>
-
-	// <Logo /><Discover /><Create />
-	// <Logo />
-	// <Discover />
-	// <Create />
-	// <Profile />
 	module.exports = Menu;
-
-	// Logo
-	// Discover
-	// Create
-	// Profile
 
 /***/ },
 /* 251 */
@@ -34520,14 +34341,19 @@
 	    mostFundedProjects = mostFundedProjects.map(function (el) {
 	      return React.createElement(ProjectIndexItem, { project: el, key: el.id });
 	    });
+
 	    var totalCategories = 0;
+
 	    var categories = this.state.categories.map(function (el) {
 	      var count = ProjectStore.getCategoryCount(el.id);
 	      totalCategories += count;
 	      return React.createElement(CategoryItem, { category: el, key: el.id, count: count });
 	    });
+
 	    var all = { title: "All" };
-	    categories.push(React.createElement(CategoryItem, { category: all, key: 99, count: totalCategories }));
+	    categories.push(React.createElement(CategoryItem, { category: all,
+	      key: 99,
+	      count: totalCategories }));
 
 	    return React.createElement(
 	      'div',
@@ -34578,40 +34404,6 @@
 	});
 
 	module.exports = Discover;
-
-	// <div id="carousel-example-generic" className="carousel slide" data-ride="carousel">
-	//   <ol className="carousel-indicators">
-	//     <li data-target="#carousel-example-generic" data-slide-to="0" className="active"></li>
-	//     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-	//     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-	//   </ol>
-	//
-	//   <div className="carousel-inner" role="listbox">
-	//
-	//     <div className="item active">
-	//       <img src="http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg" alt="..."></img>
-	//       <div className="carousel-caption">
-	//       </div>
-	//     </div>
-	//
-	//     <div className="item">
-	//       <img src="..." alt="..."></img>
-	//       <div className="carousel-caption">
-	//         ...
-	//       </div>
-	//     </div>
-	//     this is lower than the others
-	//   </div>
-	//
-	//   <a className="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-	//     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-	//     <span className="sr-only">Previous</span>
-	//   </a>
-	//   <a className="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-	//     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-	//     <span className="sr-only">Next</span>
-	//   </a>
-	// </div>
 
 /***/ },
 /* 259 */

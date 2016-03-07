@@ -30,6 +30,7 @@ var ApiActions = {
       user: obj
     });
   },
+  
   recieveAllCategories: function(obj) {
     Dispatcher.dispatch({
       actionType: CategoryConstants.ALL_CATEGORIES_RECIEVED,
@@ -38,6 +39,5 @@ var ApiActions = {
   }
 
 };
-
 
 module.exports = ApiActions;

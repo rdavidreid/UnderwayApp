@@ -28,7 +28,7 @@ var rewardForm = React.createClass({
       delivery_date: "",
       reward_max_count: "",
       modalIsOpen: false,
-      Project: ProjectStore.findById(parseInt(this.props.params.id)),
+      Project: ProjectStore.singleProject(parseInt(this.props.params.id)),
       customStyles: {
         content : {
           top                   : '50%',
@@ -144,7 +144,6 @@ var rewardForm = React.createClass({
         description: "",
         cost: "",
         project_id: "",
-        // delivery_date: "",
         img_url: "",
         reward_max_count: "",
       });
@@ -168,7 +167,6 @@ var rewardForm = React.createClass({
     if(this.state.Project !== undefined && this.state.Project.project !== undefined){
       rewards = [];
       rewards = this.state.Project.project.rewards.map(function(el) {
-        // rewards.push(el.reward_title);
         return(<RewardDetail reward={el} clickerFunc="none" />);
       });
     }

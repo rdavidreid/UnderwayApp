@@ -20,7 +20,4 @@ class Reward < ActiveRecord::Base
   has_many(:backers, dependent: :destroy)
   has_many(:users, through: :backers, source: :user)
 
-
-
-
 end
