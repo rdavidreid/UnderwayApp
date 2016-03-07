@@ -8,23 +8,14 @@ class Api::RewardsController < ApplicationController
     @reward = Reward.find_by_id(params[:id])
   end
 
-
-  # TODO not ok not dry. this logic into the view. search for render
-  #  /api/projects/show' and refactor them all
-
   def create
     @reward = Reward.new(reward_params)
     if @reward.save
       @project = @reward.project
-      current_users_rewards = current_user.rewards
-      @current_users_current_project_rewards = []
-      current_users_rewards.map do |el|
-        if el.project_id == @project.id
-          @current_users_current_project_rewards.push(el)
-        end
-      end
+      @current_user = current_user
       render "/api/projects/show"
     else
+      render :json => {:error => "Invalid Reward"}.to_json, :status => 422
     end
   end
 
@@ -32,8 +23,9 @@ class Api::RewardsController < ApplicationController
     @reward = Reward.find_by_id(params[:id])
     if @reward
       @reward.destroy
+    else
+      render :json => {:error => "Could not delete"}.to_json, :status => 422
     end
-
   end
 
   private

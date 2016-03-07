@@ -1,3 +1,11 @@
+# find the rewards current_user has purchased for the given project
+current_users_current_project_rewards = []
+current_user.rewards.map do |el|
+  if el.project_id == @project.id
+    current_users_current_project_rewards.push(el)
+  end
+end
+
 json.project do
 
   json.id @project.id
@@ -17,9 +25,7 @@ json.project do
   end
 
   json.rewards @project.rewards do |reward|
-  # json.rewards do
-  # @project.rewards.each do |reward|
-    # json.rewards do
+
     json.reward_title reward.title
     json.reward_id reward.id
     json.reward_description reward.description
@@ -35,13 +41,12 @@ json.project do
     json.rewards_bought do
       arr = []
 
-      @current_users_current_project_rewards.each do |el|
+      current_users_current_project_rewards.each do |el|
         arr.push(el) if el.id == reward.id
       end
 
       json.rewards_bought arr.length
     end
-  # end
 
   end
 end
