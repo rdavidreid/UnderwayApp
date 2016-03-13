@@ -51,6 +51,13 @@ var ProjectIndex = React.createClass({
       return(<ProjectIndexItem project={el} key={el.id}/>);
     });
 
+    if (arrProjects == ""){
+      arrProjects = (
+      <div className="alert alert-warning" role="alert">
+        {this.state.Category} is currently empty!
+      </div>);
+    }
+
     return(
       <div>
         <div className="row">

@@ -137,7 +137,7 @@ title: "Evil",
 blurb: "An ordinary guy. An extraordinary super villain.",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457326411/irlnyyoi0vcwvo0jjrjl.jpg",
 details:
-"<div><br></div><div><span style=\"font-size: 32px;\">Experience The Graphic Novel \"Evil\"</span></div><div><br></div><div><br></div><div>Bob strives to become the most feared super villain in the world, while maintaining his cover working as a Barista in one of San Francisco's most exquisite coffee shops. A story full of laughter, action, poor customer service, and expresso.</div>",
+"<div><br></div><div><span style=\"font-size: 32px;\">Experience The Graphic Novel \"Evil\"</span></div><div><br></div><div><br></div><div>Bob strives to become the most feared super villain in the world, while maintaining his cover working as a Barista in one of San Francisco's most exquisite coffee shops. A story full of laughter, action, poor customer service, and espresso.</div>",
 author_id: 1,
 category_id: 2,
 current_funding: 0,

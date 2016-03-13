@@ -48,20 +48,20 @@
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
 	var UserStore = __webpack_require__(182);
-	var CategoryStore = __webpack_require__(257);
-	var ApiUtil = __webpack_require__(184);
-	var ProjectIndex = __webpack_require__(186);
-	var ProjectDetail = __webpack_require__(237);
-	var ProjectForm = __webpack_require__(239);
-	var ProjectEditForm = __webpack_require__(245);
-	var UserDetail = __webpack_require__(246);
-	var RewardForm = __webpack_require__(248);
-	var Discover = __webpack_require__(258);
-	var Menu = __webpack_require__(250);
+	var CategoryStore = __webpack_require__(184);
+	var ApiUtil = __webpack_require__(186);
+	var ProjectIndex = __webpack_require__(188);
+	var ProjectDetail = __webpack_require__(239);
+	var ProjectForm = __webpack_require__(261);
+	var ProjectEditForm = __webpack_require__(380);
+	var UserDetail = __webpack_require__(381);
+	var RewardForm = __webpack_require__(383);
+	var Discover = __webpack_require__(385);
+	var Menu = __webpack_require__(388);
 
-	var Router = __webpack_require__(188).Router;
-	var Route = __webpack_require__(188).Route;
-	var IndexRoute = __webpack_require__(188).IndexRoute;
+	var Router = __webpack_require__(190).Router;
+	var Route = __webpack_require__(190).Route;
+	var IndexRoute = __webpack_require__(190).IndexRoute;
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -26597,7 +26597,57 @@
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ApiActions = __webpack_require__(185);
+	var Store = __webpack_require__(160).Store;
+	var AppDispatcher = __webpack_require__(178);
+	var CategoryConstants = __webpack_require__(185);
+
+	var _categories = [];
+	var CategoryStore = new Store(AppDispatcher);
+
+	CategoryStore.all = function () {
+	  return _categories.slice(0);
+	};
+
+	CategoryStore.resetCategories = function (newCategories) {
+	  _categories = newCategories;
+	};
+
+	CategoryStore.idCategory = function (id) {
+	  var ans = undefined;
+	  _categories.forEach(function (el) {
+	    if (el.id === parseInt(id)) {
+	      ans = el.title;
+	    }
+	  });
+	  return ans;
+	};
+
+	CategoryStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case CategoryConstants.ALL_CATEGORIES_RECIEVED:
+	      this.resetCategories(payload.categories);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+
+	module.exports = CategoryStore;
+
+/***/ },
+/* 185 */
+/***/ function(module, exports) {
+
+	var CategoryConstants = {
+	  ALL_CATEGORIES_RECIEVED: "ALL_CATEGORIES_RECIEVED"
+	};
+
+	module.exports = CategoryConstants;
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ApiActions = __webpack_require__(187);
 
 	var ApiUtil = {
 	  fetchAllProjects: function () {
@@ -26726,13 +26776,13 @@
 	module.exports = ApiUtil;
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Dispatcher = __webpack_require__(178);
 	var ProjectConstants = __webpack_require__(181);
 	var UserConstants = __webpack_require__(183);
-	var CategoryConstants = __webpack_require__(256);
+	var CategoryConstants = __webpack_require__(185);
 
 	var ApiActions = {
 	  recieveAll: function (obj) {
@@ -26774,15 +26824,15 @@
 	module.exports = ApiActions;
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var ProjectStore = __webpack_require__(159);
-	var ApiUtil = __webpack_require__(184);
-	var ProjectIndexItem = __webpack_require__(187);
-	var CategoryStore = __webpack_require__(257);
+	var ApiUtil = __webpack_require__(186);
+	var ProjectIndexItem = __webpack_require__(189);
+	var CategoryStore = __webpack_require__(184);
 
 	var ProjectIndex = React.createClass({
 	  displayName: 'ProjectIndex',
@@ -26830,6 +26880,15 @@
 	      return React.createElement(ProjectIndexItem, { project: el, key: el.id });
 	    });
 
+	    if (arrProjects == "") {
+	      arrProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        this.state.Category,
+	        ' is currently empty!'
+	      );
+	    }
+
 	    return React.createElement(
 	      'div',
 	      null,
@@ -26856,11 +26915,11 @@
 	module.exports = ProjectIndex;
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
+	var History = __webpack_require__(190).History;
 
 	var ProjectIndexItem = React.createClass({
 	  displayName: 'ProjectIndexItem',
@@ -27024,7 +27083,7 @@
 	module.exports = ProjectIndexItem;
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* components */
@@ -27034,19 +27093,19 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _Router2 = __webpack_require__(189);
+	var _Router2 = __webpack_require__(191);
 
 	var _Router3 = _interopRequireDefault(_Router2);
 
 	exports.Router = _Router3['default'];
 
-	var _Link2 = __webpack_require__(225);
+	var _Link2 = __webpack_require__(227);
 
 	var _Link3 = _interopRequireDefault(_Link2);
 
 	exports.Link = _Link3['default'];
 
-	var _IndexLink2 = __webpack_require__(226);
+	var _IndexLink2 = __webpack_require__(228);
 
 	var _IndexLink3 = _interopRequireDefault(_IndexLink2);
 
@@ -27054,25 +27113,25 @@
 
 	/* components (configuration) */
 
-	var _IndexRedirect2 = __webpack_require__(227);
+	var _IndexRedirect2 = __webpack_require__(229);
 
 	var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
 
 	exports.IndexRedirect = _IndexRedirect3['default'];
 
-	var _IndexRoute2 = __webpack_require__(229);
+	var _IndexRoute2 = __webpack_require__(231);
 
 	var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
 
 	exports.IndexRoute = _IndexRoute3['default'];
 
-	var _Redirect2 = __webpack_require__(228);
+	var _Redirect2 = __webpack_require__(230);
 
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 
 	exports.Redirect = _Redirect3['default'];
 
-	var _Route2 = __webpack_require__(230);
+	var _Route2 = __webpack_require__(232);
 
 	var _Route3 = _interopRequireDefault(_Route2);
 
@@ -27080,19 +27139,19 @@
 
 	/* mixins */
 
-	var _History2 = __webpack_require__(231);
+	var _History2 = __webpack_require__(233);
 
 	var _History3 = _interopRequireDefault(_History2);
 
 	exports.History = _History3['default'];
 
-	var _Lifecycle2 = __webpack_require__(232);
+	var _Lifecycle2 = __webpack_require__(234);
 
 	var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
 
 	exports.Lifecycle = _Lifecycle3['default'];
 
-	var _RouteContext2 = __webpack_require__(233);
+	var _RouteContext2 = __webpack_require__(235);
 
 	var _RouteContext3 = _interopRequireDefault(_RouteContext2);
 
@@ -27100,29 +27159,29 @@
 
 	/* utils */
 
-	var _useRoutes2 = __webpack_require__(212);
+	var _useRoutes2 = __webpack_require__(214);
 
 	var _useRoutes3 = _interopRequireDefault(_useRoutes2);
 
 	exports.useRoutes = _useRoutes3['default'];
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
 	exports.createRoutes = _RouteUtils.createRoutes;
 
-	var _RoutingContext2 = __webpack_require__(209);
+	var _RoutingContext2 = __webpack_require__(211);
 
 	var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
 
 	exports.RoutingContext = _RoutingContext3['default'];
 
-	var _PropTypes2 = __webpack_require__(224);
+	var _PropTypes2 = __webpack_require__(226);
 
 	var _PropTypes3 = _interopRequireDefault(_PropTypes2);
 
 	exports.PropTypes = _PropTypes3['default'];
 
-	var _match2 = __webpack_require__(234);
+	var _match2 = __webpack_require__(236);
 
 	var _match3 = _interopRequireDefault(_match2);
 
@@ -27133,7 +27192,7 @@
 	exports['default'] = _Router4['default'];
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27150,7 +27209,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -27158,21 +27217,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _historyLibCreateHashHistory = __webpack_require__(191);
+	var _historyLibCreateHashHistory = __webpack_require__(193);
 
 	var _historyLibCreateHashHistory2 = _interopRequireDefault(_historyLibCreateHashHistory);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _RoutingContext = __webpack_require__(209);
+	var _RoutingContext = __webpack_require__(211);
 
 	var _RoutingContext2 = _interopRequireDefault(_RoutingContext);
 
-	var _useRoutes = __webpack_require__(212);
+	var _useRoutes = __webpack_require__(214);
 
 	var _useRoutes2 = _interopRequireDefault(_useRoutes);
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var func = _React$PropTypes.func;
@@ -27304,7 +27363,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27371,7 +27430,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27382,23 +27441,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _Actions = __webpack_require__(193);
+	var _Actions = __webpack_require__(195);
 
-	var _ExecutionEnvironment = __webpack_require__(194);
+	var _ExecutionEnvironment = __webpack_require__(196);
 
-	var _DOMUtils = __webpack_require__(195);
+	var _DOMUtils = __webpack_require__(197);
 
-	var _DOMStateStorage = __webpack_require__(196);
+	var _DOMStateStorage = __webpack_require__(198);
 
-	var _createDOMHistory = __webpack_require__(197);
+	var _createDOMHistory = __webpack_require__(199);
 
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 
@@ -27602,7 +27661,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27660,7 +27719,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports) {
 
 	/**
@@ -27696,7 +27755,7 @@
 	};
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27706,7 +27765,7 @@
 	exports.canUseDOM = canUseDOM;
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27786,7 +27845,7 @@
 	}
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/*eslint-disable no-empty */
@@ -27798,7 +27857,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -27860,7 +27919,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27871,15 +27930,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _ExecutionEnvironment = __webpack_require__(194);
+	var _ExecutionEnvironment = __webpack_require__(196);
 
-	var _DOMUtils = __webpack_require__(195);
+	var _DOMUtils = __webpack_require__(197);
 
-	var _createHistory = __webpack_require__(198);
+	var _createHistory = __webpack_require__(200);
 
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 
@@ -27906,7 +27965,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27917,23 +27976,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _deepEqual = __webpack_require__(199);
+	var _deepEqual = __webpack_require__(201);
 
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
-	var _AsyncUtils = __webpack_require__(202);
+	var _AsyncUtils = __webpack_require__(204);
 
-	var _Actions = __webpack_require__(193);
+	var _Actions = __webpack_require__(195);
 
-	var _createLocation2 = __webpack_require__(203);
+	var _createLocation2 = __webpack_require__(205);
 
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 
-	var _runTransitionHook = __webpack_require__(206);
+	var _runTransitionHook = __webpack_require__(208);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _deprecate = __webpack_require__(207);
+	var _deprecate = __webpack_require__(209);
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
@@ -28181,12 +28240,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(200);
-	var isArguments = __webpack_require__(201);
+	var objectKeys = __webpack_require__(202);
+	var isArguments = __webpack_require__(203);
 
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -28281,7 +28340,7 @@
 
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -28296,7 +28355,7 @@
 
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -28322,7 +28381,7 @@
 
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28353,7 +28412,7 @@
 	}
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28362,9 +28421,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _Actions = __webpack_require__(193);
+	var _Actions = __webpack_require__(195);
 
-	var _parsePath = __webpack_require__(204);
+	var _parsePath = __webpack_require__(206);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -28394,7 +28453,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28403,11 +28462,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _extractPath = __webpack_require__(205);
+	var _extractPath = __webpack_require__(207);
 
 	var _extractPath2 = _interopRequireDefault(_extractPath);
 
@@ -28444,7 +28503,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28462,7 +28521,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28471,7 +28530,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28492,7 +28551,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28501,7 +28560,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28517,7 +28576,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28537,7 +28596,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28637,7 +28696,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28652,7 +28711,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -28660,9 +28719,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _getRouteParams = __webpack_require__(210);
+	var _getRouteParams = __webpack_require__(212);
 
 	var _getRouteParams2 = _interopRequireDefault(_getRouteParams);
 
@@ -28783,14 +28842,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(211);
+	var _PatternUtils = __webpack_require__(213);
 
 	/**
 	 * Extracts an object of params the given route cares about from
@@ -28812,7 +28871,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28826,7 +28885,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -29045,7 +29104,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -29058,31 +29117,31 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _historyLibActions = __webpack_require__(193);
+	var _historyLibActions = __webpack_require__(195);
 
-	var _historyLibUseQueries = __webpack_require__(213);
+	var _historyLibUseQueries = __webpack_require__(215);
 
 	var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
 
-	var _computeChangedRoutes2 = __webpack_require__(218);
+	var _computeChangedRoutes2 = __webpack_require__(220);
 
 	var _computeChangedRoutes3 = _interopRequireDefault(_computeChangedRoutes2);
 
-	var _TransitionUtils = __webpack_require__(219);
+	var _TransitionUtils = __webpack_require__(221);
 
-	var _isActive2 = __webpack_require__(221);
+	var _isActive2 = __webpack_require__(223);
 
 	var _isActive3 = _interopRequireDefault(_isActive2);
 
-	var _getComponents = __webpack_require__(222);
+	var _getComponents = __webpack_require__(224);
 
 	var _getComponents2 = _interopRequireDefault(_getComponents);
 
-	var _matchRoutes = __webpack_require__(223);
+	var _matchRoutes = __webpack_require__(225);
 
 	var _matchRoutes2 = _interopRequireDefault(_matchRoutes);
 
@@ -29342,7 +29401,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29355,15 +29414,15 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _qs = __webpack_require__(214);
+	var _qs = __webpack_require__(216);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _runTransitionHook = __webpack_require__(206);
+	var _runTransitionHook = __webpack_require__(208);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _parsePath = __webpack_require__(204);
+	var _parsePath = __webpack_require__(206);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -29462,13 +29521,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Stringify = __webpack_require__(215);
-	var Parse = __webpack_require__(217);
+	var Stringify = __webpack_require__(217);
+	var Parse = __webpack_require__(219);
 
 
 	// Declare internals
@@ -29483,12 +29542,12 @@
 
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(216);
+	var Utils = __webpack_require__(218);
 
 
 	// Declare internals
@@ -29610,7 +29669,7 @@
 
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports) {
 
 	// Load modules
@@ -29806,12 +29865,12 @@
 
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(216);
+	var Utils = __webpack_require__(218);
 
 
 	// Declare internals
@@ -29998,14 +30057,14 @@
 
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(211);
+	var _PatternUtils = __webpack_require__(213);
 
 	function routeParamsChanged(route, prevState, nextState) {
 	  if (!route.path) return false;
@@ -30059,7 +30118,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30068,7 +30127,7 @@
 	exports.runEnterHooks = runEnterHooks;
 	exports.runLeaveHooks = runLeaveHooks;
 
-	var _AsyncUtils = __webpack_require__(220);
+	var _AsyncUtils = __webpack_require__(222);
 
 	function createEnterHook(hook, route) {
 	  return function (a, b, callback) {
@@ -30136,7 +30195,7 @@
 	}
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30199,14 +30258,14 @@
 	}
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PatternUtils = __webpack_require__(211);
+	var _PatternUtils = __webpack_require__(213);
 
 	function deepEqual(a, b) {
 	  if (a == b) return true;
@@ -30327,14 +30386,14 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _AsyncUtils = __webpack_require__(220);
+	var _AsyncUtils = __webpack_require__(222);
 
 	function getComponentsForRoute(location, route, callback) {
 	  if (route.component || route.components) {
@@ -30365,7 +30424,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30374,15 +30433,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _AsyncUtils = __webpack_require__(220);
+	var _AsyncUtils = __webpack_require__(222);
 
-	var _PatternUtils = __webpack_require__(211);
+	var _PatternUtils = __webpack_require__(213);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
 	function getChildRoutes(route, location, callback) {
 	  if (route.childRoutes) {
@@ -30559,7 +30618,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30617,7 +30676,7 @@
 	};
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30785,7 +30844,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30804,7 +30863,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Link = __webpack_require__(225);
+	var _Link = __webpack_require__(227);
 
 	var _Link2 = _interopRequireDefault(_Link);
 
@@ -30832,7 +30891,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30845,11 +30904,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30857,11 +30916,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Redirect = __webpack_require__(228);
+	var _Redirect = __webpack_require__(230);
 
 	var _Redirect2 = _interopRequireDefault(_Redirect);
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -30911,7 +30970,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30924,7 +30983,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -30932,11 +30991,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _PatternUtils = __webpack_require__(211);
+	var _PatternUtils = __webpack_require__(213);
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -31024,7 +31083,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31037,11 +31096,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(190);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -31049,9 +31108,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	var func = _react2['default'].PropTypes.func;
 
@@ -31100,7 +31159,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31113,7 +31172,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -31121,9 +31180,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	var _React$PropTypes = _react2['default'].PropTypes;
 	var string = _React$PropTypes.string;
@@ -31173,14 +31232,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _PropTypes = __webpack_require__(224);
+	var _PropTypes = __webpack_require__(226);
 
 	/**
 	 * A mixin that adds the "history" instance variable to components.
@@ -31201,7 +31260,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31214,7 +31273,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -31271,7 +31330,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 233 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31314,7 +31373,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 234 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31325,21 +31384,21 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _historyLibCreateMemoryHistory = __webpack_require__(235);
+	var _historyLibCreateMemoryHistory = __webpack_require__(237);
 
 	var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
 
-	var _historyLibUseBasename = __webpack_require__(236);
+	var _historyLibUseBasename = __webpack_require__(238);
 
 	var _historyLibUseBasename2 = _interopRequireDefault(_historyLibUseBasename);
 
-	var _RouteUtils = __webpack_require__(208);
+	var _RouteUtils = __webpack_require__(210);
 
-	var _useRoutes = __webpack_require__(212);
+	var _useRoutes = __webpack_require__(214);
 
 	var _useRoutes2 = _interopRequireDefault(_useRoutes);
 
@@ -31383,7 +31442,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 235 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -31394,13 +31453,13 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _invariant = __webpack_require__(192);
+	var _invariant = __webpack_require__(194);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _Actions = __webpack_require__(193);
+	var _Actions = __webpack_require__(195);
 
-	var _createHistory = __webpack_require__(198);
+	var _createHistory = __webpack_require__(200);
 
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 
@@ -31531,7 +31590,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 236 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31544,17 +31603,17 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _ExecutionEnvironment = __webpack_require__(194);
+	var _ExecutionEnvironment = __webpack_require__(196);
 
-	var _runTransitionHook = __webpack_require__(206);
+	var _runTransitionHook = __webpack_require__(208);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-	var _extractPath = __webpack_require__(205);
+	var _extractPath = __webpack_require__(207);
 
 	var _extractPath2 = _interopRequireDefault(_extractPath);
 
-	var _parsePath = __webpack_require__(204);
+	var _parsePath = __webpack_require__(206);
 
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -31665,16 +31724,16 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 237 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ProjectStore = __webpack_require__(159);
-	var ApiUtil = __webpack_require__(184);
-	var RewardDetail = __webpack_require__(238);
+	var ApiUtil = __webpack_require__(186);
+	var RewardDetail = __webpack_require__(240);
 	var UserStore = __webpack_require__(182);
-	var Modal = __webpack_require__(374);
-	var History = __webpack_require__(188).History;
+	var Modal = __webpack_require__(241);
+	var History = __webpack_require__(190).History;
 
 	var ProjectDetail = React.createClass({
 	  displayName: 'ProjectDetail',
@@ -32029,12 +32088,12 @@
 	module.exports = ProjectDetail;
 
 /***/ },
-/* 238 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var Modal = __webpack_require__(374);
+	var ApiUtil = __webpack_require__(186);
+	var Modal = __webpack_require__(241);
 
 	var RewardDetail = React.createClass({
 	  displayName: 'RewardDetail',
@@ -32246,18 +32305,1942 @@
 	module.exports = RewardDetail;
 
 /***/ },
-/* 239 */
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(242);
+
+
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var ExecutionEnvironment = __webpack_require__(243);
+	var ModalPortal = React.createFactory(__webpack_require__(244));
+	var ariaAppHider = __webpack_require__(259);
+	var elementClass = __webpack_require__(260);
+	var renderSubtreeIntoContainer = __webpack_require__(158).unstable_renderSubtreeIntoContainer;
+
+	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
+
+	var Modal = module.exports = React.createClass({
+
+	  displayName: 'Modal',
+	  statics: {
+	    setAppElement: ariaAppHider.setElement,
+	    injectCSS: function() {
+	      "production" !== process.env.NODE_ENV
+	        && console.warn('React-Modal: injectCSS has been deprecated ' +
+	                        'and no longer has any effect. It will be removed in a later version');
+	    }
+	  },
+
+	  propTypes: {
+	    isOpen: React.PropTypes.bool.isRequired,
+	    style: React.PropTypes.shape({
+	      content: React.PropTypes.object,
+	      overlay: React.PropTypes.object
+	    }),
+	    appElement: React.PropTypes.instanceOf(SafeHTMLElement),
+	    onRequestClose: React.PropTypes.func,
+	    closeTimeoutMS: React.PropTypes.number,
+	    ariaHideApp: React.PropTypes.bool
+	  },
+
+	  getDefaultProps: function () {
+	    return {
+	      isOpen: false,
+	      ariaHideApp: true,
+	      closeTimeoutMS: 0
+	    };
+	  },
+
+	  componentDidMount: function() {
+	    this.node = document.createElement('div');
+	    this.node.className = 'ReactModalPortal';
+	    document.body.appendChild(this.node);
+	    this.renderPortal(this.props);
+	  },
+
+	  componentWillReceiveProps: function(newProps) {
+	    this.renderPortal(newProps);
+	  },
+
+	  componentWillUnmount: function() {
+	    ReactDOM.unmountComponentAtNode(this.node);
+	    document.body.removeChild(this.node);
+	  },
+
+	  renderPortal: function(props) {
+	    if (props.isOpen) {
+	      elementClass(document.body).add('ReactModal__Body--open');
+	    } else {
+	      elementClass(document.body).remove('ReactModal__Body--open');
+	    }
+
+	    if (props.ariaHideApp) {
+	      ariaAppHider.toggle(props.isOpen, props.appElement);
+	    }
+	    sanitizeProps(props);
+	    this.portal = renderSubtreeIntoContainer(this, ModalPortal(props), this.node);
+	  },
+
+	  render: function () {
+	    return React.DOM.noscript();
+	  }
+	});
+
+	function sanitizeProps(props) {
+	  delete props.ref;
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Based on code that is Copyright 2013-2015, Facebook, Inc.
+	  All rights reserved.
+	*/
+
+	(function () {
+		'use strict';
+
+		var canUseDOM = !!(
+			typeof window !== 'undefined' &&
+			window.document &&
+			window.document.createElement
+		);
+
+		var ExecutionEnvironment = {
+
+			canUseDOM: canUseDOM,
+
+			canUseWorkers: typeof Worker !== 'undefined',
+
+			canUseEventListeners:
+				canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+			canUseViewport: canUseDOM && !!window.screen
+
+		};
+
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return ExecutionEnvironment;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else if (typeof module !== 'undefined' && module.exports) {
+			module.exports = ExecutionEnvironment;
+		} else {
+			window.ExecutionEnvironment = ExecutionEnvironment;
+		}
+
+	}());
+
+
+/***/ },
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var Cloud = __webpack_require__(240);
-	var History = __webpack_require__(188).History;
-	var LinkedStateMixin = __webpack_require__(241);
+	var div = React.DOM.div;
+	var focusManager = __webpack_require__(245);
+	var scopeTab = __webpack_require__(247);
+	var Assign = __webpack_require__(248);
+
+
+	// so that our CSS is statically analyzable
+	var CLASS_NAMES = {
+	  overlay: {
+	    base: 'ReactModal__Overlay',
+	    afterOpen: 'ReactModal__Overlay--after-open',
+	    beforeClose: 'ReactModal__Overlay--before-close'
+	  },
+	  content: {
+	    base: 'ReactModal__Content',
+	    afterOpen: 'ReactModal__Content--after-open',
+	    beforeClose: 'ReactModal__Content--before-close'
+	  }
+	};
+
+	var defaultStyles = {
+	  overlay: {
+	    position        : 'fixed',
+	    top             : 0,
+	    left            : 0,
+	    right           : 0,
+	    bottom          : 0,
+	    backgroundColor : 'rgba(255, 255, 255, 0.75)'
+	  },
+	  content: {
+	    position                : 'absolute',
+	    top                     : '40px',
+	    left                    : '40px',
+	    right                   : '40px',
+	    bottom                  : '40px',
+	    border                  : '1px solid #ccc',
+	    background              : '#fff',
+	    overflow                : 'auto',
+	    WebkitOverflowScrolling : 'touch',
+	    borderRadius            : '4px',
+	    outline                 : 'none',
+	    padding                 : '20px'
+	  }
+	};
+
+	function stopPropagation(event) {
+	  event.stopPropagation();
+	}
+
+	var ModalPortal = module.exports = React.createClass({
+
+	  displayName: 'ModalPortal',
+
+	  getDefaultProps: function() {
+	    return {
+	      style: {
+	        overlay: {},
+	        content: {}
+	      }
+	    };
+	  },
+
+	  getInitialState: function() {
+	    return {
+	      afterOpen: false,
+	      beforeClose: false
+	    };
+	  },
+
+	  componentDidMount: function() {
+	    // Focus needs to be set when mounting and already open
+	    if (this.props.isOpen) {
+	      this.setFocusAfterRender(true);
+	      this.open();
+	    }
+	  },
+
+	  componentWillUnmount: function() {
+	    clearTimeout(this.closeTimer);
+	  },
+
+	  componentWillReceiveProps: function(newProps) {
+	    // Focus only needs to be set once when the modal is being opened
+	    if (!this.props.isOpen && newProps.isOpen) {
+	      this.setFocusAfterRender(true);
+	      this.open();
+	    } else if (this.props.isOpen && !newProps.isOpen) {
+	      this.close();
+	    }
+	  },
+
+	  componentDidUpdate: function () {
+	    if (this.focusAfterRender) {
+	      this.focusContent();
+	      this.setFocusAfterRender(false);
+	    }
+	  },
+
+	  setFocusAfterRender: function (focus) {
+	    this.focusAfterRender = focus;
+	  },
+
+	  open: function() {
+	    focusManager.setupScopedFocus(this.node);
+	    focusManager.markForFocusLater();
+	    this.setState({isOpen: true}, function() {
+	      this.setState({afterOpen: true});
+	    }.bind(this));
+	  },
+
+	  close: function() {
+	    if (!this.ownerHandlesClose())
+	      return;
+	    if (this.props.closeTimeoutMS > 0)
+	      this.closeWithTimeout();
+	    else
+	      this.closeWithoutTimeout();
+	  },
+
+	  focusContent: function() {
+	    this.refs.content.focus();
+	  },
+
+	  closeWithTimeout: function() {
+	    this.setState({beforeClose: true}, function() {
+	      this.closeTimer = setTimeout(this.closeWithoutTimeout, this.props.closeTimeoutMS);
+	    }.bind(this));
+	  },
+
+	  closeWithoutTimeout: function() {
+	    this.setState({
+	      afterOpen: false,
+	      beforeClose: false
+	    }, this.afterClose);
+	  },
+
+	  afterClose: function() {
+	    focusManager.returnFocus();
+	    focusManager.teardownScopedFocus();
+	  },
+
+	  handleKeyDown: function(event) {
+	    if (event.keyCode == 9 /*tab*/) scopeTab(this.refs.content, event);
+	    if (event.keyCode == 27 /*esc*/) this.requestClose();
+	  },
+
+	  handleOverlayClick: function() {
+	    if (this.ownerHandlesClose())
+	      this.requestClose();
+	    else
+	      this.focusContent();
+	  },
+
+	  requestClose: function() {
+	    if (this.ownerHandlesClose())
+	      this.props.onRequestClose();
+	  },
+
+	  ownerHandlesClose: function() {
+	    return this.props.onRequestClose;
+	  },
+
+	  shouldBeClosed: function() {
+	    return !this.props.isOpen && !this.state.beforeClose;
+	  },
+
+	  buildClassName: function(which, additional) {
+	    var className = CLASS_NAMES[which].base;
+	    if (this.state.afterOpen)
+	      className += ' '+CLASS_NAMES[which].afterOpen;
+	    if (this.state.beforeClose)
+	      className += ' '+CLASS_NAMES[which].beforeClose;
+	    return additional ? className + ' ' + additional : className;
+	  },
+
+	  render: function() {
+	    return this.shouldBeClosed() ? div() : (
+	      div({
+	        ref: "overlay",
+	        className: this.buildClassName('overlay', this.props.overlayClassName),
+	        style: Assign({}, defaultStyles.overlay, this.props.style.overlay || {}),
+	        onClick: this.handleOverlayClick
+	      },
+	        div({
+	          ref: "content",
+	          style: Assign({}, defaultStyles.content, this.props.style.content || {}),
+	          className: this.buildClassName('content', this.props.className),
+	          tabIndex: "-1",
+	          onClick: stopPropagation,
+	          onKeyDown: this.handleKeyDown
+	        },
+	          this.props.children
+	        )
+	      )
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var findTabbable = __webpack_require__(246);
+	var modalElement = null;
+	var focusLaterElement = null;
+	var needToFocus = false;
+
+	function handleBlur(event) {
+	  needToFocus = true;
+	}
+
+	function handleFocus(event) {
+	  if (needToFocus) {
+	    needToFocus = false;
+	    if (!modalElement) {
+	      return;
+	    }
+	    // need to see how jQuery shims document.on('focusin') so we don't need the
+	    // setTimeout, firefox doesn't support focusin, if it did, we could focus
+	    // the element outside of a setTimeout. Side-effect of this implementation 
+	    // is that the document.body gets focus, and then we focus our element right 
+	    // after, seems fine.
+	    setTimeout(function() {
+	      if (modalElement.contains(document.activeElement))
+	        return;
+	      var el = (findTabbable(modalElement)[0] || modalElement);
+	      el.focus();
+	    }, 0);
+	  }
+	}
+
+	exports.markForFocusLater = function() {
+	  focusLaterElement = document.activeElement;
+	};
+
+	exports.returnFocus = function() {
+	  try {
+	    focusLaterElement.focus();
+	  }
+	  catch (e) {
+	    console.warn('You tried to return focus to '+focusLaterElement+' but it is not in the DOM anymore');
+	  }
+	  focusLaterElement = null;
+	};
+
+	exports.setupScopedFocus = function(element) {
+	  modalElement = element;
+
+	  if (window.addEventListener) {
+	    window.addEventListener('blur', handleBlur, false);
+	    document.addEventListener('focus', handleFocus, true);
+	  } else {
+	    window.attachEvent('onBlur', handleBlur);
+	    document.attachEvent('onFocus', handleFocus);
+	  }
+	};
+
+	exports.teardownScopedFocus = function() {
+	  modalElement = null;
+
+	  if (window.addEventListener) {
+	    window.removeEventListener('blur', handleBlur);
+	    document.removeEventListener('focus', handleFocus);
+	  } else {
+	    window.detachEvent('onBlur', handleBlur);
+	    document.detachEvent('onFocus', handleFocus);
+	  }
+	};
+
+
+
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	/*!
+	 * Adapted from jQuery UI core
+	 *
+	 * http://jqueryui.com
+	 *
+	 * Copyright 2014 jQuery Foundation and other contributors
+	 * Released under the MIT license.
+	 * http://jquery.org/license
+	 *
+	 * http://api.jqueryui.com/category/ui-core/
+	 */
+
+	function focusable(element, isTabIndexNotNaN) {
+	  var nodeName = element.nodeName.toLowerCase();
+	  return (/input|select|textarea|button|object/.test(nodeName) ?
+	    !element.disabled :
+	    "a" === nodeName ?
+	      element.href || isTabIndexNotNaN :
+	      isTabIndexNotNaN) && visible(element);
+	}
+
+	function hidden(el) {
+	  return (el.offsetWidth <= 0 && el.offsetHeight <= 0) ||
+	    el.style.display === 'none';
+	}
+
+	function visible(element) {
+	  while (element) {
+	    if (element === document.body) break;
+	    if (hidden(element)) return false;
+	    element = element.parentNode;
+	  }
+	  return true;
+	}
+
+	function tabbable(element) {
+	  var tabIndex = element.getAttribute('tabindex');
+	  if (tabIndex === null) tabIndex = undefined;
+	  var isTabIndexNaN = isNaN(tabIndex);
+	  return (isTabIndexNaN || tabIndex >= 0) && focusable(element, !isTabIndexNaN);
+	}
+
+	function findTabbableDescendants(element) {
+	  return [].slice.call(element.querySelectorAll('*'), 0).filter(function(el) {
+	    return tabbable(el);
+	  });
+	}
+
+	module.exports = findTabbableDescendants;
+
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var findTabbable = __webpack_require__(246);
+
+	module.exports = function(node, event) {
+	  var tabbable = findTabbable(node);
+	  var finalTabbable = tabbable[event.shiftKey ? 0 : tabbable.length - 1];
+	  var leavingFinalTabbable = (
+	    finalTabbable === document.activeElement ||
+	    // handle immediate shift+tab after opening with mouse
+	    node === document.activeElement
+	  );
+	  if (!leavingFinalTabbable) return;
+	  event.preventDefault();
+	  var target = tabbable[event.shiftKey ? tabbable.length - 1 : 0];
+	  target.focus();
+	};
+
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseAssign = __webpack_require__(249),
+	    createAssigner = __webpack_require__(255),
+	    keys = __webpack_require__(251);
+
+	/**
+	 * A specialized version of `_.assign` for customizing assigned values without
+	 * support for argument juggling, multiple sources, and `this` binding `customizer`
+	 * functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @param {Function} customizer The function to customize assigned values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function assignWith(object, source, customizer) {
+	  var index = -1,
+	      props = keys(source),
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index],
+	        value = object[key],
+	        result = customizer(value, source[key], key, object, source);
+
+	    if ((result === result ? (result !== value) : (value === value)) ||
+	        (value === undefined && !(key in object))) {
+	      object[key] = result;
+	    }
+	  }
+	  return object;
+	}
+
+	/**
+	 * Assigns own enumerable properties of source object(s) to the destination
+	 * object. Subsequent sources overwrite property assignments of previous sources.
+	 * If `customizer` is provided it is invoked to produce the assigned values.
+	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
+	 * (objectValue, sourceValue, key, object, source).
+	 *
+	 * **Note:** This method mutates `object` and is based on
+	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias extend
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @param {Function} [customizer] The function to customize assigned values.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+	 * // => { 'user': 'fred', 'age': 40 }
+	 *
+	 * // using a customizer callback
+	 * var defaults = _.partialRight(_.assign, function(value, other) {
+	 *   return _.isUndefined(value) ? other : value;
+	 * });
+	 *
+	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+	 * // => { 'user': 'barney', 'age': 36 }
+	 */
+	var assign = createAssigner(function(object, source, customizer) {
+	  return customizer
+	    ? assignWith(object, source, customizer)
+	    : baseAssign(object, source);
+	});
+
+	module.exports = assign;
+
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseCopy = __webpack_require__(250),
+	    keys = __webpack_require__(251);
+
+	/**
+	 * The base implementation of `_.assign` without support for argument juggling,
+	 * multiple sources, and `customizer` functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseAssign(object, source) {
+	  return source == null
+	    ? object
+	    : baseCopy(source, keys(source), object);
+	}
+
+	module.exports = baseAssign;
+
+
+/***/ },
+/* 250 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property names to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseCopy(source, props, object) {
+	  object || (object = {});
+
+	  var index = -1,
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index];
+	    object[key] = source[key];
+	  }
+	  return object;
+	}
+
+	module.exports = baseCopy;
+
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(252),
+	    isArguments = __webpack_require__(253),
+	    isArray = __webpack_require__(254);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keys;
+
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = getNative;
+
+
+/***/ },
+/* 253 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value)) && !isFunction(value);
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var bindCallback = __webpack_require__(256),
+	    isIterateeCall = __webpack_require__(257),
+	    restParam = __webpack_require__(258);
+
+	/**
+	 * Creates a function that assigns properties of source object(s) to a given
+	 * destination object.
+	 *
+	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return restParam(function(object, sources) {
+	    var index = -1,
+	        length = object == null ? 0 : sources.length,
+	        customizer = length > 2 ? sources[length - 2] : undefined,
+	        guard = length > 2 ? sources[2] : undefined,
+	        thisArg = length > 1 ? sources[length - 1] : undefined;
+
+	    if (typeof customizer == 'function') {
+	      customizer = bindCallback(customizer, thisArg, 5);
+	      length -= 2;
+	    } else {
+	      customizer = typeof thisArg == 'function' ? thisArg : undefined;
+	      length -= (customizer ? 1 : 0);
+	    }
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+
+	module.exports = createAssigner;
+
+
+/***/ },
+/* 256 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.9 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.6.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeMax = Math.max;
+
+	/**
+	 * Creates a function that invokes `func` with the `this` binding of the
+	 * created function and arguments from `start` and beyond provided as an array.
+	 *
+	 * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var say = _.restParam(function(what, names) {
+	 *   return what + ' ' + _.initial(names).join(', ') +
+	 *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+	 * });
+	 *
+	 * say('hello', 'fred', 'barney', 'pebbles');
+	 * // => 'hello fred, barney, & pebbles'
+	 */
+	function restParam(func, start) {
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        rest = Array(length);
+
+	    while (++index < length) {
+	      rest[index] = args[start + index];
+	    }
+	    switch (start) {
+	      case 0: return func.call(this, rest);
+	      case 1: return func.call(this, args[0], rest);
+	      case 2: return func.call(this, args[0], args[1], rest);
+	    }
+	    var otherArgs = Array(start + 1);
+	    index = -1;
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = rest;
+	    return func.apply(this, otherArgs);
+	  };
+	}
+
+	module.exports = restParam;
+
+
+/***/ },
+/* 259 */
+/***/ function(module, exports) {
+
+	var _element = typeof document !== 'undefined' ? document.body : null;
+
+	function setElement(element) {
+	  if (typeof element === 'string') {
+	    var el = document.querySelectorAll(element);
+	    element = 'length' in el ? el[0] : el;
+	  }
+	  _element = element || _element;
+	}
+
+	function hide(appElement) {
+	  validateElement(appElement);
+	  (appElement || _element).setAttribute('aria-hidden', 'true');
+	}
+
+	function show(appElement) {
+	  validateElement(appElement);
+	  (appElement || _element).removeAttribute('aria-hidden');
+	}
+
+	function toggle(shouldHide, appElement) {
+	  if (shouldHide)
+	    hide(appElement);
+	  else
+	    show(appElement);
+	}
+
+	function validateElement(appElement) {
+	  if (!appElement && !_element)
+	    throw new Error('react-modal: You must set an element with `Modal.setAppElement(el)` to make this accessible');
+	}
+
+	function resetForTesting() {
+	  _element = document.body;
+	}
+
+	exports.toggle = toggle;
+	exports.setElement = setElement;
+	exports.show = show;
+	exports.hide = hide;
+	exports.resetForTesting = resetForTesting;
+
+
+/***/ },
+/* 260 */
+/***/ function(module, exports) {
+
+	module.exports = function(opts) {
+	  return new ElementClass(opts)
+	}
+
+	function indexOf(arr, prop) {
+	  if (arr.indexOf) return arr.indexOf(prop)
+	  for (var i = 0, len = arr.length; i < len; i++)
+	    if (arr[i] === prop) return i
+	  return -1
+	}
+
+	function ElementClass(opts) {
+	  if (!(this instanceof ElementClass)) return new ElementClass(opts)
+	  var self = this
+	  if (!opts) opts = {}
+
+	  // similar doing instanceof HTMLElement but works in IE8
+	  if (opts.nodeType) opts = {el: opts}
+
+	  this.opts = opts
+	  this.el = opts.el || document.body
+	  if (typeof this.el !== 'object') this.el = document.querySelector(this.el)
+	}
+
+	ElementClass.prototype.add = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (el.className === "") return el.className = className
+	  var classes = el.className.split(' ')
+	  if (indexOf(classes, className) > -1) return classes
+	  classes.push(className)
+	  el.className = classes.join(' ')
+	  return classes
+	}
+
+	ElementClass.prototype.remove = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (el.className === "") return
+	  var classes = el.className.split(' ')
+	  var idx = indexOf(classes, className)
+	  if (idx > -1) classes.splice(idx, 1)
+	  el.className = classes.join(' ')
+	  return classes
+	}
+
+	ElementClass.prototype.has = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  var classes = el.className.split(' ')
+	  return indexOf(classes, className) > -1
+	}
+
+	ElementClass.prototype.toggle = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (this.has(className)) this.remove(className)
+	  else this.add(className)
+	}
+
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(186);
+	var Cloud = __webpack_require__(262);
+	var History = __webpack_require__(190).History;
+	var LinkedStateMixin = __webpack_require__(263);
 	var ProjectStore = __webpack_require__(159);
-	var ReactQuill = __webpack_require__(260);
-	var DateTime = __webpack_require__(268);
-	var Modal = __webpack_require__(374);
+	var ReactQuill = __webpack_require__(267);
+	var DateTime = __webpack_require__(274);
+	var Modal = __webpack_require__(241);
 
 	var projectForm = React.createClass({
 	  displayName: 'projectForm',
@@ -32687,11 +34670,11 @@
 	module.exports = projectForm;
 
 /***/ },
-/* 240 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
+	var ApiUtil = __webpack_require__(186);
 
 	var Cloud = React.createClass({
 	  displayName: 'Cloud',
@@ -32723,13 +34706,13 @@
 	module.exports = Cloud;
 
 /***/ },
-/* 241 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(242);
+	module.exports = __webpack_require__(264);
 
 /***/ },
-/* 242 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32746,8 +34729,8 @@
 
 	'use strict';
 
-	var ReactLink = __webpack_require__(243);
-	var ReactStateSetters = __webpack_require__(244);
+	var ReactLink = __webpack_require__(265);
+	var ReactStateSetters = __webpack_require__(266);
 
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32770,7 +34753,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 243 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32844,7 +34827,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 244 */
+/* 266 */
 /***/ function(module, exports) {
 
 	/**
@@ -32953,1543 +34936,29 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var Cloud = __webpack_require__(240);
-	var History = __webpack_require__(188).History;
-	var LinkedStateMixin = __webpack_require__(241);
-	var ProjectStore = __webpack_require__(159);
-
-	var ReactQuill = __webpack_require__(260);
-
-	var projectForm = React.createClass({
-	  displayName: 'projectForm',
-
-	  mixins: [LinkedStateMixin, History, ReactQuill.Mixin],
-
-	  inputs: {
-	    title: "",
-	    blurb: "",
-	    campaign_end_date: "",
-	    details: "",
-	    category_id: "",
-	    funding_goal: "",
-	    img_url: ""
-	  },
-
-	  getStateFromStore: function () {
-	    return { Project: ProjectStore.singleProject(parseInt(this.props.params.id)) };
-	  },
-
-	  componentDidMount: function () {
-	    this.projectListener = ProjectStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
-	    var editor = this.createEditor();
-	    this.setState({ editor: editor });
-	  },
-
-	  componentWillReceiveProps: function (nextProps) {
-	    if ('value' in nextProps && nextProps.value !== this.props.value) {
-	      this.setEditorContents(this.state.editor, nextProps.value);
-	    }
-	  },
-
-	  componentWillUnmount: function () {
-	    this.projectListener.remove();
-	  },
-
-	  _onChange: function () {
-	    this.setState(this.getStateFromStore());
-	  },
-
-	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
-
-	  postImage: function (image) {
-	    this.setState({ img_url: image.url });
-	  },
-
-	  validateInput: function () {
-	    this.errors = [];
-
-	    if (this.state.blurb === "") {
-	      this.errors.push("blurb cannot be blank");
-	    }
-	    if (this.state.details === "") {
-	      this.errors.push("details cannot be blank");
-	    }
-	    if (this.errors.length > 0) {
-	      return false;
-	    }
-	    return true;
-	  },
-
-	  editProject: function (event) {
-	    event.preventDefault();
-	    var project = {};
-
-	    Object.keys(this.state).forEach(function (key) {
-	      project[key] = this.state[key];
-	    }.bind(this));
-
-	    var valid = this.validateInput();
-	    if (valid) {
-	      ApiUtil.updateProject(project, function (id) {
-	        this.history.pushState(null, "/project/" + id, {});
-	      }.bind(this));
-	    } else {
-	      alert(this.errors.join("\n"));
-	    }
-	  },
-
-	  onTextChange: function (value) {
-	    this.state.details = value;
-	  },
-
-	  render: function () {
-	    if (this.state.Project == undefined) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'loading...'
-	      );
-	    }
-
-	    return React.createElement(
-	      'div',
-	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
-	      React.createElement(
-	        'form',
-	        { className: 'form-horizontal editProjectForm',
-	          onSubmit: this.editProject },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Editing: ',
-	          this.state.Project.project.title
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-group ' },
-	          React.createElement(
-	            'label',
-	            { htmlFor: 'project_blurb', className: 'col-sm-2 control-label' },
-	            'Edit Blurb:'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-10' },
-	            React.createElement('input', {
-	              className: 'form-control',
-	              type: 'text',
-	              id: 'project_blurb',
-	              valueLink: this.linkState("blurb"),
-	              defaultValue: this.state.Project.project.blurb,
-	              required: true
-	            })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-group ' },
-	          React.createElement(
-	            'label',
-	            { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
-	            'Image URL:'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-10' },
-	            React.createElement('input', {
-	              className: 'form-control',
-	              type: 'hidden',
-	              id: 'img_url',
-	              valueLink: this.linkState("img_url"),
-	              defaultValue: this.state.Project.project.img_url
-	            }),
-	            React.createElement(Cloud, { className: 'image-upload', postImage: this.postImage })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-12' },
-	            React.createElement('img', { className: 'preview-image center-block',
-	              src: this.state.img_url })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-12' },
-	            React.createElement(ReactQuill, {
-	              className: 'quill-component',
-	              theme: 'snow',
-	              onChange: this.onTextChange,
-	              value: this.state.Project.project.details
-	            })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-10' },
-	            React.createElement('br', null),
-	            React.createElement(
-	              'button',
-	              { className: 'button blue' },
-	              'Confirm Changes'
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = projectForm;
-
-/***/ },
-/* 246 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ProjectStore = __webpack_require__(159);
-	var UserStore = __webpack_require__(182);
-	var ApiUtil = __webpack_require__(184);
-	var RewardDetail = __webpack_require__(238);
-	var ProjectIndexItem = __webpack_require__(187);
-	var UserRewardTableRows = __webpack_require__(247);
-
-	var History = __webpack_require__(188).History;
-
-	var ProjectDetail = React.createClass({
-	  displayName: 'ProjectDetail',
-
-	  mixins: [History],
-
-	  getStateFromStore: function () {
-	    return { User: UserStore.currentUser() };
-	  },
-
-	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
-
-	  _onChange: function () {
-	    this.setState({ User: UserStore.currentUser() });
-	  },
-
-	  componentDidMount: function () {
-	    this.userListener = UserStore.addListener(this._onChange);
-	    ApiUtil.fetchCurrentUser();
-	  },
-
-	  componentWillUnmount: function () {
-	    this.userListener.remove();
-	  },
-
-	  editRewards: function () {
-	    this.history.push('/editreward/' + this.state.Project.project.id);
-	  },
-
-	  _clickRewardRow: function () {
-	    this.history.push('/project/' + arguments[0]);
-	  },
-
-	  render: function () {
-	    var that = this;
-
-	    if (this.state.User != undefined) {
-
-	      var backedProjects = this.state.User.backed_projects.map(function (el) {
-	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
-	      });
-
-	      var createdProjects = this.state.User.authored_projects.map(function (el) {
-	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
-	      });
-
-	      var rewardRow = this.state.User.rewards.map(function (el) {
-	        return React.createElement(UserRewardTableRows, { reward: el });
-	      });
-	    } else {
-
-	      backedProjects = [];
-	      createdProjects = [];
-	      rewardRow = [];
-	    }
-
-	    if (backedProjects == "") {
-	      backedProjects = React.createElement(
-	        'div',
-	        { className: 'alert alert-warning', role: 'alert' },
-	        'You have not backed any projects'
-	      );
-	    }
-
-	    if (createdProjects == "") {
-	      var createdProjects = React.createElement(
-	        'div',
-	        { className: 'alert alert-warning', role: 'alert' },
-	        'You have not created any projects'
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'h2',
-	          { className: 'user-detail-title' },
-	          'Backed Projects'
-	        ),
-	        backedProjects
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'h2',
-	          { className: 'user-detail-title' },
-	          ' Created Projects'
-	        ),
-	        createdProjects
-	      ),
-	      React.createElement(
-	        'table',
-	        { className: 'table table-hover' },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Purchase History'
-	        ),
-	        React.createElement(
-	          'thead',
-	          null,
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'th',
-	              null,
-	              'Reward:'
-	            ),
-	            React.createElement(
-	              'th',
-	              null,
-	              'Price:'
-	            ),
-	            React.createElement(
-	              'th',
-	              null,
-	              'delivery_date:'
-	            ),
-	            React.createElement(
-	              'th',
-	              null,
-	              'description:'
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'tbody',
-	          null,
-	          rewardRow
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = ProjectDetail;
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ProjectStore = __webpack_require__(159);
-	var UserStore = __webpack_require__(182);
-	var ApiUtil = __webpack_require__(184);
-	var RewardDetail = __webpack_require__(238);
-	var ProjectIndexItem = __webpack_require__(187);
-
-	var History = __webpack_require__(188).History;
-
-	var userRewardTableRows = React.createClass({
-	  displayName: 'userRewardTableRows',
-
-	  mixins: [History],
-
-	  _clickRewardRow: function () {
-	    this.history.push('/project/' + this.props.reward.project_id);
-	  },
-
-	  render: function () {
-	    var dots = "";
-	    if (this.props.reward.description.length > 37) {
-	      dots = "...";
-	    }
-
-	    return React.createElement(
-	      'tr',
-	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
-	      React.createElement(
-	        'th',
-	        { scope: 'row', className: 'user-table-row' },
-	        this.props.reward.title
-	      ),
-	      React.createElement(
-	        'td',
-	        { className: 'user-table-row' },
-	        this.props.reward.cost
-	      ),
-	      React.createElement(
-	        'td',
-	        { className: 'user-table-row' },
-	        this.props.reward.delivery_date
-	      ),
-	      React.createElement(
-	        'td',
-	        { className: 'user-table-row' },
-	        this.props.reward.description.slice(0, 40) + dots
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = userRewardTableRows;
-
-/***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var History = __webpack_require__(188).History;
-	var LinkedStateMixin = __webpack_require__(241);
-	var ProjectStore = __webpack_require__(159);
-	var RewardDetail = __webpack_require__(249);
-	var DateTime = __webpack_require__(268);
-	var Modal = __webpack_require__(374);
-
-	var rewardForm = React.createClass({
-	  displayName: 'rewardForm',
-
-	  mixins: [LinkedStateMixin, History],
-
-	  inputs: {
-	    title: "",
-	    description: "",
-	    cost: "",
-	    project_id: "",
-	    delivery_date: "",
-	    reward_max_count: ""
-	  },
-
-	  getNewState: function () {
-	    return {
-	      title: "",
-	      description: "",
-	      cost: "",
-	      project_id: "",
-	      delivery_date: "",
-	      reward_max_count: "",
-	      modalIsOpen: false,
-	      Project: ProjectStore.singleProject(parseInt(this.props.params.id)),
-	      customStyles: {
-	        content: {
-	          top: '50%',
-	          left: '50%',
-	          right: 'auto',
-	          bottom: 'auto',
-	          marginRight: '-50%',
-	          transform: 'translate(-50%, -50%)',
-	          borderRadius: '10px',
-	          border: '1px solid black',
-	          backgroundColor: "#ffff00"
-	        },
-	        overlay: {
-	          position: 'fixed',
-	          top: 0,
-	          left: 0,
-	          right: 0,
-	          bottom: 0,
-	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
-	        }
-	      }
-	    };
-	  },
-
-	  _onChange: function () {
-	    this.setState(this.getNewState());
-	  },
-
-	  onDateChange: function (value) {
-	    this.state.delivery_date = new Date(value.valueOf());
-	  },
-
-	  getInitialState: function () {
-	    return this.getNewState();
-	  },
-
-	  componentWillReceiveProps: function (newProps) {
-	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
-	  },
-
-	  componentDidMount: function () {
-	    this.projectListener = ProjectStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
-	  },
-
-	  componentWillUnmount: function () {
-	    this.projectListener.remove();
-	  },
-
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-
-	  // TODO: REFACTOR / CLEAN THIS. add into another file
-
-	  validateInput: function () {
-	    this.errors = [];
-	    if (this.state.title === "") {
-	      this.errors.push("Title can not be blank");
-	    }
-	    if (this.state.description === "") {
-	      this.errors.push("description cannot be blank");
-	    }
-	    if (this.state.delivery_date === "") {
-	      this.errors.push("You must chose a delivery date");
-	    }
-	    if (this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
-	      this.errors.push("invalid cost");
-	    }
-	    if (this.state.cost <= 0) {
-	      this.errors.push("Cost must be above 0");
-	    }
-	    if (typeof parseInt(this.state.cost) !== 'number' || parseInt(this.state.cost) % 1 !== 0) {
-	      this.errors.push("Cost must be a number");
-	    }
-	    if (this.state.reward_max_count != "") {
-	      if (typeof parseInt(this.state.reward_max_count) !== 'number' || parseInt(this.state.reward_max_count) % 1 !== 0) {
-	        this.errors.push("Quantity must be a number");
-	      }
-	      if (this.state.reward_max_count <= 0) {
-	        this.errors.push("Quantity cannot be negative");
-	      }
-	    }
-	    if (this.state.delivery_date === undefined) {
-	      this.errors.push("Must sellect delivery date");
-	    }
-	    if (this.errors.length > 0) {
-	      return false;
-	    }
-	    return true;
-	  },
-
-	  createReward: function (event) {
-
-	    event.preventDefault();
-	    this.state.project_id = this.props.params.id;
-	    var reward = {};
-
-	    //TODO EDIT THIS
-
-	    Object.keys(this.inputs).forEach(function (key) {
-	      reward[key] = this.state[key];
-	    }.bind(this));
-
-	    var valid = this.validateInput();
-	    if (valid) {
-	      ApiUtil.createReward(reward, function (id) {});
-	      this.setState({
-	        title: "",
-	        description: "",
-	        cost: "",
-	        project_id: "",
-	        img_url: "",
-	        reward_max_count: ""
-	      });
-	    } else {
-	      this.errorList = this.errors.map(function (el) {
-	        return React.createElement(
-	          'li',
-	          null,
-	          el
-	        );
-	      });
-	      this.openModal();
-	    }
-	  },
-
-	  backToProject: function () {
-	    this.history.push('/project/' + this.state.Project.project.id);
-	  },
-
-	  render: function () {
-	    Modal.setAppElement(document.body);
-	    var msg = "";
-	    var rewards = "";
-
-	    if (this.state.Project !== undefined && this.state.Project.project !== undefined) {
-	      rewards = [];
-	      rewards = this.state.Project.project.rewards.map(function (el) {
-	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'none' });
-	      });
-	    }
-
-	    if (this.props.location.query.new === "true") {
-	      msg = React.createElement(
-	        'div',
-	        { className: 'alert alert-info' },
-	        'Dont forget to add rewards to your project! Projects that have rewards get *significantly* more funding than those which dont.'
-	      );
-	    } else {
-	      msg = React.createElement(
-	        'div',
-	        { className: 'alert alert-info' },
-	        'Add more rewards! Achieve your dreams!'
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'row create-form' },
-	      React.createElement(
-	        'div',
-	        { className: 'col-sm-12 col-md-8' },
-	        React.createElement(
-	          'form',
-	          { className: 'form-horizontal createRewardForm', onSubmit: this.createReward },
-	          React.createElement(
-	            'h2',
-	            { className: 'create-form-title' },
-	            'REWARD FORM'
-	          ),
-	          msg,
-	          React.createElement(
-	            'div',
-	            { className: 'form-group ' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'title', className: 'col-sm-2 control-label' },
-	              'Title:'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement('input', {
-	                type: 'text',
-	                className: 'form-control',
-	                id: 'title',
-	                valueLink: this.linkState("title"),
-	                required: true
-	              })
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'description', className: 'col-sm-2 control-label' },
-	              'description:'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement('input', {
-	                type: 'text',
-	                className: 'form-control',
-	                id: 'description',
-	                valueLink: this.linkState("description"),
-	                required: true
-	              })
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'cost', className: 'col-sm-2 control-label' },
-	              'Cost:'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement('input', {
-	                type: 'integer',
-	                className: 'form-control',
-	                id: 'cost',
-	                valueLink: this.linkState("cost"),
-	                required: true
-	              })
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'delivery_date', className: 'col-sm-2 control-label' },
-	              'Delivery Date:'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement(DateTime, {
-	                isValidDate: this.validDate,
-	                input: false,
-	                onChange: this.onDateChange
-	              })
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'reward_max_count', className: 'col-sm-2 control-label' },
-	              'Quantity (optional):'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement('input', {
-	                className: 'form-control',
-	                type: 'text',
-	                id: 'reward_max_count',
-	                valueLink: this.linkState("reward_max_count")
-	              }),
-	              React.createElement(
-	                'h6',
-	                { className: 'quantity-explanation' },
-	                'Want to limit how many of these rewards are available? Just enter a number above!'
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            React.createElement(
-	              'div',
-	              { className: 'col-sm-10' },
-	              React.createElement(
-	                'button',
-	                { className: 'button blue', onClick: this.backToProject },
-	                'Back to Project'
-	              ),
-	              React.createElement(
-	                'button',
-	                { className: 'button blue reward-create' },
-	                'Create Reward'
-	              )
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'col-sm-12 col-md-4' },
-	        React.createElement(
-	          'h2',
-	          { className: 'create-form-title' },
-	          'Existing Rewards'
-	        ),
-	        rewards
-	      ),
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'reward-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: this.state.customStyles },
-	        React.createElement(
-	          'h2',
-	          { className: 'reward-modal-title' },
-	          'Errors:'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-modal-msg' },
-	          this.errorList
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = rewardForm;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(184);
-	var Modal = __webpack_require__(374);
-
-	var RewardDetail = React.createClass({
-	  displayName: 'RewardDetail',
-
-
-	  _clickerFunc: function () {
-	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
-	      var newBacker = { reward_id: this.props.reward.reward_id };
-	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold >= this.props.reward.reward_max_count) {
-
-	        var background = this.state.customStyles;
-	        this.state.modalTitle = "Sold Out!";
-	        this.state.modalMsg = "Please select a different reward";
-	        background.content.backgroundColor = "#ffff00";
-	        this.setState({ customStyles: background });
-	        this.openModal();
-	      } else {
-
-	        var background = this.state.customStyles;
-	        this.state.modalTitle = "Purchase Success!";
-	        this.state.modalMsg = "Thankyou for your support";
-	        background.content.backgroundColor = "#33cc33";
-	        this.setState({ customStyles: background });
-	        ApiUtil.createBacker(newBacker);
-	        this.openModal();
-	      }
-	    }
-	  },
-
-	  getInitialState: function () {
-	    return { modalIsOpen: false,
-	      customStyles: {
-	        content: {
-	          top: '50%',
-	          left: '50%',
-	          right: 'auto',
-	          bottom: 'auto',
-	          marginRight: '-50%',
-	          transform: 'translate(-50%, -50%)',
-	          borderRadius: '10px',
-	          border: '1px solid black'
-	        },
-	        overlay: {
-	          position: 'fixed',
-	          top: 0,
-	          left: 0,
-	          right: 0,
-	          bottom: 0,
-	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
-	        }
-	      }
-	    };
-	  },
-
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-
-	  render: function () {
-	    Modal.setAppElement(document.body);
-
-	    var reward = this.props.reward;
-
-	    if (reward.rewards_bought.rewards_bought > 0) {
-	      var count = "You own: " + reward.rewards_bought.rewards_bought;
-	    } else {
-	      count = "";
-	    }
-
-	    if (parseInt(reward.reward_max_count) > 0) {
-	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
-	    } else {
-	      countRemaining = "";
-	    }
-
-	    if (reward.reward_max_count) {
-	      var rewardLimit = React.createElement(
-	        'span',
-	        { className: 'reward-limit' },
-	        'Limited ',
-	        " " + reward.number_remaining + " ",
-	        ' left of',
-	        " " + reward.reward_max_count,
-	        ';'
-	      );
-	    } else {
-	      rewardLimit = "";
-	    }
-
-	    if (this.props.clickerFunc === "expired") {
-	      var hoverDiv = React.createElement(
-	        'div',
-	        { className: 'mask red-mask' },
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-select' },
-	          React.createElement(
-	            'h4',
-	            null,
-	            'Funding period over'
-	          )
-	        )
-	      );
-	    } else if (this.props.clickerFunc === "none") {
-	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
-	    } else if (this.props.clickerFunc === "soldout") {
-	      var hoverDiv = React.createElement(
-	        'div',
-	        { className: 'mask yellow-mask' },
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-select' },
-	          React.createElement(
-	            'h4',
-	            null,
-	            'Reward is sold out'
-	          )
-	        )
-	      );
-	    } else {
-	      var hoverDiv = React.createElement(
-	        'div',
-	        { className: 'mask green-mask' },
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-select' },
-	          React.createElement(
-	            'h4',
-	            null,
-	            'Select this reward'
-	          )
-	        )
-	      );
-	    }
-	    var modalTitle = "";
-	    var modalMsg = "";
-
-	    return React.createElement(
-	      'div',
-	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
-	      React.createElement(
-	        'section',
-	        null,
-	        'Pledge',
-	        " $" + reward.reward_cost
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_number_sold,
-	        ' backers. ',
-	        rewardLimit
-	      ),
-	      React.createElement('br', null),
-	      React.createElement(
-	        'section',
-	        { className: 'reward-title' },
-	        reward.reward_title
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        reward.reward_description
-	      ),
-	      React.createElement('br', null),
-	      React.createElement(
-	        'section',
-	        null,
-	        'Estimated delivery ',
-	        reward.reward_delivery_date
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        count
-	      ),
-	      hoverDiv,
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'reward-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: this.state.customStyles },
-	        React.createElement(
-	          'h2',
-	          { className: 'reward-modal-title' },
-	          this.state.modalTitle
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-modal-msg' },
-	          this.state.modalMsg
-	        )
-	      )
-	    );
-	  }
-
-	});
-
-	// <div className="reward-select"><h4>Select this reward</h4></div>
-	module.exports = RewardDetail;
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Logo = __webpack_require__(251);
-	var Discover = __webpack_require__(252);
-	var Create = __webpack_require__(253);
-	var Profile = __webpack_require__(254);
-	var UserStore = __webpack_require__(182);
-	var ApiUtil = __webpack_require__(184);
-
-	var History = __webpack_require__(188).History;
-
-	var Menu = React.createClass({
-	  displayName: 'Menu',
-
-	  mixins: [History],
-
-	  getStateFromStore: function () {
-	    return { User: UserStore.currentUser() };
-	  },
-
-	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
-
-	  _onChange: function () {
-	    this.setState({ User: UserStore.currentUser() });
-	  },
-
-	  componentDidMount: function () {
-	    this.userListener = UserStore.addListener(this._onChange);
-	    ApiUtil.fetchCurrentUser();
-	    ApiUtil.fetchAllCategories();
-	  },
-
-	  componentWillUnmount: function () {
-	    this.userListener.remove();
-	  },
-
-	  _clickSignOut: function () {
-	    ApiUtil.signOut();
-	  },
-
-	  _clickProfile: function () {
-	    this.history.push("/userDetails");
-	  },
-
-	  render: function () {
-	    var username = "Options";
-
-	    if (this.state.User != undefined) {
-	      username = this.state.User.username;
-	    }
-
-	    return React.createElement(
-	      'nav',
-	      { className: 'navbar navbar-default' },
-	      React.createElement(
-	        'div',
-	        { className: 'container-fluid' },
-	        React.createElement(
-	          'div',
-	          { className: 'navbar-header' },
-	          React.createElement(
-	            'button',
-	            {
-	              type: 'button',
-	              className: 'navbar-toggle collapsed',
-	              'data-toggle': 'collapse',
-	              'data-target': '#bs-example-navbar-collapse-1',
-	              'aria-expanded': 'false'
-	            },
-	            React.createElement(
-	              'span',
-	              { className: 'sr-only' },
-	              'Toggle navigation'
-	            ),
-	            React.createElement('span', { className: 'icon-bar' }),
-	            React.createElement('span', { className: 'icon-bar' }),
-	            React.createElement('span', { className: 'icon-bar' })
-	          ),
-	          React.createElement(Logo, { className: 'navbar-brand' })
-	        ),
-	        React.createElement(
-	          'div',
-	          {
-	            className: 'collapse navbar-collapse',
-	            id: 'bs-example-navbar-collapse-1'
-	          },
-	          React.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav' },
-	            React.createElement(
-	              'li',
-	              null,
-	              React.createElement(Discover, null)
-	            ),
-	            React.createElement(
-	              'li',
-	              null,
-	              React.createElement(Create, null)
-	            )
-	          ),
-	          React.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav navbar-right' },
-	            React.createElement(
-	              'li',
-	              { className: 'dropdown' },
-	              React.createElement(
-	                'a',
-	                {
-	                  href: '#', className: 'dropdown-toggle username-dropdown',
-	                  'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true',
-	                  'aria-expanded': 'false'
-	                },
-	                React.createElement(
-	                  'span',
-	                  { className: 'username-dropdown' },
-	                  username
-	                ),
-	                React.createElement('span', { className: 'caret' })
-	              ),
-	              React.createElement(
-	                'ul',
-	                { className: 'dropdown-menu' },
-	                React.createElement(
-	                  'li',
-	                  null,
-	                  React.createElement(
-	                    'a',
-	                    { onClick: this._clickProfile },
-	                    'Profile'
-	                  )
-	                ),
-	                React.createElement('li', { role: 'separator', className: 'divider' }),
-	                React.createElement(
-	                  'li',
-	                  null,
-	                  React.createElement(
-	                    'a',
-	                    { onClick: this._clickSignOut },
-	                    'SignOut'
-	                  )
-	                )
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Menu;
-
-/***/ },
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
-
-	var Logo = React.createClass({
-	  displayName: 'Logo',
-
-	  mixins: [History],
-	  _clickLogo: function () {
-	    this.history.push("/");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'logo-icon', onClick: this._clickLogo },
-	      React.createElement('img', { src: '/assets/Underway-icon-color.png', id: 'icon' })
-	    );
-	  }
-	});
-
-	module.exports = Logo;
-
-/***/ },
-/* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
-
-	var Discover = React.createClass({
-	  displayName: 'Discover',
-
-	  mixins: [History],
-	  _clickDiscover: function () {
-	    this.history.push("/");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'a',
-	      { className: '.navbar-link navbar-discover', onClick: this._clickDiscover },
-	      'Discover'
-	    );
-	  }
-	});
-
-	module.exports = Discover;
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
-
-	var Create = React.createClass({
-	  displayName: 'Create',
-
-	  mixins: [History],
-	  _clickCreate: function () {
-	    this.history.push("/createProject");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'a',
-	      { className: '.navbar-link navbar-create', onClick: this._clickCreate },
-	      'Create'
-	    );
-	  }
-	});
-
-	module.exports = Create;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
-
-	var Profile = React.createClass({
-	  displayName: 'Profile',
-
-	  mixins: [History],
-	  _clickProfile: function () {
-	    this.history.push("/userDetails");
-	  },
-	  render: function () {
-	    return React.createElement(
-	      'span',
-	      { className: '.navbar-link', onClick: this._clickProfile },
-	      'Profile'
-	    );
-	  }
-	});
-
-	module.exports = Profile;
-
-/***/ },
-/* 255 */,
-/* 256 */
-/***/ function(module, exports) {
-
-	var CategoryConstants = {
-	  ALL_CATEGORIES_RECIEVED: "ALL_CATEGORIES_RECIEVED"
-	};
-
-	module.exports = CategoryConstants;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(160).Store;
-	var AppDispatcher = __webpack_require__(178);
-	var CategoryConstants = __webpack_require__(256);
-
-	var _categories = [];
-	var CategoryStore = new Store(AppDispatcher);
-
-	CategoryStore.all = function () {
-	  return _categories.slice(0);
-	};
-
-	CategoryStore.resetCategories = function (newCategories) {
-	  _categories = newCategories;
-	};
-
-	CategoryStore.idCategory = function (id) {
-	  var ans = undefined;
-	  _categories.forEach(function (el) {
-	    if (el.id === parseInt(id)) {
-	      ans = el.title;
-	    }
-	  });
-	  return ans;
-	};
-
-	CategoryStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case CategoryConstants.ALL_CATEGORIES_RECIEVED:
-	      this.resetCategories(payload.categories);
-	      this.__emitChange();
-	      break;
-	  }
-	};
-
-	module.exports = CategoryStore;
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactDom = __webpack_require__(158);
-	var ApiUtil = __webpack_require__(184);
-	var CategoryStore = __webpack_require__(257);
-	var ProjectStore = __webpack_require__(159);
-	var CategoryItem = __webpack_require__(259);
-	var ProjectIndexItem = __webpack_require__(267);
-
-	var Discover = React.createClass({
-	  displayName: 'Discover',
-
-
-	  getInitialState: function () {
-	    return { categories: CategoryStore.all() };
-	  },
-
-	  _onCategoryChange: function () {
-	    this.setState({ categories: CategoryStore.all() });
-	  },
-
-	  _onProjectChange: function () {
-	    this.setState({ projects: ProjectStore.all() });
-	  },
-
-	  componentDidMount: function () {
-	    this.categoryListener = CategoryStore.addListener(this._onCategoryChange);
-	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
-	    ApiUtil.fetchAllCategories();
-	    ApiUtil.fetchAllProjects();
-	  },
-
-	  componentWillUnmount: function () {
-	    this.categoryListener.remove();
-	    this.projectListener.remove();
-	  },
-
-	  compareByFunding: function (a, b) {
-	    if (a.current_funding > b.current_funding) {
-	      return -1;
-	    }
-	    if (b.current_funding > a.current_funding) {
-	      return 1;
-	    }
-	    return 0;
-	  },
-
-	  selectMostFunding: function () {
-	    if (this.state.projects === undefined) {
-	      return [];
-	    }
-	    var that = this;
-	    var arr = this.state.projects.sort(this.compareByFunding);
-	    var sortedArr = [];
-	    arr.forEach(function (el) {
-	      if (new Date(el.campaign_end_date) > new Date()) {
-	        sortedArr.push(el);
-	      }
-	    });
-	    if (sortedArr.length >= 2) {
-	      return sortedArr.slice(0, 4);
-	    } else {
-	      return [];
-	    }
-	  },
-
-	  render: function () {
-
-	    var mostFundedProjects = this.selectMostFunding();
-
-	    mostFundedProjects = mostFundedProjects.map(function (el) {
-	      return React.createElement(ProjectIndexItem, { project: el, key: el.id });
-	    });
-
-	    var totalCategories = 0;
-
-	    var categories = this.state.categories.map(function (el) {
-	      var count = ProjectStore.getCategoryCount(el.id);
-	      totalCategories += count;
-	      return React.createElement(CategoryItem, { category: el, key: el.id, count: count });
-	    });
-
-	    var all = { title: "All" };
-	    categories.push(React.createElement(CategoryItem, { category: all,
-	      key: 99,
-	      count: totalCategories }));
-
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'category-intro' },
-	        React.createElement(
-	          'div',
-	          { className: 'row' },
-	          React.createElement(
-	            'div',
-	            { className: 'col-sm-6 col-sm-offset-3 inner-category-intro' },
-	            React.createElement(
-	              'h4',
-	              null,
-	              'Underway is a place where ideas are born. If you have an idea, create a project! You can also join someone else’s voyage below.'
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'category-selections' },
-	        React.createElement(
-	          'div',
-	          { className: 'row' },
-	          React.createElement(
-	            'div',
-	            { className: 'inner-category-selection' },
-	            categories
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'h2',
-	          { className: 'trending-title' },
-	          'Trending now:'
-	        )
-	      ),
-	      mostFundedProjects
-	    );
-	  }
-
-	});
-
-	module.exports = Discover;
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-	var ApiUtil = __webpack_require__(184);
-	var History = __webpack_require__(188).History;
-
-	var Category = React.createClass({
-	  displayName: 'Category',
-
-	  mixins: [History],
-
-	  _onClick: function () {
-	    if (this.props.category) {
-	      this.history.pushState(null, "/projects/", { category: this.props.category.id });
-	    } else {
-	      this.history.pushState(null, "/projects/");
-	    }
-	  },
-
-	  render: function () {
-	    if (this.props.count === 1) {
-	      var projects = ' Project';
-	    } else {
-	      projects = ' Projects';
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'col-sm-3 category-item', onClick: this._onClick },
-	      React.createElement(
-	        'section',
-	        { className: 'slide-down', id: this.props.category.title },
-	        React.createElement(
-	          'div',
-	          { className: 'wrapper' },
-	          React.createElement(
-	            'div',
-	            { className: 'inner-item image1' },
-	            this.props.category.title
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'inner-item inner-hover image2' },
-	            this.props.count,
-	            ' ',
-	            projects
-	          )
-	        )
-	      )
-	    );
-	  }
-
-	});
-
-	module.exports = Category;
-
-/***/ },
-/* 260 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
 	React-Quill v0.4.1
 	https://github.com/zenoamaro/react-quill
 	*/
-	module.exports = __webpack_require__(261);
-	module.exports.Mixin = __webpack_require__(264);
-	module.exports.Toolbar = __webpack_require__(262);
-	module.exports.Quill = __webpack_require__(265);
+	module.exports = __webpack_require__(268);
+	module.exports.Mixin = __webpack_require__(271);
+	module.exports.Toolbar = __webpack_require__(269);
+	module.exports.Quill = __webpack_require__(272);
 
 
 /***/ },
-/* 261 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1),
 		ReactDOM = __webpack_require__(158),
-		QuillToolbar = __webpack_require__(262),
-		QuillMixin = __webpack_require__(264),
+		QuillToolbar = __webpack_require__(269),
+		QuillMixin = __webpack_require__(271),
 		T = React.PropTypes;
 
 	// FIXME: Remove with the switch to JSX
@@ -34775,13 +35244,13 @@
 
 
 /***/ },
-/* 262 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1),
-		ReactDOMServer = __webpack_require__(263),
+		ReactDOMServer = __webpack_require__(270),
 		T = React.PropTypes;
 
 	var defaultColors = [
@@ -34943,7 +35412,7 @@
 
 
 /***/ },
-/* 263 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34952,12 +35421,12 @@
 
 
 /***/ },
-/* 264 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Quill = __webpack_require__(265);
+	var Quill = __webpack_require__(272);
 
 	var QuillMixin = {
 
@@ -35049,14 +35518,14 @@
 
 
 /***/ },
-/* 265 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(266);
+	module.exports = __webpack_require__(273);
 
 
 /***/ },
-/* 266 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {/*! Quill Editor v0.20.1
@@ -45811,192 +46280,24 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(188).History;
-
-	var ProjectIndexItem = React.createClass({
-	  displayName: 'ProjectIndexItem',
-
-	  mixins: [History],
-
-	  showDetails: function () {
-	    this.history.push('/project/' + this.props.project.id);
-	  },
-
-	  _imgError: function () {
-	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
-	  },
-
-	  _formatTime: function (t) {
-
-	    var cd = 24 * 60 * 60 * 1000,
-	        ch = 60 * 60 * 1000,
-	        d = Math.floor(t / cd),
-	        h = Math.floor((t - d * cd) / ch),
-	        m = Math.round((t - d * cd - h * ch) / 60000),
-	        pad = function (n) {
-	      return n < 10 ? '0' + n : n;
-	    };
-	    if (m === 60) {
-	      h++;
-	      m = 0;
-	    }
-	    if (h === 24) {
-	      d++;
-	      h = 0;
-	    }
-	    if (d < 0) {
-	      d = 0;
-	    }
-	    return d;
-	  },
-
-	  render: function () {
-
-	    var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
-	    var fundingAsString = Math.round(fundingAsPercent * 100);
-
-	    if (fundingAsString == Infinity) {
-	      fundingAsString = 0;
-	    }
-
-	    var fundingStyle = fundingAsString;
-	    if (fundingStyle > 100) {
-	      fundingStyle = "100";
-	    }
-	    fundingStyle = fundingStyle.toString() + "%";
-	    fundingAsString = fundingAsString.toString() + "%";
-
-	    fundingStyle = { width: fundingStyle };
-
-	    var timeRemainingInt = Date.parse(this.props.project.campaign_end_date) - new Date();
-	    var daysToGo = this._formatTime(timeRemainingInt);
-
-	    var pleged = "$" + this.props.project.current_funding;
-
-	    var project_title = this.props.project.title;
-
-	    if (this.props.project.title.length > 20) {
-	      project_title = this.props.project.title.slice(0, 20) + "...";
-	    } else {
-	      project_title = this.props.project.title;
-	    }
-
-	    return React.createElement(
-	      'div',
-	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
-	        onClick: this.showDetails,
-	        key: parseInt(this.props.project.id) },
-	      React.createElement(
-	        'div',
-	        { className: 'inner-box' },
-	        React.createElement('img', {
-	          ref: 'indexItemImage',
-	          className: 'index-item-image',
-	          src: this.props.project.img_url,
-	          onError: this._imgError
-	        }),
-	        React.createElement(
-	          'h3',
-	          { className: 'project-index-item-title' },
-	          project_title
-	        ),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'index-blurb' },
-	          React.createElement(
-	            'p',
-	            null,
-	            this.props.project.blurb
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'progress' },
-	          React.createElement(
-	            'div',
-	            { className: 'progress-bar progress-bar-success',
-	              role: 'progressbar',
-	              'aria-valuenow': fundingAsString,
-	              'aria-valuemin': '0',
-	              'aria-valuemax': '100',
-	              style: fundingStyle },
-	            fundingAsString
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'index-item-infos' },
-	          React.createElement(
-	            'div',
-	            { className: 'item-info' },
-	            React.createElement(
-	              'h6',
-	              null,
-	              'Days to go:'
-	            ),
-	            React.createElement(
-	              'section',
-	              null,
-	              daysToGo
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'item-info' },
-	            React.createElement(
-	              'h6',
-	              null,
-	              'Funded:'
-	            ),
-	            React.createElement(
-	              'section',
-	              null,
-	              fundingAsString
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'item-info' },
-	            React.createElement(
-	              'h6',
-	              null,
-	              'Pleged:'
-	            ),
-	            pleged
-	          )
-	        ),
-	        React.createElement('br', null)
-	      )
-	    );
-	  }
-	});
-
-	module.exports = ProjectIndexItem;
-
-/***/ },
-/* 268 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var assign = __webpack_require__(269),
+	var assign = __webpack_require__(275),
 		React = __webpack_require__(1),
-		DaysView = __webpack_require__(270),
-		MonthsView = __webpack_require__(370),
-		YearsView = __webpack_require__(371),
-		TimeView = __webpack_require__(372),
-		moment = __webpack_require__(271)
+		DaysView = __webpack_require__(276),
+		MonthsView = __webpack_require__(376),
+		YearsView = __webpack_require__(377),
+		TimeView = __webpack_require__(378),
+		moment = __webpack_require__(277)
 	;
 
 	var TYPES = React.PropTypes;
 	var Datetime = React.createClass({
 		mixins: [
-			__webpack_require__(373)
+			__webpack_require__(379)
 		],
 		viewComponents: {
 			days: DaysView,
@@ -46331,7 +46632,7 @@
 
 
 /***/ },
-/* 269 */
+/* 275 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -46376,11 +46677,11 @@
 
 
 /***/ },
-/* 270 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-		moment = __webpack_require__(271)
+		moment = __webpack_require__(277)
 	;
 
 	var DOM = React.DOM;
@@ -46515,7 +46816,7 @@
 
 
 /***/ },
-/* 271 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -46794,7 +47095,7 @@
 	                module && module.exports) {
 	            try {
 	                oldLocale = globalLocale._abbr;
-	                __webpack_require__(273)("./" + name);
+	                __webpack_require__(279)("./" + name);
 	                // because defineLocale currently also sets the global locale, we
 	                // want to undo that for lazy loaded locales
 	                locale_locales__getSetGlobalLocale(oldLocale);
@@ -50124,10 +50425,10 @@
 	    return _moment;
 
 	}));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(272)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(278)(module)))
 
 /***/ },
-/* 272 */
+/* 278 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -50143,202 +50444,202 @@
 
 
 /***/ },
-/* 273 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./af": 274,
-		"./af.js": 274,
-		"./ar": 275,
-		"./ar-ma": 276,
-		"./ar-ma.js": 276,
-		"./ar-sa": 277,
-		"./ar-sa.js": 277,
-		"./ar-tn": 278,
-		"./ar-tn.js": 278,
-		"./ar.js": 275,
-		"./az": 279,
-		"./az.js": 279,
-		"./be": 280,
-		"./be.js": 280,
-		"./bg": 281,
-		"./bg.js": 281,
-		"./bn": 282,
-		"./bn.js": 282,
-		"./bo": 283,
-		"./bo.js": 283,
-		"./br": 284,
-		"./br.js": 284,
-		"./bs": 285,
-		"./bs.js": 285,
-		"./ca": 286,
-		"./ca.js": 286,
-		"./cs": 287,
-		"./cs.js": 287,
-		"./cv": 288,
-		"./cv.js": 288,
-		"./cy": 289,
-		"./cy.js": 289,
-		"./da": 290,
-		"./da.js": 290,
-		"./de": 291,
-		"./de-at": 292,
-		"./de-at.js": 292,
-		"./de.js": 291,
-		"./dv": 293,
-		"./dv.js": 293,
-		"./el": 294,
-		"./el.js": 294,
-		"./en-au": 295,
-		"./en-au.js": 295,
-		"./en-ca": 296,
-		"./en-ca.js": 296,
-		"./en-gb": 297,
-		"./en-gb.js": 297,
-		"./en-ie": 298,
-		"./en-ie.js": 298,
-		"./en-nz": 299,
-		"./en-nz.js": 299,
-		"./eo": 300,
-		"./eo.js": 300,
-		"./es": 301,
-		"./es.js": 301,
-		"./et": 302,
-		"./et.js": 302,
-		"./eu": 303,
-		"./eu.js": 303,
-		"./fa": 304,
-		"./fa.js": 304,
-		"./fi": 305,
-		"./fi.js": 305,
-		"./fo": 306,
-		"./fo.js": 306,
-		"./fr": 307,
-		"./fr-ca": 308,
-		"./fr-ca.js": 308,
-		"./fr-ch": 309,
-		"./fr-ch.js": 309,
-		"./fr.js": 307,
-		"./fy": 310,
-		"./fy.js": 310,
-		"./gd": 311,
-		"./gd.js": 311,
-		"./gl": 312,
-		"./gl.js": 312,
-		"./he": 313,
-		"./he.js": 313,
-		"./hi": 314,
-		"./hi.js": 314,
-		"./hr": 315,
-		"./hr.js": 315,
-		"./hu": 316,
-		"./hu.js": 316,
-		"./hy-am": 317,
-		"./hy-am.js": 317,
-		"./id": 318,
-		"./id.js": 318,
-		"./is": 319,
-		"./is.js": 319,
-		"./it": 320,
-		"./it.js": 320,
-		"./ja": 321,
-		"./ja.js": 321,
-		"./jv": 322,
-		"./jv.js": 322,
-		"./ka": 323,
-		"./ka.js": 323,
-		"./kk": 324,
-		"./kk.js": 324,
-		"./km": 325,
-		"./km.js": 325,
-		"./ko": 326,
-		"./ko.js": 326,
-		"./lb": 327,
-		"./lb.js": 327,
-		"./lo": 328,
-		"./lo.js": 328,
-		"./lt": 329,
-		"./lt.js": 329,
-		"./lv": 330,
-		"./lv.js": 330,
-		"./me": 331,
-		"./me.js": 331,
-		"./mk": 332,
-		"./mk.js": 332,
-		"./ml": 333,
-		"./ml.js": 333,
-		"./mr": 334,
-		"./mr.js": 334,
-		"./ms": 335,
-		"./ms-my": 336,
-		"./ms-my.js": 336,
-		"./ms.js": 335,
-		"./my": 337,
-		"./my.js": 337,
-		"./nb": 338,
-		"./nb.js": 338,
-		"./ne": 339,
-		"./ne.js": 339,
-		"./nl": 340,
-		"./nl.js": 340,
-		"./nn": 341,
-		"./nn.js": 341,
-		"./pl": 342,
-		"./pl.js": 342,
-		"./pt": 343,
-		"./pt-br": 344,
-		"./pt-br.js": 344,
-		"./pt.js": 343,
-		"./ro": 345,
-		"./ro.js": 345,
-		"./ru": 346,
-		"./ru.js": 346,
-		"./se": 347,
-		"./se.js": 347,
-		"./si": 348,
-		"./si.js": 348,
-		"./sk": 349,
-		"./sk.js": 349,
-		"./sl": 350,
-		"./sl.js": 350,
-		"./sq": 351,
-		"./sq.js": 351,
-		"./sr": 352,
-		"./sr-cyrl": 353,
-		"./sr-cyrl.js": 353,
-		"./sr.js": 352,
-		"./sv": 354,
-		"./sv.js": 354,
-		"./sw": 355,
-		"./sw.js": 355,
-		"./ta": 356,
-		"./ta.js": 356,
-		"./te": 357,
-		"./te.js": 357,
-		"./th": 358,
-		"./th.js": 358,
-		"./tl-ph": 359,
-		"./tl-ph.js": 359,
-		"./tlh": 360,
-		"./tlh.js": 360,
-		"./tr": 361,
-		"./tr.js": 361,
-		"./tzl": 362,
-		"./tzl.js": 362,
-		"./tzm": 363,
-		"./tzm-latn": 364,
-		"./tzm-latn.js": 364,
-		"./tzm.js": 363,
-		"./uk": 365,
-		"./uk.js": 365,
-		"./uz": 366,
-		"./uz.js": 366,
-		"./vi": 367,
-		"./vi.js": 367,
-		"./zh-cn": 368,
-		"./zh-cn.js": 368,
-		"./zh-tw": 369,
-		"./zh-tw.js": 369
+		"./af": 280,
+		"./af.js": 280,
+		"./ar": 281,
+		"./ar-ma": 282,
+		"./ar-ma.js": 282,
+		"./ar-sa": 283,
+		"./ar-sa.js": 283,
+		"./ar-tn": 284,
+		"./ar-tn.js": 284,
+		"./ar.js": 281,
+		"./az": 285,
+		"./az.js": 285,
+		"./be": 286,
+		"./be.js": 286,
+		"./bg": 287,
+		"./bg.js": 287,
+		"./bn": 288,
+		"./bn.js": 288,
+		"./bo": 289,
+		"./bo.js": 289,
+		"./br": 290,
+		"./br.js": 290,
+		"./bs": 291,
+		"./bs.js": 291,
+		"./ca": 292,
+		"./ca.js": 292,
+		"./cs": 293,
+		"./cs.js": 293,
+		"./cv": 294,
+		"./cv.js": 294,
+		"./cy": 295,
+		"./cy.js": 295,
+		"./da": 296,
+		"./da.js": 296,
+		"./de": 297,
+		"./de-at": 298,
+		"./de-at.js": 298,
+		"./de.js": 297,
+		"./dv": 299,
+		"./dv.js": 299,
+		"./el": 300,
+		"./el.js": 300,
+		"./en-au": 301,
+		"./en-au.js": 301,
+		"./en-ca": 302,
+		"./en-ca.js": 302,
+		"./en-gb": 303,
+		"./en-gb.js": 303,
+		"./en-ie": 304,
+		"./en-ie.js": 304,
+		"./en-nz": 305,
+		"./en-nz.js": 305,
+		"./eo": 306,
+		"./eo.js": 306,
+		"./es": 307,
+		"./es.js": 307,
+		"./et": 308,
+		"./et.js": 308,
+		"./eu": 309,
+		"./eu.js": 309,
+		"./fa": 310,
+		"./fa.js": 310,
+		"./fi": 311,
+		"./fi.js": 311,
+		"./fo": 312,
+		"./fo.js": 312,
+		"./fr": 313,
+		"./fr-ca": 314,
+		"./fr-ca.js": 314,
+		"./fr-ch": 315,
+		"./fr-ch.js": 315,
+		"./fr.js": 313,
+		"./fy": 316,
+		"./fy.js": 316,
+		"./gd": 317,
+		"./gd.js": 317,
+		"./gl": 318,
+		"./gl.js": 318,
+		"./he": 319,
+		"./he.js": 319,
+		"./hi": 320,
+		"./hi.js": 320,
+		"./hr": 321,
+		"./hr.js": 321,
+		"./hu": 322,
+		"./hu.js": 322,
+		"./hy-am": 323,
+		"./hy-am.js": 323,
+		"./id": 324,
+		"./id.js": 324,
+		"./is": 325,
+		"./is.js": 325,
+		"./it": 326,
+		"./it.js": 326,
+		"./ja": 327,
+		"./ja.js": 327,
+		"./jv": 328,
+		"./jv.js": 328,
+		"./ka": 329,
+		"./ka.js": 329,
+		"./kk": 330,
+		"./kk.js": 330,
+		"./km": 331,
+		"./km.js": 331,
+		"./ko": 332,
+		"./ko.js": 332,
+		"./lb": 333,
+		"./lb.js": 333,
+		"./lo": 334,
+		"./lo.js": 334,
+		"./lt": 335,
+		"./lt.js": 335,
+		"./lv": 336,
+		"./lv.js": 336,
+		"./me": 337,
+		"./me.js": 337,
+		"./mk": 338,
+		"./mk.js": 338,
+		"./ml": 339,
+		"./ml.js": 339,
+		"./mr": 340,
+		"./mr.js": 340,
+		"./ms": 341,
+		"./ms-my": 342,
+		"./ms-my.js": 342,
+		"./ms.js": 341,
+		"./my": 343,
+		"./my.js": 343,
+		"./nb": 344,
+		"./nb.js": 344,
+		"./ne": 345,
+		"./ne.js": 345,
+		"./nl": 346,
+		"./nl.js": 346,
+		"./nn": 347,
+		"./nn.js": 347,
+		"./pl": 348,
+		"./pl.js": 348,
+		"./pt": 349,
+		"./pt-br": 350,
+		"./pt-br.js": 350,
+		"./pt.js": 349,
+		"./ro": 351,
+		"./ro.js": 351,
+		"./ru": 352,
+		"./ru.js": 352,
+		"./se": 353,
+		"./se.js": 353,
+		"./si": 354,
+		"./si.js": 354,
+		"./sk": 355,
+		"./sk.js": 355,
+		"./sl": 356,
+		"./sl.js": 356,
+		"./sq": 357,
+		"./sq.js": 357,
+		"./sr": 358,
+		"./sr-cyrl": 359,
+		"./sr-cyrl.js": 359,
+		"./sr.js": 358,
+		"./sv": 360,
+		"./sv.js": 360,
+		"./sw": 361,
+		"./sw.js": 361,
+		"./ta": 362,
+		"./ta.js": 362,
+		"./te": 363,
+		"./te.js": 363,
+		"./th": 364,
+		"./th.js": 364,
+		"./tl-ph": 365,
+		"./tl-ph.js": 365,
+		"./tlh": 366,
+		"./tlh.js": 366,
+		"./tr": 367,
+		"./tr.js": 367,
+		"./tzl": 368,
+		"./tzl.js": 368,
+		"./tzm": 369,
+		"./tzm-latn": 370,
+		"./tzm-latn.js": 370,
+		"./tzm.js": 369,
+		"./uk": 371,
+		"./uk.js": 371,
+		"./uz": 372,
+		"./uz.js": 372,
+		"./vi": 373,
+		"./vi.js": 373,
+		"./zh-cn": 374,
+		"./zh-cn.js": 374,
+		"./zh-tw": 375,
+		"./zh-tw.js": 375
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -50351,11 +50652,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 273;
+	webpackContext.id = 279;
 
 
 /***/ },
-/* 274 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50363,7 +50664,7 @@
 	//! author : Werner Mollentze : https://github.com/wernerm
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50432,7 +50733,7 @@
 	}));
 
 /***/ },
-/* 275 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50442,7 +50743,7 @@
 	//! Native plural forms: forabi https://github.com/forabi
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50572,7 +50873,7 @@
 	}));
 
 /***/ },
-/* 276 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50581,7 +50882,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50635,7 +50936,7 @@
 	}));
 
 /***/ },
-/* 277 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50643,7 +50944,7 @@
 	//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50742,14 +51043,14 @@
 	}));
 
 /***/ },
-/* 278 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale  : Tunisian Arabic (ar-tn)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50803,7 +51104,7 @@
 	}));
 
 /***/ },
-/* 279 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50811,7 +51112,7 @@
 	//! author : topchiyev : https://github.com/topchiyev
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50911,7 +51212,7 @@
 	}));
 
 /***/ },
-/* 280 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50921,7 +51222,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51049,7 +51350,7 @@
 	}));
 
 /***/ },
-/* 281 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51057,7 +51358,7 @@
 	//! author : Krasen Borisov : https://github.com/kraz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51143,7 +51444,7 @@
 	}));
 
 /***/ },
-/* 282 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51151,7 +51452,7 @@
 	//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51260,7 +51561,7 @@
 	}));
 
 /***/ },
-/* 283 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51268,7 +51569,7 @@
 	//! author : Thupten N. Chakrishar : https://github.com/vajradog
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51374,7 +51675,7 @@
 	}));
 
 /***/ },
-/* 284 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51382,7 +51683,7 @@
 	//! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51485,7 +51786,7 @@
 	}));
 
 /***/ },
-/* 285 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51494,7 +51795,7 @@
 	//! based on (hr) translation by Bojan Marković
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51630,7 +51931,7 @@
 	}));
 
 /***/ },
-/* 286 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51638,7 +51939,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51713,7 +52014,7 @@
 	}));
 
 /***/ },
-/* 287 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51721,7 +52022,7 @@
 	//! author : petrbela : https://github.com/petrbela
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51888,7 +52189,7 @@
 	}));
 
 /***/ },
-/* 288 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51896,7 +52197,7 @@
 	//! author : Anatoly Mironov : https://github.com/mirontoli
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -51955,7 +52256,7 @@
 	}));
 
 /***/ },
-/* 289 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -51963,7 +52264,7 @@
 	//! author : Robert Allen
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52038,7 +52339,7 @@
 	}));
 
 /***/ },
-/* 290 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52046,7 +52347,7 @@
 	//! author : Ulrik Nielsen : https://github.com/mrbase
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52102,7 +52403,7 @@
 	}));
 
 /***/ },
-/* 291 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52112,7 +52413,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52182,7 +52483,7 @@
 	}));
 
 /***/ },
-/* 292 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52193,7 +52494,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52263,7 +52564,7 @@
 	}));
 
 /***/ },
-/* 293 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52271,7 +52572,7 @@
 	//! author : Jawish Hameed : https://github.com/jawish
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52366,7 +52667,7 @@
 	}));
 
 /***/ },
-/* 294 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52374,7 +52675,7 @@
 	//! author : Aggelos Karalias : https://github.com/mehiel
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52468,14 +52769,14 @@
 	}));
 
 /***/ },
-/* 295 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : australian english (en-au)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52538,7 +52839,7 @@
 	}));
 
 /***/ },
-/* 296 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52546,7 +52847,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52605,7 +52906,7 @@
 	}));
 
 /***/ },
-/* 297 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52613,7 +52914,7 @@
 	//! author : Chris Gedrim : https://github.com/chrisgedrim
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52676,7 +52977,7 @@
 	}));
 
 /***/ },
-/* 298 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52684,7 +52985,7 @@
 	//! author : Chris Cartlidge : https://github.com/chriscartlidge
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52747,14 +53048,14 @@
 	}));
 
 /***/ },
-/* 299 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : New Zealand english (en-nz)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52817,7 +53118,7 @@
 	}));
 
 /***/ },
-/* 300 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52827,7 +53128,7 @@
 	//!          Se ne, bonvolu korekti kaj avizi min por ke mi povas lerni!
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52894,7 +53195,7 @@
 	}));
 
 /***/ },
-/* 301 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52902,7 +53203,7 @@
 	//! author : Julio Napurí : https://github.com/julionc
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -52977,7 +53278,7 @@
 	}));
 
 /***/ },
-/* 302 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -52986,7 +53287,7 @@
 	//! improvements : Illimar Tambek : https://github.com/ragulka
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53061,7 +53362,7 @@
 	}));
 
 /***/ },
-/* 303 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53069,7 +53370,7 @@
 	//! author : Eneko Illarramendi : https://github.com/eillarra
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53129,7 +53430,7 @@
 	}));
 
 /***/ },
-/* 304 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53137,7 +53438,7 @@
 	//! author : Ebrahim Byagowi : https://github.com/ebraminio
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53238,7 +53539,7 @@
 	}));
 
 /***/ },
-/* 305 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53246,7 +53547,7 @@
 	//! author : Tarmo Aidantausta : https://github.com/bleadof
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53349,7 +53650,7 @@
 	}));
 
 /***/ },
-/* 306 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53357,7 +53658,7 @@
 	//! author : Ragnar Johannesen : https://github.com/ragnar123
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53413,7 +53714,7 @@
 	}));
 
 /***/ },
-/* 307 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53421,7 +53722,7 @@
 	//! author : John Fischer : https://github.com/jfroffice
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53479,7 +53780,7 @@
 	}));
 
 /***/ },
-/* 308 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53487,7 +53788,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53541,7 +53842,7 @@
 	}));
 
 /***/ },
-/* 309 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53549,7 +53850,7 @@
 	//! author : Gaspard Bucher : https://github.com/gaspard
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53607,7 +53908,7 @@
 	}));
 
 /***/ },
-/* 310 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53615,7 +53916,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53682,7 +53983,7 @@
 	}));
 
 /***/ },
-/* 311 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53690,7 +53991,7 @@
 	//! author : Jon Ashdown : https://github.com/jonashdown
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53762,7 +54063,7 @@
 	}));
 
 /***/ },
-/* 312 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53770,7 +54071,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53841,7 +54142,7 @@
 	}));
 
 /***/ },
-/* 313 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53851,7 +54152,7 @@
 	//! author : Tal Ater : https://github.com/TalAter
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -53927,7 +54228,7 @@
 	}));
 
 /***/ },
-/* 314 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -53935,7 +54236,7 @@
 	//! author : Mayank Singhal : https://github.com/mayanksinghal
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54054,7 +54355,7 @@
 	}));
 
 /***/ },
-/* 315 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54062,7 +54363,7 @@
 	//! author : Bojan Marković : https://github.com/bmarkovic
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54201,7 +54502,7 @@
 	}));
 
 /***/ },
-/* 316 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54209,7 +54510,7 @@
 	//! author : Adam Brunner : https://github.com/adambrunner
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54314,7 +54615,7 @@
 	}));
 
 /***/ },
-/* 317 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54322,7 +54623,7 @@
 	//! author : Armendarabyan : https://github.com/armendarabyan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54413,7 +54714,7 @@
 	}));
 
 /***/ },
-/* 318 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54422,7 +54723,7 @@
 	//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54500,7 +54801,7 @@
 	}));
 
 /***/ },
-/* 319 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54508,7 +54809,7 @@
 	//! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54631,7 +54932,7 @@
 	}));
 
 /***/ },
-/* 320 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54640,7 +54941,7 @@
 	//! author: Mattia Larentis: https://github.com/nostalgiaz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54705,7 +55006,7 @@
 	}));
 
 /***/ },
-/* 321 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54713,7 +55014,7 @@
 	//! author : LI Long : https://github.com/baryon
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54774,7 +55075,7 @@
 	}));
 
 /***/ },
-/* 322 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54783,7 +55084,7 @@
 	//! reference: http://jv.wikipedia.org/wiki/Basa_Jawa
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54861,7 +55162,7 @@
 	}));
 
 /***/ },
-/* 323 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54869,7 +55170,7 @@
 	//! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -54954,7 +55255,7 @@
 	}));
 
 /***/ },
-/* 324 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -54962,7 +55263,7 @@
 	//! authors : Nurlan Rakhimzhanov : https://github.com/nurlan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55045,7 +55346,7 @@
 	}));
 
 /***/ },
-/* 325 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55053,7 +55354,7 @@
 	//! author : Kruy Vanna : https://github.com/kruyvanna
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55107,7 +55408,7 @@
 	}));
 
 /***/ },
-/* 326 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55119,7 +55420,7 @@
 	//! - Jeeeyul Lee <jeeeyul@gmail.com>
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55179,7 +55480,7 @@
 	}));
 
 /***/ },
-/* 327 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55187,7 +55488,7 @@
 	//! author : mweimerskirch : https://github.com/mweimerskirch, David Raison : https://github.com/kwisatz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55317,7 +55618,7 @@
 	}));
 
 /***/ },
-/* 328 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55325,7 +55626,7 @@
 	//! author : Ryan Hart : https://github.com/ryanhart2
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55390,7 +55691,7 @@
 	}));
 
 /***/ },
-/* 329 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55398,7 +55699,7 @@
 	//! author : Mindaugas Mozūras : https://github.com/mmozuras
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55509,7 +55810,7 @@
 	}));
 
 /***/ },
-/* 330 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55518,7 +55819,7 @@
 	//! author : Jānis Elmeris : https://github.com/JanisE
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55609,7 +55910,7 @@
 	}));
 
 /***/ },
-/* 331 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55617,7 +55918,7 @@
 	//! author : Miodrag Nikač <miodrag@restartit.me> : https://github.com/miodragnikac
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55722,7 +56023,7 @@
 	}));
 
 /***/ },
-/* 332 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55730,7 +56031,7 @@
 	//! author : Borislav Mickov : https://github.com/B0k0
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55816,7 +56117,7 @@
 	}));
 
 /***/ },
-/* 333 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55824,7 +56125,7 @@
 	//! author : Floyd Pink : https://github.com/floydpink
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -55891,7 +56192,7 @@
 	}));
 
 /***/ },
-/* 334 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -55900,7 +56201,7 @@
 	//! author : Vivek Athalye : https://github.com/vnathalye
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56053,7 +56354,7 @@
 	}));
 
 /***/ },
-/* 335 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56061,7 +56362,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56139,7 +56440,7 @@
 	}));
 
 /***/ },
-/* 336 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56147,7 +56448,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56225,7 +56526,7 @@
 	}));
 
 /***/ },
-/* 337 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56233,7 +56534,7 @@
 	//! author : Squar team, mysquar.com
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56322,7 +56623,7 @@
 	}));
 
 /***/ },
-/* 338 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56331,7 +56632,7 @@
 	//!           Sigurd Gartmann : https://github.com/sigurdga
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56387,7 +56688,7 @@
 	}));
 
 /***/ },
-/* 339 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56395,7 +56696,7 @@
 	//! author : suvash : https://github.com/suvash
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56512,7 +56813,7 @@
 	}));
 
 /***/ },
-/* 340 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56520,7 +56821,7 @@
 	//! author : Joris Röling : https://github.com/jjupiter
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56587,7 +56888,7 @@
 	}));
 
 /***/ },
-/* 341 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56595,7 +56896,7 @@
 	//! author : https://github.com/mechuwind
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56651,7 +56952,7 @@
 	}));
 
 /***/ },
-/* 342 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56659,7 +56960,7 @@
 	//! author : Rafal Hirsz : https://github.com/evoL
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56760,7 +57061,7 @@
 	}));
 
 /***/ },
-/* 343 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56768,7 +57069,7 @@
 	//! author : Jefferson : https://github.com/jalex79
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56828,7 +57129,7 @@
 	}));
 
 /***/ },
-/* 344 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56836,7 +57137,7 @@
 	//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56892,7 +57193,7 @@
 	}));
 
 /***/ },
-/* 345 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56901,7 +57202,7 @@
 	//! author : Valentin Agachi : https://github.com/avaly
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -56970,7 +57271,7 @@
 	}));
 
 /***/ },
-/* 346 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -56979,7 +57280,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57140,7 +57441,7 @@
 	}));
 
 /***/ },
-/* 347 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57148,7 +57449,7 @@
 	//! authors : Bård Rolstad Henriksen : https://github.com/karamell
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57205,7 +57506,7 @@
 	}));
 
 /***/ },
-/* 348 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57213,7 +57514,7 @@
 	//! author : Sampath Sitinamaluwa : https://github.com/sampathsris
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57275,7 +57576,7 @@
 	}));
 
 /***/ },
-/* 349 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57284,7 +57585,7 @@
 	//! based on work of petrbela : https://github.com/petrbela
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57429,7 +57730,7 @@
 	}));
 
 /***/ },
-/* 350 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57437,7 +57738,7 @@
 	//! author : Robert Sedovšek : https://github.com/sedovsek
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57593,7 +57894,7 @@
 	}));
 
 /***/ },
-/* 351 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57603,7 +57904,7 @@
 	//! author : Oerd Cukalla : https://github.com/oerd (fixes)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57666,7 +57967,7 @@
 	}));
 
 /***/ },
-/* 352 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57674,7 +57975,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57778,7 +58079,7 @@
 	}));
 
 /***/ },
-/* 353 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57786,7 +58087,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57890,7 +58191,7 @@
 	}));
 
 /***/ },
-/* 354 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57898,7 +58199,7 @@
 	//! author : Jens Alm : https://github.com/ulmus
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -57961,7 +58262,7 @@
 	}));
 
 /***/ },
-/* 355 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -57969,7 +58270,7 @@
 	//! author : Fahad Kassim : https://github.com/fadsel
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58023,7 +58324,7 @@
 	}));
 
 /***/ },
-/* 356 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58031,7 +58332,7 @@
 	//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58156,7 +58457,7 @@
 	}));
 
 /***/ },
-/* 357 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58164,7 +58465,7 @@
 	//! author : Krishna Chaitanya Thota : https://github.com/kcthota
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58248,7 +58549,7 @@
 	}));
 
 /***/ },
-/* 358 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58256,7 +58557,7 @@
 	//! author : Kridsada Thanabulpong : https://github.com/sirn
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58317,7 +58618,7 @@
 	}));
 
 /***/ },
-/* 359 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58325,7 +58626,7 @@
 	//! author : Dan Hagman
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58383,7 +58684,7 @@
 	}));
 
 /***/ },
-/* 360 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58391,7 +58692,7 @@
 	//! author : Dominika Kruk : https://github.com/amaranthrose
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58506,7 +58807,7 @@
 	}));
 
 /***/ },
-/* 361 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58515,7 +58816,7 @@
 	//!           Burak Yiğit Kaya: https://github.com/BYK
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58600,7 +58901,7 @@
 	}));
 
 /***/ },
-/* 362 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58608,7 +58909,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v with the help of Iustì Canun
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58691,7 +58992,7 @@
 	}));
 
 /***/ },
-/* 363 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58699,7 +59000,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58753,7 +59054,7 @@
 	}));
 
 /***/ },
-/* 364 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58761,7 +59062,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58815,7 +59116,7 @@
 	}));
 
 /***/ },
-/* 365 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58824,7 +59125,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -58965,7 +59266,7 @@
 	}));
 
 /***/ },
-/* 366 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -58973,7 +59274,7 @@
 	//! author : Sardor Muminov : https://github.com/muminoff
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -59027,7 +59328,7 @@
 	}));
 
 /***/ },
-/* 367 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -59035,7 +59336,7 @@
 	//! author : Bang Nguyen : https://github.com/bangnk
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -59097,7 +59398,7 @@
 	}));
 
 /***/ },
-/* 368 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -59106,7 +59407,7 @@
 	//! author : Zeno Zeng : https://github.com/zenozeng
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -59228,7 +59529,7 @@
 	}));
 
 /***/ },
-/* 369 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -59236,7 +59537,7 @@
 	//! author : Ben : https://github.com/ben-lin
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(271)) :
+	    true ? factory(__webpack_require__(277)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -59333,13 +59634,13 @@
 	}));
 
 /***/ },
-/* 370 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1),
-	moment = __webpack_require__(271)
+	moment = __webpack_require__(277)
 	;
 
 	var DOM = React.DOM;
@@ -59400,7 +59701,7 @@
 
 
 /***/ },
-/* 371 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59469,7 +59770,7 @@
 
 
 /***/ },
-/* 372 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59626,7 +59927,7 @@
 
 
 /***/ },
-/* 373 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This is extracted from https://github.com/Pomax/react-onclickoutside
@@ -59733,1928 +60034,1739 @@
 
 
 /***/ },
-/* 374 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(375);
-
-
-
-/***/ },
-/* 375 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-	var ExecutionEnvironment = __webpack_require__(376);
-	var ModalPortal = React.createFactory(__webpack_require__(377));
-	var ariaAppHider = __webpack_require__(392);
-	var elementClass = __webpack_require__(393);
-	var renderSubtreeIntoContainer = __webpack_require__(158).unstable_renderSubtreeIntoContainer;
-
-	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
-
-	var Modal = module.exports = React.createClass({
-
-	  displayName: 'Modal',
-	  statics: {
-	    setAppElement: ariaAppHider.setElement,
-	    injectCSS: function() {
-	      "production" !== process.env.NODE_ENV
-	        && console.warn('React-Modal: injectCSS has been deprecated ' +
-	                        'and no longer has any effect. It will be removed in a later version');
-	    }
-	  },
-
-	  propTypes: {
-	    isOpen: React.PropTypes.bool.isRequired,
-	    style: React.PropTypes.shape({
-	      content: React.PropTypes.object,
-	      overlay: React.PropTypes.object
-	    }),
-	    appElement: React.PropTypes.instanceOf(SafeHTMLElement),
-	    onRequestClose: React.PropTypes.func,
-	    closeTimeoutMS: React.PropTypes.number,
-	    ariaHideApp: React.PropTypes.bool
-	  },
-
-	  getDefaultProps: function () {
-	    return {
-	      isOpen: false,
-	      ariaHideApp: true,
-	      closeTimeoutMS: 0
-	    };
-	  },
-
-	  componentDidMount: function() {
-	    this.node = document.createElement('div');
-	    this.node.className = 'ReactModalPortal';
-	    document.body.appendChild(this.node);
-	    this.renderPortal(this.props);
-	  },
-
-	  componentWillReceiveProps: function(newProps) {
-	    this.renderPortal(newProps);
-	  },
-
-	  componentWillUnmount: function() {
-	    ReactDOM.unmountComponentAtNode(this.node);
-	    document.body.removeChild(this.node);
-	  },
-
-	  renderPortal: function(props) {
-	    if (props.isOpen) {
-	      elementClass(document.body).add('ReactModal__Body--open');
-	    } else {
-	      elementClass(document.body).remove('ReactModal__Body--open');
-	    }
-
-	    if (props.ariaHideApp) {
-	      ariaAppHider.toggle(props.isOpen, props.appElement);
-	    }
-	    sanitizeProps(props);
-	    this.portal = renderSubtreeIntoContainer(this, ModalPortal(props), this.node);
-	  },
-
-	  render: function () {
-	    return React.DOM.noscript();
-	  }
-	});
-
-	function sanitizeProps(props) {
-	  delete props.ref;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 376 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
-	  Based on code that is Copyright 2013-2015, Facebook, Inc.
-	  All rights reserved.
-	*/
-
-	(function () {
-		'use strict';
-
-		var canUseDOM = !!(
-			typeof window !== 'undefined' &&
-			window.document &&
-			window.document.createElement
-		);
-
-		var ExecutionEnvironment = {
-
-			canUseDOM: canUseDOM,
-
-			canUseWorkers: typeof Worker !== 'undefined',
-
-			canUseEventListeners:
-				canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-			canUseViewport: canUseDOM && !!window.screen
-
-		};
-
-		if (true) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return ExecutionEnvironment;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = ExecutionEnvironment;
-		} else {
-			window.ExecutionEnvironment = ExecutionEnvironment;
-		}
-
-	}());
-
-
-/***/ },
-/* 377 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var div = React.DOM.div;
-	var focusManager = __webpack_require__(378);
-	var scopeTab = __webpack_require__(380);
-	var Assign = __webpack_require__(381);
+	var ApiUtil = __webpack_require__(186);
+	var Cloud = __webpack_require__(262);
+	var History = __webpack_require__(190).History;
+	var LinkedStateMixin = __webpack_require__(263);
+	var ProjectStore = __webpack_require__(159);
 
+	var ReactQuill = __webpack_require__(267);
 
-	// so that our CSS is statically analyzable
-	var CLASS_NAMES = {
-	  overlay: {
-	    base: 'ReactModal__Overlay',
-	    afterOpen: 'ReactModal__Overlay--after-open',
-	    beforeClose: 'ReactModal__Overlay--before-close'
-	  },
-	  content: {
-	    base: 'ReactModal__Content',
-	    afterOpen: 'ReactModal__Content--after-open',
-	    beforeClose: 'ReactModal__Content--before-close'
-	  }
-	};
+	var projectForm = React.createClass({
+	  displayName: 'projectForm',
 
-	var defaultStyles = {
-	  overlay: {
-	    position        : 'fixed',
-	    top             : 0,
-	    left            : 0,
-	    right           : 0,
-	    bottom          : 0,
-	    backgroundColor : 'rgba(255, 255, 255, 0.75)'
-	  },
-	  content: {
-	    position                : 'absolute',
-	    top                     : '40px',
-	    left                    : '40px',
-	    right                   : '40px',
-	    bottom                  : '40px',
-	    border                  : '1px solid #ccc',
-	    background              : '#fff',
-	    overflow                : 'auto',
-	    WebkitOverflowScrolling : 'touch',
-	    borderRadius            : '4px',
-	    outline                 : 'none',
-	    padding                 : '20px'
-	  }
-	};
+	  mixins: [LinkedStateMixin, History, ReactQuill.Mixin],
 
-	function stopPropagation(event) {
-	  event.stopPropagation();
-	}
-
-	var ModalPortal = module.exports = React.createClass({
-
-	  displayName: 'ModalPortal',
-
-	  getDefaultProps: function() {
-	    return {
-	      style: {
-	        overlay: {},
-	        content: {}
-	      }
-	    };
+	  inputs: {
+	    title: "",
+	    blurb: "",
+	    campaign_end_date: "",
+	    details: "",
+	    category_id: "",
+	    funding_goal: "",
+	    img_url: ""
 	  },
 
-	  getInitialState: function() {
-	    return {
-	      afterOpen: false,
-	      beforeClose: false
-	    };
+	  getStateFromStore: function () {
+	    return { Project: ProjectStore.singleProject(parseInt(this.props.params.id)) };
 	  },
 
-	  componentDidMount: function() {
-	    // Focus needs to be set when mounting and already open
-	    if (this.props.isOpen) {
-	      this.setFocusAfterRender(true);
-	      this.open();
+	  componentDidMount: function () {
+	    this.projectListener = ProjectStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+	    var editor = this.createEditor();
+	    this.setState({ editor: editor });
+	  },
+
+	  componentWillReceiveProps: function (nextProps) {
+	    if ('value' in nextProps && nextProps.value !== this.props.value) {
+	      this.setEditorContents(this.state.editor, nextProps.value);
 	    }
 	  },
 
-	  componentWillUnmount: function() {
-	    clearTimeout(this.closeTimer);
+	  componentWillUnmount: function () {
+	    this.projectListener.remove();
 	  },
 
-	  componentWillReceiveProps: function(newProps) {
-	    // Focus only needs to be set once when the modal is being opened
-	    if (!this.props.isOpen && newProps.isOpen) {
-	      this.setFocusAfterRender(true);
-	      this.open();
-	    } else if (this.props.isOpen && !newProps.isOpen) {
-	      this.close();
+	  _onChange: function () {
+	    this.setState(this.getStateFromStore());
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  postImage: function (image) {
+	    this.setState({ img_url: image.url });
+	  },
+
+	  validateInput: function () {
+	    this.errors = [];
+
+	    if (this.state.blurb === "") {
+	      this.errors.push("blurb cannot be blank");
 	    }
-	  },
-
-	  componentDidUpdate: function () {
-	    if (this.focusAfterRender) {
-	      this.focusContent();
-	      this.setFocusAfterRender(false);
+	    if (this.state.details === "") {
+	      this.errors.push("details cannot be blank");
 	    }
+	    if (this.errors.length > 0) {
+	      return false;
+	    }
+	    return true;
 	  },
 
-	  setFocusAfterRender: function (focus) {
-	    this.focusAfterRender = focus;
-	  },
+	  editProject: function (event) {
+	    event.preventDefault();
+	    var project = {};
 
-	  open: function() {
-	    focusManager.setupScopedFocus(this.node);
-	    focusManager.markForFocusLater();
-	    this.setState({isOpen: true}, function() {
-	      this.setState({afterOpen: true});
+	    Object.keys(this.state).forEach(function (key) {
+	      project[key] = this.state[key];
 	    }.bind(this));
+
+	    var valid = this.validateInput();
+	    if (valid) {
+	      ApiUtil.updateProject(project, function (id) {
+	        this.history.pushState(null, "/project/" + id, {});
+	      }.bind(this));
+	    } else {
+	      alert(this.errors.join("\n"));
+	    }
 	  },
 
-	  close: function() {
-	    if (!this.ownerHandlesClose())
-	      return;
-	    if (this.props.closeTimeoutMS > 0)
-	      this.closeWithTimeout();
-	    else
-	      this.closeWithoutTimeout();
+	  onTextChange: function (value) {
+	    this.state.details = value;
 	  },
 
-	  focusContent: function() {
-	    this.refs.content.focus();
-	  },
+	  render: function () {
+	    if (this.state.Project == undefined) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'loading...'
+	      );
+	    }
 
-	  closeWithTimeout: function() {
-	    this.setState({beforeClose: true}, function() {
-	      this.closeTimer = setTimeout(this.closeWithoutTimeout, this.props.closeTimeoutMS);
-	    }.bind(this));
-	  },
-
-	  closeWithoutTimeout: function() {
-	    this.setState({
-	      afterOpen: false,
-	      beforeClose: false
-	    }, this.afterClose);
-	  },
-
-	  afterClose: function() {
-	    focusManager.returnFocus();
-	    focusManager.teardownScopedFocus();
-	  },
-
-	  handleKeyDown: function(event) {
-	    if (event.keyCode == 9 /*tab*/) scopeTab(this.refs.content, event);
-	    if (event.keyCode == 27 /*esc*/) this.requestClose();
-	  },
-
-	  handleOverlayClick: function() {
-	    if (this.ownerHandlesClose())
-	      this.requestClose();
-	    else
-	      this.focusContent();
-	  },
-
-	  requestClose: function() {
-	    if (this.ownerHandlesClose())
-	      this.props.onRequestClose();
-	  },
-
-	  ownerHandlesClose: function() {
-	    return this.props.onRequestClose;
-	  },
-
-	  shouldBeClosed: function() {
-	    return !this.props.isOpen && !this.state.beforeClose;
-	  },
-
-	  buildClassName: function(which, additional) {
-	    var className = CLASS_NAMES[which].base;
-	    if (this.state.afterOpen)
-	      className += ' '+CLASS_NAMES[which].afterOpen;
-	    if (this.state.beforeClose)
-	      className += ' '+CLASS_NAMES[which].beforeClose;
-	    return additional ? className + ' ' + additional : className;
-	  },
-
-	  render: function() {
-	    return this.shouldBeClosed() ? div() : (
-	      div({
-	        ref: "overlay",
-	        className: this.buildClassName('overlay', this.props.overlayClassName),
-	        style: Assign({}, defaultStyles.overlay, this.props.style.overlay || {}),
-	        onClick: this.handleOverlayClick
-	      },
-	        div({
-	          ref: "content",
-	          style: Assign({}, defaultStyles.content, this.props.style.content || {}),
-	          className: this.buildClassName('content', this.props.className),
-	          tabIndex: "-1",
-	          onClick: stopPropagation,
-	          onKeyDown: this.handleKeyDown
-	        },
-	          this.props.children
+	    return React.createElement(
+	      'div',
+	      { className: 'create-form col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1' },
+	      React.createElement(
+	        'form',
+	        { className: 'form-horizontal editProjectForm',
+	          onSubmit: this.editProject },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Editing: ',
+	          this.state.Project.project.title
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group ' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'project_blurb', className: 'col-sm-2 control-label' },
+	            'Edit Blurb:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'text',
+	              id: 'project_blurb',
+	              valueLink: this.linkState("blurb"),
+	              defaultValue: this.state.Project.project.blurb,
+	              required: true
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group ' },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'img_url', className: 'col-sm-2 control-label' },
+	            'Image URL:'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('input', {
+	              className: 'form-control',
+	              type: 'hidden',
+	              id: 'img_url',
+	              valueLink: this.linkState("img_url"),
+	              defaultValue: this.state.Project.project.img_url
+	            }),
+	            React.createElement(Cloud, { className: 'image-upload', postImage: this.postImage })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
+	            React.createElement('img', { className: 'preview-image center-block',
+	              src: this.state.img_url })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
+	            React.createElement(ReactQuill, {
+	              className: 'quill-component',
+	              theme: 'snow',
+	              onChange: this.onTextChange,
+	              value: this.state.Project.project.details
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-10' },
+	            React.createElement('br', null),
+	            React.createElement(
+	              'button',
+	              { className: 'button blue' },
+	              'Confirm Changes'
+	            )
+	          )
 	        )
 	      )
 	    );
 	  }
 	});
 
-
-/***/ },
-/* 378 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var findTabbable = __webpack_require__(379);
-	var modalElement = null;
-	var focusLaterElement = null;
-	var needToFocus = false;
-
-	function handleBlur(event) {
-	  needToFocus = true;
-	}
-
-	function handleFocus(event) {
-	  if (needToFocus) {
-	    needToFocus = false;
-	    if (!modalElement) {
-	      return;
-	    }
-	    // need to see how jQuery shims document.on('focusin') so we don't need the
-	    // setTimeout, firefox doesn't support focusin, if it did, we could focus
-	    // the element outside of a setTimeout. Side-effect of this implementation 
-	    // is that the document.body gets focus, and then we focus our element right 
-	    // after, seems fine.
-	    setTimeout(function() {
-	      if (modalElement.contains(document.activeElement))
-	        return;
-	      var el = (findTabbable(modalElement)[0] || modalElement);
-	      el.focus();
-	    }, 0);
-	  }
-	}
-
-	exports.markForFocusLater = function() {
-	  focusLaterElement = document.activeElement;
-	};
-
-	exports.returnFocus = function() {
-	  try {
-	    focusLaterElement.focus();
-	  }
-	  catch (e) {
-	    console.warn('You tried to return focus to '+focusLaterElement+' but it is not in the DOM anymore');
-	  }
-	  focusLaterElement = null;
-	};
-
-	exports.setupScopedFocus = function(element) {
-	  modalElement = element;
-
-	  if (window.addEventListener) {
-	    window.addEventListener('blur', handleBlur, false);
-	    document.addEventListener('focus', handleFocus, true);
-	  } else {
-	    window.attachEvent('onBlur', handleBlur);
-	    document.attachEvent('onFocus', handleFocus);
-	  }
-	};
-
-	exports.teardownScopedFocus = function() {
-	  modalElement = null;
-
-	  if (window.addEventListener) {
-	    window.removeEventListener('blur', handleBlur);
-	    document.removeEventListener('focus', handleFocus);
-	  } else {
-	    window.detachEvent('onBlur', handleBlur);
-	    document.detachEvent('onFocus', handleFocus);
-	  }
-	};
-
-
-
-
-/***/ },
-/* 379 */
-/***/ function(module, exports) {
-
-	/*!
-	 * Adapted from jQuery UI core
-	 *
-	 * http://jqueryui.com
-	 *
-	 * Copyright 2014 jQuery Foundation and other contributors
-	 * Released under the MIT license.
-	 * http://jquery.org/license
-	 *
-	 * http://api.jqueryui.com/category/ui-core/
-	 */
-
-	function focusable(element, isTabIndexNotNaN) {
-	  var nodeName = element.nodeName.toLowerCase();
-	  return (/input|select|textarea|button|object/.test(nodeName) ?
-	    !element.disabled :
-	    "a" === nodeName ?
-	      element.href || isTabIndexNotNaN :
-	      isTabIndexNotNaN) && visible(element);
-	}
-
-	function hidden(el) {
-	  return (el.offsetWidth <= 0 && el.offsetHeight <= 0) ||
-	    el.style.display === 'none';
-	}
-
-	function visible(element) {
-	  while (element) {
-	    if (element === document.body) break;
-	    if (hidden(element)) return false;
-	    element = element.parentNode;
-	  }
-	  return true;
-	}
-
-	function tabbable(element) {
-	  var tabIndex = element.getAttribute('tabindex');
-	  if (tabIndex === null) tabIndex = undefined;
-	  var isTabIndexNaN = isNaN(tabIndex);
-	  return (isTabIndexNaN || tabIndex >= 0) && focusable(element, !isTabIndexNaN);
-	}
-
-	function findTabbableDescendants(element) {
-	  return [].slice.call(element.querySelectorAll('*'), 0).filter(function(el) {
-	    return tabbable(el);
-	  });
-	}
-
-	module.exports = findTabbableDescendants;
-
-
-
-/***/ },
-/* 380 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var findTabbable = __webpack_require__(379);
-
-	module.exports = function(node, event) {
-	  var tabbable = findTabbable(node);
-	  var finalTabbable = tabbable[event.shiftKey ? 0 : tabbable.length - 1];
-	  var leavingFinalTabbable = (
-	    finalTabbable === document.activeElement ||
-	    // handle immediate shift+tab after opening with mouse
-	    node === document.activeElement
-	  );
-	  if (!leavingFinalTabbable) return;
-	  event.preventDefault();
-	  var target = tabbable[event.shiftKey ? tabbable.length - 1 : 0];
-	  target.focus();
-	};
-
+	module.exports = projectForm;
 
 /***/ },
 /* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var baseAssign = __webpack_require__(382),
-	    createAssigner = __webpack_require__(388),
-	    keys = __webpack_require__(384);
+	var React = __webpack_require__(1);
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(186);
+	var RewardDetail = __webpack_require__(240);
+	var ProjectIndexItem = __webpack_require__(189);
+	var UserRewardTableRows = __webpack_require__(382);
 
-	/**
-	 * A specialized version of `_.assign` for customizing assigned values without
-	 * support for argument juggling, multiple sources, and `this` binding `customizer`
-	 * functions.
-	 *
-	 * @private
-	 * @param {Object} object The destination object.
-	 * @param {Object} source The source object.
-	 * @param {Function} customizer The function to customize assigned values.
-	 * @returns {Object} Returns `object`.
-	 */
-	function assignWith(object, source, customizer) {
-	  var index = -1,
-	      props = keys(source),
-	      length = props.length;
+	var History = __webpack_require__(190).History;
 
-	  while (++index < length) {
-	    var key = props[index],
-	        value = object[key],
-	        result = customizer(value, source[key], key, object, source);
+	var ProjectDetail = React.createClass({
+	  displayName: 'ProjectDetail',
 
-	    if ((result === result ? (result !== value) : (value === value)) ||
-	        (value === undefined && !(key in object))) {
-	      object[key] = result;
+	  mixins: [History],
+
+	  getStateFromStore: function () {
+	    return { User: UserStore.currentUser() };
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  _onChange: function () {
+	    this.setState({ User: UserStore.currentUser() });
+	  },
+
+	  componentDidMount: function () {
+	    this.userListener = UserStore.addListener(this._onChange);
+	    ApiUtil.fetchCurrentUser();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+
+	  editRewards: function () {
+	    this.history.push('/editreward/' + this.state.Project.project.id);
+	  },
+
+	  _clickRewardRow: function () {
+	    this.history.push('/project/' + arguments[0]);
+	  },
+
+	  render: function () {
+	    var that = this;
+
+	    if (this.state.User != undefined) {
+
+	      var backedProjects = this.state.User.backed_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      var createdProjects = this.state.User.authored_projects.map(function (el) {
+	        return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	      });
+
+	      var rewardRow = this.state.User.rewards.map(function (el) {
+	        return React.createElement(UserRewardTableRows, { reward: el });
+	      });
+	    } else {
+
+	      backedProjects = [];
+	      createdProjects = [];
+	      rewardRow = [];
 	    }
-	  }
-	  return object;
-	}
 
-	/**
-	 * Assigns own enumerable properties of source object(s) to the destination
-	 * object. Subsequent sources overwrite property assignments of previous sources.
-	 * If `customizer` is provided it is invoked to produce the assigned values.
-	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
-	 * (objectValue, sourceValue, key, object, source).
-	 *
-	 * **Note:** This method mutates `object` and is based on
-	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @alias extend
-	 * @category Object
-	 * @param {Object} object The destination object.
-	 * @param {...Object} [sources] The source objects.
-	 * @param {Function} [customizer] The function to customize assigned values.
-	 * @param {*} [thisArg] The `this` binding of `customizer`.
-	 * @returns {Object} Returns `object`.
-	 * @example
-	 *
-	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
-	 * // => { 'user': 'fred', 'age': 40 }
-	 *
-	 * // using a customizer callback
-	 * var defaults = _.partialRight(_.assign, function(value, other) {
-	 *   return _.isUndefined(value) ? other : value;
-	 * });
-	 *
-	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
-	 * // => { 'user': 'barney', 'age': 36 }
-	 */
-	var assign = createAssigner(function(object, source, customizer) {
-	  return customizer
-	    ? assignWith(object, source, customizer)
-	    : baseAssign(object, source);
+	    if (backedProjects == "") {
+	      backedProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not backed any projects'
+	      );
+	    }
+
+	    if (createdProjects == "") {
+	      var createdProjects = React.createElement(
+	        'div',
+	        { className: 'alert alert-warning', role: 'alert' },
+	        'You have not created any projects'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'user-detail-title' },
+	          'Backed Projects'
+	        ),
+	        backedProjects
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'user-detail-title' },
+	          ' Created Projects'
+	        ),
+	        createdProjects
+	      ),
+	      React.createElement(
+	        'table',
+	        { className: 'table table-hover' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Purchase History'
+	        ),
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'th',
+	              null,
+	              'Reward:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'Price:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'delivery_date:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'description:'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          rewardRow
+	        )
+	      )
+	    );
+	  }
 	});
 
-	module.exports = assign;
-
+	module.exports = ProjectDetail;
 
 /***/ },
 /* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var baseCopy = __webpack_require__(383),
-	    keys = __webpack_require__(384);
+	var React = __webpack_require__(1);
+	var ProjectStore = __webpack_require__(159);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(186);
+	var RewardDetail = __webpack_require__(240);
+	var ProjectIndexItem = __webpack_require__(189);
 
-	/**
-	 * The base implementation of `_.assign` without support for argument juggling,
-	 * multiple sources, and `customizer` functions.
-	 *
-	 * @private
-	 * @param {Object} object The destination object.
-	 * @param {Object} source The source object.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseAssign(object, source) {
-	  return source == null
-	    ? object
-	    : baseCopy(source, keys(source), object);
-	}
+	var History = __webpack_require__(190).History;
 
-	module.exports = baseAssign;
+	var userRewardTableRows = React.createClass({
+	  displayName: 'userRewardTableRows',
 
+	  mixins: [History],
+
+	  _clickRewardRow: function () {
+	    this.history.push('/project/' + this.props.reward.project_id);
+	  },
+
+	  render: function () {
+	    var dots = "";
+	    if (this.props.reward.description.length > 37) {
+	      dots = "...";
+	    }
+
+	    return React.createElement(
+	      'tr',
+	      { onClick: this._clickRewardRow.bind(this, this.props.reward.project_id) },
+	      React.createElement(
+	        'th',
+	        { scope: 'row', className: 'user-table-row' },
+	        this.props.reward.title
+	      ),
+	      React.createElement(
+	        'td',
+	        { className: 'user-table-row' },
+	        this.props.reward.cost
+	      ),
+	      React.createElement(
+	        'td',
+	        { className: 'user-table-row' },
+	        this.props.reward.delivery_date
+	      ),
+	      React.createElement(
+	        'td',
+	        { className: 'user-table-row' },
+	        this.props.reward.description.slice(0, 40) + dots
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = userRewardTableRows;
 
 /***/ },
 /* 383 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(186);
+	var History = __webpack_require__(190).History;
+	var LinkedStateMixin = __webpack_require__(263);
+	var ProjectStore = __webpack_require__(159);
+	var RewardDetail = __webpack_require__(384);
+	var DateTime = __webpack_require__(274);
+	var Modal = __webpack_require__(241);
 
-	/**
-	 * Copies properties of `source` to `object`.
-	 *
-	 * @private
-	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
-	 * @param {Object} [object={}] The object to copy properties to.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseCopy(source, props, object) {
-	  object || (object = {});
+	var rewardForm = React.createClass({
+	  displayName: 'rewardForm',
 
-	  var index = -1,
-	      length = props.length;
+	  mixins: [LinkedStateMixin, History],
 
-	  while (++index < length) {
-	    var key = props[index];
-	    object[key] = source[key];
+	  inputs: {
+	    title: "",
+	    description: "",
+	    cost: "",
+	    project_id: "",
+	    delivery_date: "",
+	    reward_max_count: ""
+	  },
+
+	  getNewState: function () {
+	    return {
+	      title: "",
+	      description: "",
+	      cost: "",
+	      project_id: "",
+	      delivery_date: "",
+	      reward_max_count: "",
+	      modalIsOpen: false,
+	      Project: ProjectStore.singleProject(parseInt(this.props.params.id)),
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black',
+	          backgroundColor: "#ffff00"
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
+	  },
+
+	  _onChange: function () {
+	    this.setState(this.getNewState());
+	  },
+
+	  onDateChange: function (value) {
+	    this.state.delivery_date = new Date(value.valueOf());
+	  },
+
+	  getInitialState: function () {
+	    return this.getNewState();
+	  },
+
+	  componentWillReceiveProps: function (newProps) {
+	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+	  },
+
+	  componentDidMount: function () {
+	    this.projectListener = ProjectStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleProject(parseInt(this.props.params.id));
+	  },
+
+	  componentWillUnmount: function () {
+	    this.projectListener.remove();
+	  },
+
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+
+	  // TODO: REFACTOR / CLEAN THIS. add into another file
+
+	  validateInput: function () {
+	    this.errors = [];
+	    if (this.state.title === "") {
+	      this.errors.push("Title can not be blank");
+	    }
+	    if (this.state.description === "") {
+	      this.errors.push("description cannot be blank");
+	    }
+	    if (this.state.delivery_date === "") {
+	      this.errors.push("You must chose a delivery date");
+	    }
+	    if (this.state.cost === "" || Number(this.state.cost) != this.state.cost) {
+	      this.errors.push("invalid cost");
+	    }
+	    if (this.state.cost <= 0) {
+	      this.errors.push("Cost must be above 0");
+	    }
+	    if (typeof parseInt(this.state.cost) !== 'number' || parseInt(this.state.cost) % 1 !== 0) {
+	      this.errors.push("Cost must be a number");
+	    }
+	    if (this.state.reward_max_count != "") {
+	      if (typeof parseInt(this.state.reward_max_count) !== 'number' || parseInt(this.state.reward_max_count) % 1 !== 0) {
+	        this.errors.push("Quantity must be a number");
+	      }
+	      if (this.state.reward_max_count <= 0) {
+	        this.errors.push("Quantity cannot be negative");
+	      }
+	    }
+	    if (this.state.delivery_date === undefined) {
+	      this.errors.push("Must sellect delivery date");
+	    }
+	    if (this.errors.length > 0) {
+	      return false;
+	    }
+	    return true;
+	  },
+
+	  createReward: function (event) {
+
+	    event.preventDefault();
+	    this.state.project_id = this.props.params.id;
+	    var reward = {};
+
+	    //TODO EDIT THIS
+
+	    Object.keys(this.inputs).forEach(function (key) {
+	      reward[key] = this.state[key];
+	    }.bind(this));
+
+	    var valid = this.validateInput();
+	    if (valid) {
+	      ApiUtil.createReward(reward, function (id) {});
+	      this.setState({
+	        title: "",
+	        description: "",
+	        cost: "",
+	        project_id: "",
+	        img_url: "",
+	        reward_max_count: ""
+	      });
+	    } else {
+	      this.errorList = this.errors.map(function (el) {
+	        return React.createElement(
+	          'li',
+	          null,
+	          el
+	        );
+	      });
+	      this.openModal();
+	    }
+	  },
+
+	  backToProject: function () {
+	    this.history.push('/project/' + this.state.Project.project.id);
+	  },
+
+	  render: function () {
+	    Modal.setAppElement(document.body);
+	    var msg = "";
+	    var rewards = "";
+
+	    if (this.state.Project !== undefined && this.state.Project.project !== undefined) {
+	      rewards = [];
+	      rewards = this.state.Project.project.rewards.map(function (el) {
+	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'none' });
+	      });
+	    }
+
+	    if (this.props.location.query.new === "true") {
+	      msg = React.createElement(
+	        'div',
+	        { className: 'alert alert-info' },
+	        'Dont forget to add rewards to your project! Projects that have rewards get *significantly* more funding than those which dont.'
+	      );
+	    } else {
+	      msg = React.createElement(
+	        'div',
+	        { className: 'alert alert-info' },
+	        'Add more rewards! Achieve your dreams!'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'row create-form' },
+	      React.createElement(
+	        'div',
+	        { className: 'col-sm-12 col-md-8' },
+	        React.createElement(
+	          'form',
+	          { className: 'form-horizontal createRewardForm', onSubmit: this.createReward },
+	          React.createElement(
+	            'h2',
+	            { className: 'create-form-title' },
+	            'REWARD FORM'
+	          ),
+	          msg,
+	          React.createElement(
+	            'div',
+	            { className: 'form-group ' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'title', className: 'col-sm-2 control-label' },
+	              'Title:'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', {
+	                type: 'text',
+	                className: 'form-control',
+	                id: 'title',
+	                valueLink: this.linkState("title"),
+	                required: true
+	              })
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'description', className: 'col-sm-2 control-label' },
+	              'description:'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', {
+	                type: 'text',
+	                className: 'form-control',
+	                id: 'description',
+	                valueLink: this.linkState("description"),
+	                required: true
+	              })
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'cost', className: 'col-sm-2 control-label' },
+	              'Cost:'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', {
+	                type: 'integer',
+	                className: 'form-control',
+	                id: 'cost',
+	                valueLink: this.linkState("cost"),
+	                required: true
+	              })
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'delivery_date', className: 'col-sm-2 control-label' },
+	              'Delivery Date:'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement(DateTime, {
+	                isValidDate: this.validDate,
+	                input: false,
+	                onChange: this.onDateChange
+	              })
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'reward_max_count', className: 'col-sm-2 control-label' },
+	              'Quantity (optional):'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', {
+	                className: 'form-control',
+	                type: 'text',
+	                id: 'reward_max_count',
+	                valueLink: this.linkState("reward_max_count")
+	              }),
+	              React.createElement(
+	                'h6',
+	                { className: 'quantity-explanation' },
+	                'Want to limit how many of these rewards are available? Just enter a number above!'
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement(
+	                'button',
+	                { className: 'button blue', onClick: this.backToProject },
+	                'Back to Project'
+	              ),
+	              React.createElement(
+	                'button',
+	                { className: 'button blue reward-create' },
+	                'Create Reward'
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'col-sm-12 col-md-4' },
+	        React.createElement(
+	          'h2',
+	          { className: 'create-form-title' },
+	          'Existing Rewards'
+	        ),
+	        rewards
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'reward-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: this.state.customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'reward-modal-title' },
+	          'Errors:'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-modal-msg' },
+	          this.errorList
+	        )
+	      )
+	    );
 	  }
-	  return object;
-	}
+	});
 
-	module.exports = baseCopy;
-
+	module.exports = rewardForm;
 
 /***/ },
 /* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var getNative = __webpack_require__(385),
-	    isArguments = __webpack_require__(386),
-	    isArray = __webpack_require__(387);
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(186);
+	var Modal = __webpack_require__(241);
 
-	/** Used to detect unsigned integer values. */
-	var reIsUint = /^\d+$/;
+	var RewardDetail = React.createClass({
+	  displayName: 'RewardDetail',
 
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+	  _clickerFunc: function () {
+	    if (this.props.clickerFunc === "none") {} else if (this.props.clickerFunc === "expired") {} else {
+	      var newBacker = { reward_id: this.props.reward.reward_id };
+	      if (this.props.reward.reward_max_count && this.props.reward.reward_number_sold >= this.props.reward.reward_max_count) {
 
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeKeys = getNative(Object, 'keys');
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Sold Out!";
+	        this.state.modalMsg = "Please select a different reward";
+	        background.content.backgroundColor = "#ffff00";
+	        this.setState({ customStyles: background });
+	        this.openModal();
+	      } else {
 
-	/**
-	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-
-	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-
-	/**
-	 * A fallback implementation of `Object.keys` which creates an array of the
-	 * own enumerable property names of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 */
-	function shimKeys(object) {
-	  var props = keysIn(object),
-	      propsLength = props.length,
-	      length = propsLength && object.length;
-
-	  var allowIndexes = !!length && isLength(length) &&
-	    (isArray(object) || isArguments(object));
-
-	  var index = -1,
-	      result = [];
-
-	  while (++index < propsLength) {
-	    var key = props[index];
-	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
-	      result.push(key);
+	        var background = this.state.customStyles;
+	        this.state.modalTitle = "Purchase Success!";
+	        this.state.modalMsg = "Thankyou for your support";
+	        background.content.backgroundColor = "#33cc33";
+	        this.setState({ customStyles: background });
+	        ApiUtil.createBacker(newBacker);
+	        this.openModal();
+	      }
 	    }
-	  }
-	  return result;
-	}
+	  },
 
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
+	  getInitialState: function () {
+	    return { modalIsOpen: false,
+	      customStyles: {
+	        content: {
+	          top: '50%',
+	          left: '50%',
+	          right: 'auto',
+	          bottom: 'auto',
+	          marginRight: '-50%',
+	          transform: 'translate(-50%, -50%)',
+	          borderRadius: '10px',
+	          border: '1px solid black'
+	        },
+	        overlay: {
+	          position: 'fixed',
+	          top: 0,
+	          left: 0,
+	          right: 0,
+	          bottom: 0,
+	          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        }
+	      }
+	    };
+	  },
 
-	/**
-	 * Creates an array of the own enumerable property names of `object`.
-	 *
-	 * **Note:** Non-object values are coerced to objects. See the
-	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
-	 * for more details.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 *   this.b = 2;
-	 * }
-	 *
-	 * Foo.prototype.c = 3;
-	 *
-	 * _.keys(new Foo);
-	 * // => ['a', 'b'] (iteration order is not guaranteed)
-	 *
-	 * _.keys('hi');
-	 * // => ['0', '1']
-	 */
-	var keys = !nativeKeys ? shimKeys : function(object) {
-	  var Ctor = object == null ? undefined : object.constructor;
-	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-	      (typeof object != 'function' && isArrayLike(object))) {
-	    return shimKeys(object);
-	  }
-	  return isObject(object) ? nativeKeys(object) : [];
-	};
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
 
-	/**
-	 * Creates an array of the own and inherited enumerable property names of `object`.
-	 *
-	 * **Note:** Non-object values are coerced to objects.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 *   this.b = 2;
-	 * }
-	 *
-	 * Foo.prototype.c = 3;
-	 *
-	 * _.keysIn(new Foo);
-	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
-	 */
-	function keysIn(object) {
-	  if (object == null) {
-	    return [];
-	  }
-	  if (!isObject(object)) {
-	    object = Object(object);
-	  }
-	  var length = object.length;
-	  length = (length && isLength(length) &&
-	    (isArray(object) || isArguments(object)) && length) || 0;
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
 
-	  var Ctor = object.constructor,
-	      index = -1,
-	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
-	      result = Array(length),
-	      skipIndexes = length > 0;
+	  render: function () {
+	    Modal.setAppElement(document.body);
 
-	  while (++index < length) {
-	    result[index] = (index + '');
-	  }
-	  for (var key in object) {
-	    if (!(skipIndexes && isIndex(key, length)) &&
-	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
-	      result.push(key);
+	    var reward = this.props.reward;
+
+	    if (reward.rewards_bought.rewards_bought > 0) {
+	      var count = "You own: " + reward.rewards_bought.rewards_bought;
+	    } else {
+	      count = "";
 	    }
+
+	    if (parseInt(reward.reward_max_count) > 0) {
+	      var countRemaining = "Quantity remaining: " + reward.number_remaining;
+	    } else {
+	      countRemaining = "";
+	    }
+
+	    if (reward.reward_max_count) {
+	      var rewardLimit = React.createElement(
+	        'span',
+	        { className: 'reward-limit' },
+	        'Limited ',
+	        " " + reward.number_remaining + " ",
+	        ' left of',
+	        " " + reward.reward_max_count,
+	        ';'
+	      );
+	    } else {
+	      rewardLimit = "";
+	    }
+
+	    if (this.props.clickerFunc === "expired") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask red-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Funding period over'
+	          )
+	        )
+	      );
+	    } else if (this.props.clickerFunc === "none") {
+	      var hoverDiv = React.createElement('div', { className: 'no-mask' });
+	    } else if (this.props.clickerFunc === "soldout") {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask yellow-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Reward is sold out'
+	          )
+	        )
+	      );
+	    } else {
+	      var hoverDiv = React.createElement(
+	        'div',
+	        { className: 'mask green-mask' },
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-select' },
+	          React.createElement(
+	            'h4',
+	            null,
+	            'Select this reward'
+	          )
+	        )
+	      );
+	    }
+	    var modalTitle = "";
+	    var modalMsg = "";
+
+	    return React.createElement(
+	      'div',
+	      { className: 'col-md-12 reward-detail', onClick: this._clickerFunc },
+	      React.createElement(
+	        'section',
+	        null,
+	        'Pledge',
+	        " $" + reward.reward_cost
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_number_sold,
+	        ' backers. ',
+	        rewardLimit
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        { className: 'reward-title' },
+	        reward.reward_title
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        reward.reward_description
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'section',
+	        null,
+	        'Estimated delivery ',
+	        reward.reward_delivery_date
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        count
+	      ),
+	      hoverDiv,
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'reward-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: this.state.customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'reward-modal-title' },
+	          this.state.modalTitle
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'reward-modal-msg' },
+	          this.state.modalMsg
+	        )
+	      )
+	    );
 	  }
-	  return result;
-	}
 
-	module.exports = keys;
+	});
 
+	// <div className="reward-select"><h4>Select this reward</h4></div>
+	module.exports = RewardDetail;
 
 /***/ },
 /* 385 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var ReactDom = __webpack_require__(158);
+	var ApiUtil = __webpack_require__(186);
+	var CategoryStore = __webpack_require__(184);
+	var ProjectStore = __webpack_require__(159);
+	var CategoryItem = __webpack_require__(386);
+	var ProjectIndexItem = __webpack_require__(387);
 
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]';
+	var Discover = React.createClass({
+	  displayName: 'Discover',
 
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
+	  getInitialState: function () {
+	    return { categories: CategoryStore.all() };
+	  },
 
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
+	  _onCategoryChange: function () {
+	    this.setState({ categories: CategoryStore.all() });
+	  },
 
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
+	  _onProjectChange: function () {
+	    this.setState({ projects: ProjectStore.all() });
+	  },
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+	  componentDidMount: function () {
+	    this.categoryListener = CategoryStore.addListener(this._onCategoryChange);
+	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
+	    ApiUtil.fetchAllCategories();
+	    ApiUtil.fetchAllProjects();
+	  },
 
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
+	  componentWillUnmount: function () {
+	    this.categoryListener.remove();
+	    this.projectListener.remove();
+	  },
 
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
+	  compareByFunding: function (a, b) {
+	    if (a.current_funding > b.current_funding) {
+	      return -1;
+	    }
+	    if (b.current_funding > a.current_funding) {
+	      return 1;
+	    }
+	    return 0;
+	  },
 
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
+	  selectMostFunding: function () {
+	    if (this.state.projects === undefined) {
+	      return [];
+	    }
+	    var that = this;
+	    var arr = this.state.projects.sort(this.compareByFunding);
+	    var sortedArr = [];
+	    arr.forEach(function (el) {
+	      if (new Date(el.campaign_end_date) > new Date()) {
+	        sortedArr.push(el);
+	      }
+	    });
+	    if (sortedArr.length >= 2) {
+	      return sortedArr.slice(0, 4);
+	    } else {
+	      return [];
+	    }
+	  },
 
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in older versions of Chrome and Safari which return 'function' for regexes
-	  // and Safari 8 equivalents which return 'object' for typed array constructors.
-	  return isObject(value) && objToString.call(value) == funcTag;
-	}
+	  render: function () {
 
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
+	    var mostFundedProjects = this.selectMostFunding();
 
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
+	    mostFundedProjects = mostFundedProjects.map(function (el) {
+	      return React.createElement(ProjectIndexItem, { project: el, key: el.id });
+	    });
+
+	    var totalCategories = 0;
+
+	    var categories = this.state.categories.map(function (el) {
+	      var count = ProjectStore.getCategoryCount(el.id);
+	      totalCategories += count;
+	      return React.createElement(CategoryItem, { category: el, key: el.id, count: count });
+	    });
+
+	    var all = { title: "All" };
+	    categories.push(React.createElement(CategoryItem, { category: all,
+	      key: 99,
+	      count: totalCategories }));
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'category-intro' },
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'col-sm-6 col-sm-offset-3 inner-category-intro' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Underway is a place where ideas are born. If you have an idea, create a project! You can also join someone else’s voyage below.'
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'category-selections' },
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'inner-category-selection' },
+	            categories
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h2',
+	          { className: 'trending-title' },
+	          'Trending now:'
+	        )
+	      ),
+	      mostFundedProjects
+	    );
 	  }
-	  if (isFunction(value)) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
 
-	module.exports = getNative;
+	});
 
+	module.exports = Discover;
 
 /***/ },
 /* 386 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var ApiUtil = __webpack_require__(186);
+	var History = __webpack_require__(190).History;
 
-	/** Used as references for various `Number` constants. */
-	var MAX_SAFE_INTEGER = 9007199254740991;
+	var Category = React.createClass({
+	  displayName: 'Category',
 
-	/** `Object#toString` result references. */
-	var argsTag = '[object Arguments]',
-	    funcTag = '[object Function]',
-	    genTag = '[object GeneratorFunction]';
+	  mixins: [History],
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+	  _onClick: function () {
+	    if (this.props.category) {
+	      this.history.pushState(null, "/projects/", { category: this.props.category.id });
+	    } else {
+	      this.history.pushState(null, "/projects/");
+	    }
+	  },
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+	  render: function () {
+	    if (this.props.count === 1) {
+	      var projects = ' Project';
+	    } else {
+	      projects = ' Projects';
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'col-sm-3 category-item', onClick: this._onClick },
+	      React.createElement(
+	        'section',
+	        { className: 'slide-down', id: this.props.category.title },
+	        React.createElement(
+	          'div',
+	          { className: 'wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'inner-item image1' },
+	            this.props.category.title
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'inner-item inner-hover image2' },
+	            this.props.count,
+	            ' ',
+	            projects
+	          )
+	        )
+	      )
+	    );
+	  }
 
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
+	});
 
-	/** Built-in value references. */
-	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-
-	/**
-	 * Checks if `value` is likely an `arguments` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArguments(function() { return arguments; }());
-	 * // => true
-	 *
-	 * _.isArguments([1, 2, 3]);
-	 * // => false
-	 */
-	function isArguments(value) {
-	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
-	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
-	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-	}
-
-	/**
-	 * Checks if `value` is array-like. A value is considered array-like if it's
-	 * not a function and has a `value.length` that's an integer greater than or
-	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 * @example
-	 *
-	 * _.isArrayLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isArrayLike(document.body.children);
-	 * // => true
-	 *
-	 * _.isArrayLike('abc');
-	 * // => true
-	 *
-	 * _.isArrayLike(_.noop);
-	 * // => false
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value)) && !isFunction(value);
-	}
-
-	/**
-	 * This method is like `_.isArrayLike` except that it also checks if `value`
-	 * is an object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
-	 * @example
-	 *
-	 * _.isArrayLikeObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isArrayLikeObject(document.body.children);
-	 * // => true
-	 *
-	 * _.isArrayLikeObject('abc');
-	 * // => false
-	 *
-	 * _.isArrayLikeObject(_.noop);
-	 * // => false
-	 */
-	function isArrayLikeObject(value) {
-	  return isObjectLike(value) && isArrayLike(value);
-	}
-
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
-	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
-	  var tag = isObject(value) ? objectToString.call(value) : '';
-	  return tag == funcTag || tag == genTag;
-	}
-
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 * @example
-	 *
-	 * _.isLength(3);
-	 * // => true
-	 *
-	 * _.isLength(Number.MIN_VALUE);
-	 * // => false
-	 *
-	 * _.isLength(Infinity);
-	 * // => false
-	 *
-	 * _.isLength('3');
-	 * // => false
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' &&
-	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(_.noop);
-	 * // => true
-	 *
-	 * _.isObject(null);
-	 * // => false
-	 */
-	function isObject(value) {
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	module.exports = isArguments;
-
+	module.exports = Category;
 
 /***/ },
 /* 387 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(190).History;
 
-	/** `Object#toString` result references. */
-	var arrayTag = '[object Array]',
-	    funcTag = '[object Function]';
+	var ProjectIndexItem = React.createClass({
+	  displayName: 'ProjectIndexItem',
 
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	  mixins: [History],
 
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
+	  showDetails: function () {
+	    this.history.push('/project/' + this.props.project.id);
+	  },
 
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
+	  _imgError: function () {
+	    this.refs.indexItemImage.src = "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457232012/kzkdxs35l04naeenna7z.png";
+	  },
 
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
+	  _formatTime: function (t) {
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+	    var cd = 24 * 60 * 60 * 1000,
+	        ch = 60 * 60 * 1000,
+	        d = Math.floor(t / cd),
+	        h = Math.floor((t - d * cd) / ch),
+	        m = Math.round((t - d * cd - h * ch) / 60000),
+	        pad = function (n) {
+	      return n < 10 ? '0' + n : n;
+	    };
+	    if (m === 60) {
+	      h++;
+	      m = 0;
+	    }
+	    if (h === 24) {
+	      d++;
+	      h = 0;
+	    }
+	    if (d < 0) {
+	      d = 0;
+	    }
+	    return d;
+	  },
 
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
+	  render: function () {
 
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
+	    var fundingAsPercent = this.props.project.current_funding / this.props.project.funding_goal;
+	    var fundingAsString = Math.round(fundingAsPercent * 100);
 
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeIsArray = getNative(Array, 'isArray');
+	    if (fundingAsString == Infinity) {
+	      fundingAsString = 0;
+	    }
 
-	/**
-	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
+	    var fundingStyle = fundingAsString;
+	    if (fundingStyle > 100) {
+	      fundingStyle = "100";
+	    }
+	    fundingStyle = fundingStyle.toString() + "%";
+	    fundingAsString = fundingAsString.toString() + "%";
 
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
+	    fundingStyle = { width: fundingStyle };
 
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
+	    var timeRemainingInt = Date.parse(this.props.project.campaign_end_date) - new Date();
+	    var daysToGo = this._formatTime(timeRemainingInt);
 
-	/**
-	 * Checks if `value` is classified as an `Array` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArray([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isArray(function() { return arguments; }());
-	 * // => false
-	 */
-	var isArray = nativeIsArray || function(value) {
-	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
-	};
+	    var pleged = "$" + this.props.project.current_funding;
 
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in older versions of Chrome and Safari which return 'function' for regexes
-	  // and Safari 8 equivalents which return 'object' for typed array constructors.
-	  return isObject(value) && objToString.call(value) == funcTag;
-	}
+	    var project_title = this.props.project.title;
 
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
+	    if (this.props.project.title.length > 20) {
+	      project_title = this.props.project.title.slice(0, 20) + "...";
+	    } else {
+	      project_title = this.props.project.title;
+	    }
 
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
+	    return React.createElement(
+	      'div',
+	      { className: 'index-item col-xs-12 col-sm-6 col-md-4 col-lg-3',
+	        onClick: this.showDetails,
+	        key: parseInt(this.props.project.id) },
+	      React.createElement(
+	        'div',
+	        { className: 'inner-box' },
+	        React.createElement('img', {
+	          ref: 'indexItemImage',
+	          className: 'index-item-image',
+	          src: this.props.project.img_url,
+	          onError: this._imgError
+	        }),
+	        React.createElement(
+	          'h3',
+	          { className: 'project-index-item-title' },
+	          project_title
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'index-blurb' },
+	          React.createElement(
+	            'p',
+	            null,
+	            this.props.project.blurb
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'progress' },
+	          React.createElement(
+	            'div',
+	            { className: 'progress-bar progress-bar-success',
+	              role: 'progressbar',
+	              'aria-valuenow': fundingAsString,
+	              'aria-valuemin': '0',
+	              'aria-valuemax': '100',
+	              style: fundingStyle },
+	            fundingAsString
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'index-item-infos' },
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Days to go:'
+	            ),
+	            React.createElement(
+	              'section',
+	              null,
+	              daysToGo
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Funded:'
+	            ),
+	            React.createElement(
+	              'section',
+	              null,
+	              fundingAsString
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'item-info' },
+	            React.createElement(
+	              'h6',
+	              null,
+	              'Pleged:'
+	            ),
+	            pleged
+	          )
+	        ),
+	        React.createElement('br', null)
+	      )
+	    );
 	  }
-	  if (isFunction(value)) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
+	});
 
-	module.exports = isArray;
-
+	module.exports = ProjectIndexItem;
 
 /***/ },
 /* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var bindCallback = __webpack_require__(389),
-	    isIterateeCall = __webpack_require__(390),
-	    restParam = __webpack_require__(391);
+	var React = __webpack_require__(1);
+	var Logo = __webpack_require__(389);
+	var Discover = __webpack_require__(390);
+	var Create = __webpack_require__(391);
+	var Profile = __webpack_require__(392);
+	var UserStore = __webpack_require__(182);
+	var ApiUtil = __webpack_require__(186);
 
-	/**
-	 * Creates a function that assigns properties of source object(s) to a given
-	 * destination object.
-	 *
-	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
-	 *
-	 * @private
-	 * @param {Function} assigner The function to assign values.
-	 * @returns {Function} Returns the new assigner function.
-	 */
-	function createAssigner(assigner) {
-	  return restParam(function(object, sources) {
-	    var index = -1,
-	        length = object == null ? 0 : sources.length,
-	        customizer = length > 2 ? sources[length - 2] : undefined,
-	        guard = length > 2 ? sources[2] : undefined,
-	        thisArg = length > 1 ? sources[length - 1] : undefined;
+	var History = __webpack_require__(190).History;
 
-	    if (typeof customizer == 'function') {
-	      customizer = bindCallback(customizer, thisArg, 5);
-	      length -= 2;
-	    } else {
-	      customizer = typeof thisArg == 'function' ? thisArg : undefined;
-	      length -= (customizer ? 1 : 0);
+	var Menu = React.createClass({
+	  displayName: 'Menu',
+
+	  mixins: [History],
+
+	  getStateFromStore: function () {
+	    return { User: UserStore.currentUser() };
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  _onChange: function () {
+	    this.setState({ User: UserStore.currentUser() });
+	  },
+
+	  componentDidMount: function () {
+	    this.userListener = UserStore.addListener(this._onChange);
+	    ApiUtil.fetchCurrentUser();
+	    ApiUtil.fetchAllCategories();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+
+	  _clickSignOut: function () {
+	    ApiUtil.signOut();
+	  },
+
+	  _clickProfile: function () {
+	    this.history.push("/userDetails");
+	  },
+
+	  render: function () {
+	    var username = "Options";
+
+	    if (this.state.User != undefined) {
+	      username = this.state.User.username;
 	    }
-	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-	      customizer = length < 3 ? undefined : customizer;
-	      length = 1;
-	    }
-	    while (++index < length) {
-	      var source = sources[index];
-	      if (source) {
-	        assigner(object, source, customizer);
-	      }
-	    }
-	    return object;
-	  });
-	}
 
-	module.exports = createAssigner;
+	    return React.createElement(
+	      'nav',
+	      { className: 'navbar navbar-default' },
+	      React.createElement(
+	        'div',
+	        { className: 'container-fluid hidden-xs' },
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-header' },
+	          React.createElement(
+	            'button',
+	            {
+	              type: 'button',
+	              className: 'navbar-toggle collapsed',
+	              'data-toggle': 'collapse',
+	              'data-target': '#bs-example-navbar-collapse-1',
+	              'aria-expanded': 'false'
+	            },
+	            React.createElement(
+	              'span',
+	              { className: 'sr-only' },
+	              'Toggle navigation'
+	            ),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' })
+	          ),
+	          React.createElement(Logo, { className: 'navbar-brand' })
+	        ),
+	        React.createElement(
+	          'div',
+	          {
+	            className: 'collapse navbar-collapse',
+	            id: 'bs-example-navbar-collapse-1'
+	          },
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(Discover, null)
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(Create, null)
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { href: '//www.linkedin.com/in/robertdavidreid', id: 'li-logo-a' },
+	                React.createElement('img', { src: '/assets/linkedin_logo.png', id: 'li-logo' })
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { href: 'https://github.com/rdavidreid', id: 'gh-logo-a' },
+	                React.createElement('img', { src: '/assets/github_logo.png', id: 'gh-logo' })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav navbar-right' },
+	            React.createElement(
+	              'li',
+	              { className: 'dropdown' },
+	              React.createElement(
+	                'a',
+	                {
+	                  href: '#', className: 'dropdown-toggle username-dropdown',
+	                  'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true',
+	                  'aria-expanded': 'false'
+	                },
+	                React.createElement(
+	                  'span',
+	                  { className: 'username-dropdown' },
+	                  username
+	                ),
+	                React.createElement('span', { className: 'caret' })
+	              ),
+	              React.createElement(
+	                'ul',
+	                { className: 'dropdown-menu' },
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    { onClick: this._clickProfile },
+	                    'Profile'
+	                  )
+	                ),
+	                React.createElement('li', { role: 'separator', className: 'divider' }),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    { onClick: this._clickSignOut },
+	                    'SignOut'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'container-fluid visible-xs' },
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-header' },
+	          React.createElement(
+	            'button',
+	            {
+	              type: 'button',
+	              className: 'navbar-toggle collapsed',
+	              'data-toggle': 'collapse',
+	              'data-target': '#bs-example-navbar-collapse-2',
+	              'aria-expanded': 'false'
+	            },
+	            React.createElement(
+	              'span',
+	              { className: 'sr-only' },
+	              'Toggle navigation'
+	            ),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' }),
+	            React.createElement('span', { className: 'icon-bar' })
+	          ),
+	          React.createElement(Logo, { className: 'navbar-brand' })
+	        ),
+	        React.createElement(
+	          'div',
+	          {
+	            className: 'collapse navbar-collapse',
+	            id: 'bs-example-navbar-collapse-2'
+	          },
+	          React.createElement(
+	            'ul',
+	            { className: 'nav navbar-nav' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(Discover, null)
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(Create, null)
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { href: '//www.linkedin.com/in/robertdavidreid', id: 'li-link' },
+	                'Linkedin'
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { href: 'https://github.com/rdavidreid', id: 'gh-link' },
+	                'Github'
+	              )
+	            ),
+	            React.createElement('li', { className: 'divider' }),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { onClick: this._clickProfile, id: 'profile-link' },
+	                'Profile'
+	              )
+	            ),
+	            React.createElement('li', { role: 'separator', className: 'divider' }),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { onClick: this._clickSignOut, id: 'signout-link' },
+	                'SignOut'
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
 
+	module.exports = Menu;
 
 /***/ },
 /* 389 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(190).History;
 
-	/**
-	 * A specialized version of `baseCallback` which only supports `this` binding
-	 * and specifying the number of arguments to provide to `func`.
-	 *
-	 * @private
-	 * @param {Function} func The function to bind.
-	 * @param {*} thisArg The `this` binding of `func`.
-	 * @param {number} [argCount] The number of arguments to provide to `func`.
-	 * @returns {Function} Returns the callback.
-	 */
-	function bindCallback(func, thisArg, argCount) {
-	  if (typeof func != 'function') {
-	    return identity;
+	var Logo = React.createClass({
+	  displayName: 'Logo',
+
+	  mixins: [History],
+	  _clickLogo: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'logo-icon', onClick: this._clickLogo },
+	      React.createElement('img', { src: '/assets/Underway-icon-color.png', id: 'icon' })
+	    );
 	  }
-	  if (thisArg === undefined) {
-	    return func;
-	  }
-	  switch (argCount) {
-	    case 1: return function(value) {
-	      return func.call(thisArg, value);
-	    };
-	    case 3: return function(value, index, collection) {
-	      return func.call(thisArg, value, index, collection);
-	    };
-	    case 4: return function(accumulator, value, index, collection) {
-	      return func.call(thisArg, accumulator, value, index, collection);
-	    };
-	    case 5: return function(value, other, key, object, source) {
-	      return func.call(thisArg, value, other, key, object, source);
-	    };
-	  }
-	  return function() {
-	    return func.apply(thisArg, arguments);
-	  };
-	}
+	});
 
-	/**
-	 * This method returns the first argument provided to it.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Utility
-	 * @param {*} value Any value.
-	 * @returns {*} Returns `value`.
-	 * @example
-	 *
-	 * var object = { 'user': 'fred' };
-	 *
-	 * _.identity(object) === object;
-	 * // => true
-	 */
-	function identity(value) {
-	  return value;
-	}
-
-	module.exports = bindCallback;
-
+	module.exports = Logo;
 
 /***/ },
 /* 390 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.0.9 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(190).History;
 
-	/** Used to detect unsigned integer values. */
-	var reIsUint = /^\d+$/;
+	var Discover = React.createClass({
+	  displayName: 'Discover',
 
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-
-	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-
-	/**
-	 * Checks if the provided arguments are from an iteratee call.
-	 *
-	 * @private
-	 * @param {*} value The potential iteratee value argument.
-	 * @param {*} index The potential iteratee index or key argument.
-	 * @param {*} object The potential iteratee object argument.
-	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
-	 */
-	function isIterateeCall(value, index, object) {
-	  if (!isObject(object)) {
-	    return false;
+	  mixins: [History],
+	  _clickDiscover: function () {
+	    this.history.push("/");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'a',
+	      { className: '.navbar-link navbar-discover', onClick: this._clickDiscover },
+	      'Discover'
+	    );
 	  }
-	  var type = typeof index;
-	  if (type == 'number'
-	      ? (isArrayLike(object) && isIndex(index, object.length))
-	      : (type == 'string' && index in object)) {
-	    var other = object[index];
-	    return value === value ? (value === other) : (other !== other);
-	  }
-	  return false;
-	}
+	});
 
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	module.exports = isIterateeCall;
-
+	module.exports = Discover;
 
 /***/ },
 /* 391 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * lodash 3.6.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(190).History;
 
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
+	var Create = React.createClass({
+	  displayName: 'Create',
 
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeMax = Math.max;
-
-	/**
-	 * Creates a function that invokes `func` with the `this` binding of the
-	 * created function and arguments from `start` and beyond provided as an array.
-	 *
-	 * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Function
-	 * @param {Function} func The function to apply a rest parameter to.
-	 * @param {number} [start=func.length-1] The start position of the rest parameter.
-	 * @returns {Function} Returns the new function.
-	 * @example
-	 *
-	 * var say = _.restParam(function(what, names) {
-	 *   return what + ' ' + _.initial(names).join(', ') +
-	 *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
-	 * });
-	 *
-	 * say('hello', 'fred', 'barney', 'pebbles');
-	 * // => 'hello fred, barney, & pebbles'
-	 */
-	function restParam(func, start) {
-	  if (typeof func != 'function') {
-	    throw new TypeError(FUNC_ERROR_TEXT);
+	  mixins: [History],
+	  _clickCreate: function () {
+	    this.history.push("/createProject");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'a',
+	      { className: '.navbar-link navbar-create', onClick: this._clickCreate },
+	      'Create'
+	    );
 	  }
-	  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
-	  return function() {
-	    var args = arguments,
-	        index = -1,
-	        length = nativeMax(args.length - start, 0),
-	        rest = Array(length);
+	});
 
-	    while (++index < length) {
-	      rest[index] = args[start + index];
-	    }
-	    switch (start) {
-	      case 0: return func.call(this, rest);
-	      case 1: return func.call(this, args[0], rest);
-	      case 2: return func.call(this, args[0], args[1], rest);
-	    }
-	    var otherArgs = Array(start + 1);
-	    index = -1;
-	    while (++index < start) {
-	      otherArgs[index] = args[index];
-	    }
-	    otherArgs[start] = rest;
-	    return func.apply(this, otherArgs);
-	  };
-	}
-
-	module.exports = restParam;
-
+	module.exports = Create;
 
 /***/ },
 /* 392 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var _element = typeof document !== 'undefined' ? document.body : null;
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(190).History;
 
-	function setElement(element) {
-	  if (typeof element === 'string') {
-	    var el = document.querySelectorAll(element);
-	    element = 'length' in el ? el[0] : el;
+	var Profile = React.createClass({
+	  displayName: 'Profile',
+
+	  mixins: [History],
+	  _clickProfile: function () {
+	    this.history.push("/userDetails");
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'span',
+	      { className: '.navbar-link', onClick: this._clickProfile },
+	      'Profile'
+	    );
 	  }
-	  _element = element || _element;
-	}
+	});
 
-	function hide(appElement) {
-	  validateElement(appElement);
-	  (appElement || _element).setAttribute('aria-hidden', 'true');
-	}
-
-	function show(appElement) {
-	  validateElement(appElement);
-	  (appElement || _element).removeAttribute('aria-hidden');
-	}
-
-	function toggle(shouldHide, appElement) {
-	  if (shouldHide)
-	    hide(appElement);
-	  else
-	    show(appElement);
-	}
-
-	function validateElement(appElement) {
-	  if (!appElement && !_element)
-	    throw new Error('react-modal: You must set an element with `Modal.setAppElement(el)` to make this accessible');
-	}
-
-	function resetForTesting() {
-	  _element = document.body;
-	}
-
-	exports.toggle = toggle;
-	exports.setElement = setElement;
-	exports.show = show;
-	exports.hide = hide;
-	exports.resetForTesting = resetForTesting;
-
-
-/***/ },
-/* 393 */
-/***/ function(module, exports) {
-
-	module.exports = function(opts) {
-	  return new ElementClass(opts)
-	}
-
-	function indexOf(arr, prop) {
-	  if (arr.indexOf) return arr.indexOf(prop)
-	  for (var i = 0, len = arr.length; i < len; i++)
-	    if (arr[i] === prop) return i
-	  return -1
-	}
-
-	function ElementClass(opts) {
-	  if (!(this instanceof ElementClass)) return new ElementClass(opts)
-	  var self = this
-	  if (!opts) opts = {}
-
-	  // similar doing instanceof HTMLElement but works in IE8
-	  if (opts.nodeType) opts = {el: opts}
-
-	  this.opts = opts
-	  this.el = opts.el || document.body
-	  if (typeof this.el !== 'object') this.el = document.querySelector(this.el)
-	}
-
-	ElementClass.prototype.add = function(className) {
-	  var el = this.el
-	  if (!el) return
-	  if (el.className === "") return el.className = className
-	  var classes = el.className.split(' ')
-	  if (indexOf(classes, className) > -1) return classes
-	  classes.push(className)
-	  el.className = classes.join(' ')
-	  return classes
-	}
-
-	ElementClass.prototype.remove = function(className) {
-	  var el = this.el
-	  if (!el) return
-	  if (el.className === "") return
-	  var classes = el.className.split(' ')
-	  var idx = indexOf(classes, className)
-	  if (idx > -1) classes.splice(idx, 1)
-	  el.className = classes.join(' ')
-	  return classes
-	}
-
-	ElementClass.prototype.has = function(className) {
-	  var el = this.el
-	  if (!el) return
-	  var classes = el.className.split(' ')
-	  return indexOf(classes, className) > -1
-	}
-
-	ElementClass.prototype.toggle = function(className) {
-	  var el = this.el
-	  if (!el) return
-	  if (this.has(className)) this.remove(className)
-	  else this.add(className)
-	}
-
+	module.exports = Profile;
 
 /***/ }
 /******/ ]);

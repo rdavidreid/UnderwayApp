@@ -19,6 +19,44 @@
     -webkit-transition: all .6s ease;
 }
 
+#li-logo{
+  margin-left: 30px;
+  margin-top: 7px;
+  width: 35px;
+  height: 35px;
+}
+
+#li-logo-a{
+  padding: 0;
+}
+#gh-logo{
+  margin-left: 30px;
+  margin-top: 7px;
+  width: 35px;
+  height: 35px;
+}
+#gh-logo-a{
+  padding: 0;
+}
+
+#li-link{
+  margin-left: 20px;
+  border-top: 1px solid #d9d9d9;
+}
+
+#gh-link{
+  margin-left: 20px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+#profile-link{
+  margin-left: 20px;
+}
+
+#signout-link{
+  margin-left: 20px;
+}
+
 .navbar-create{
   margin-left: 20px;
   -webkit-transition: all .3s ease;

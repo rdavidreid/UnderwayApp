@@ -140,8 +140,10 @@ chose which categories to display, or to display all.
 - [ ] Multiple sessions
 - [ ] Users can post comments on projects they have backed
 - [ ] Users can 'follow' a project without backing it
+- [ ] Users can send messages to other users
+- [ ] Project authors can message all backers
 - [ ] Implement 'Account Settings.' Edit display name, update password, etc.
-- [ ] Implement infinite scroll on Project Index. Fix scalability.
+- [ ] Implement infinite scroll on Project Index. Improve scalability.
 
 [phase-one]: ./docs/phases/phase01.md
 [phase-two]: ./docs/phases/phase02.md
