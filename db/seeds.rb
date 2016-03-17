@@ -86,8 +86,15 @@ Category.create!({
 ##### Project ######
 ####################
 
+
+
+
+
+#######################
+####### Project 01 ####
+#######################
+
 Project.create!({
-id: 1,
 title:              "Flying cat pet",
 blurb:              "Love your feline friend? Give him or her the gift of flight",
 img_url:            "http://res.cloudinary.com/dur3lr9q4/image/upload/v1456883738/o284ebn1axjajhcxzg9z.jpg",
@@ -99,8 +106,33 @@ campaign_end_date:  Time.now + 10.days,
 details:            "Rocket Cat"
 })
 
+Reward.create!({
+title: "Reward 1 for Project 1",
+description: "Flight for one cat",
+cost: 100,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 100.days,
+reward_count: 0,
+reward_max_count: 100
+})
+
+Reward.create!({
+title: "Reward 2 for Project 1",
+description: "Deluxe flight ability for one cat",
+cost: 200,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 100.days,
+reward_count: 0,
+reward_max_count: 100
+})
+
+
+#######################
+####### Project 02 ####
+#######################
+
+
 Project.create!({
-id: 2,
 title: "Ultimate Game",
 blurb: "We combined Blackjack, A Rubiks Cube, and Foosball to create the greatest game ever",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457335136/pksu8o42ees2h56kyql5.jpg",
@@ -112,8 +144,21 @@ funding_goal: 4500,
 campaign_end_date: Time.now + 12.days,
 })
 
+Reward.create!({
+title: "Rulebook + Strategy Guide",
+description: "Learn how to play our game with our offical rulebook + strategy guide!",
+cost: 95,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 32.days,
+reward_count: nil,
+reward_max_count: nil
+})
+
+#######################
+####### Project 03 ####
+#######################
+
 Project.create!({
-id: 3,
 title: "Wonder Pants",
 blurb: "The new pants for the twenty-first century!",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457333931/qy1imf5v1j5jhy8alwhr.jpg",
@@ -126,8 +171,21 @@ funding_goal: 900000,
 campaign_end_date: Time.now + 62.days
 })
 
+Reward.create!({
+title: "Thanks for the leg up",
+description: "Support our project! Get a premium sock!",
+cost: 5,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 60.days,
+reward_count: nil,
+reward_max_count: nil
+})
+
+#######################
+####### Project 04 ####
+#######################
+
 Project.create!({
-id: 6,
 title: "Evil",
 blurb: "An ordinary guy. An extraordinary super villain.",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457326411/irlnyyoi0vcwvo0jjrjl.jpg",
@@ -140,8 +198,42 @@ funding_goal: 15000,
 campaign_end_date: Time.now + 30.days
 })
 
+Reward.create!({
+title: "Digital Level",
+description: "Digital copy of the entire 164 page graphic novel, featuring all six issues as well as bonus content and artwork",
+cost: 10,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 30.days,
+reward_count: nil,
+reward_max_count: nil
+})
+
+Reward.create!({
+ title: "T Shirt Level",
+ description:
+  "Not only will you get a digital copy of the graphic novel, you will also get a T Shirt. ",
+ cost: 30,
+ project_id: Project.all.last.id,
+ delivery_date: Time.now + 30.days,
+ reward_count: nil,
+ reward_max_count: nil
+})
+
+Reward.create!({
+ title: "THE NOVEL LEVEL",
+ description: "High quality hard cover copy of the graphic novel",
+ cost: 45,
+ project_id: Project.all.last.id,
+ delivery_date: Time.now + 30.days,
+ reward_count: nil,
+ reward_max_count: nil
+})
+
+#######################
+####### Project 05 ####
+#######################
+
 Project.create!({
-id: 7,
 title: "The Mini Book Show",
 blurb: "Help us spread creativity around the world in Mini Book Form!",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457324728/eetqoawrmzongpcgsvec.jpg",
@@ -153,8 +245,31 @@ funding_goal: 8888,
 campaign_end_date:  Time.now + 60.days
 })
 
+Reward.create!({
+title: "Our Gratitude",
+description: "A small donation = lots of gratitude from our team. Thanks for your support!",
+cost: 10,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 100.days,
+reward_count: nil,
+reward_max_count: nil
+})
+
+Reward.create!({
+title: "Handmade Mini Book",
+description: "A handmade mini book just for you!",
+cost: 50,
+project_id: Project.all.last.id,
+delivery_date: Time.now + 100.days,
+reward_count: nil,
+reward_max_count: nil
+})
+
+#######################
+####### Project 06 ####
+#######################
+
 Project.create!({
-id: 8,
 title: "Toys for Fido",
 blurb: "A new dog toy that is sure to delight your furry best friend",
 img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457328150/phkujt9jaivuuyy7z4lq.jpg",
@@ -166,202 +281,117 @@ funding_goal: 100000,
 campaign_end_date: Time.now + 30.days
 })
 
-Project.create!({
-id: 9,
-title: "The Fancier Dress Shoe ",
-blurb: "No other shoe comes close",
-img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457330191/v9qys2h4dohy9zm2vceb.jpg",
-details: "<div><span style=\"font-size: 18px;\">The Fancier Dress Shoe&nbsp;</span></div><div><br></div><div><br></div><div>The pinnacle of men's fashion. No other shoe is this classy, this comfortable, and this expensive. Experience the difference today. Your feet will thank you. </div>",
-author_id: 1,
-category_id: 4,
-current_funding: 0,
-funding_goal: 50000,
-campaign_end_date: Time.now + 180.days
-})
-
-Project.create!({
-id: 10,
-title: "Documentary ^ 2",
-blurb: "Ever wondered how documentaries are made? Presenting the documentary about documentaries",
-img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457331670/crgrzotsphlhkx8rdttw.jpg",
-details: "<div><br></div><div><span style=\"font-size: 32px;\">Documentary ^ 2</span></div><div><br></div><div>We take you behind the scenes exploring the world of documentaries. Our documentary has everything:</div><div><br></div><ol><li>Narration</li><li>Humor</li><li>Drama</li><li>Information</li></ol><div><br></div><div>Don't miss out on watching the documentary of a lifetime!</div>",
-author_id: 1,
-category_id: 5,
-current_funding: 0,
-funding_goal: 25000,
-campaign_end_date: Time.now + 45.days
-})
-
-####################
-###### Reward ######
-####################
-
 Reward.create!({
-title: "Reward 1 for Project 1",
-description: "This is the description of R1 P1 here is a little more text and
-a little more text just incase you need to have this much text in a reward",
-cost: 100,
-project_id: 1,
-delivery_date: Time.now + 100.days,
-reward_count: 0,
-reward_max_count: 100
-})
-
-Reward.create!({
-title: "Reward 2 for Project 1",
-description: "This is the description of R2 P1 here is a little more text and
-a little more text just incase you need to have this much text in a reward",
-cost: 200,
-project_id: 1,
-delivery_date: Time.now + 100.days,
-reward_count: 0,
-reward_max_count: 100
-})
-
-Reward.create!({
-id: 38,
-title: "Our Gratitude",
-description: "A small donation = lots of gratitude from our team. Thanks for your support!",
-cost: 10,
-project_id: 7,
-delivery_date: Time.now + 100.days,
-reward_count: nil,
-reward_max_count: nil
-})
-
-Reward.create!({
-id: 40,
-title: "Handmade Mini Book",
-description: "A handmade mini book just for you!",
-cost: 50,
-project_id: 7,
-delivery_date: Time.now + 100.days,
-reward_count: nil,
-reward_max_count: nil
-})
-
-Reward.create!({
-id: 5,
-title: "Digital Level",
-description: "Digital copy of the entire 164 page graphic novel, featuring all six issues as well as bonus content and artwork",
-cost: 10,
-project_id: 6,
-delivery_date: Time.now + 30.days,
-reward_count: nil,
-reward_max_count: nil
-})
-
-Reward.create!({
- id: 6,
- title: "T Shirt Level",
- description:
-  "Not only will you get a digital copy of the graphic novel, you will also get a T Shirt. ",
- cost: 30,
- project_id: 6,
- delivery_date: Time.now + 30.days,
- reward_count: nil,
- reward_max_count: nil
-})
-
-Reward.create!({
- id: 7,
- title: "THE NOVEL LEVEL",
- description: "High quality hard cover copy of the graphic novel",
- cost: 45,
- project_id: 6,
- delivery_date: Time.now + 30.days,
- reward_count: nil,
- reward_max_count: nil
-})
-
-Reward.create!({
-id: 8,
 title: "First generation toy",
 description: "Hot off the shelf! Get your new toy as soon as its ready to ship.",
 cost: 45,
-project_id: 8,
+project_id: Project.all.last.id,
 delivery_date: Time.now + 60.days,
 reward_count: nil,
 reward_max_count: nil
 })
 
 Reward.create!({
-id: 9,
 title: "Limited edition toy",
 description: "Just for our Underway supporters! A limited edition toy at no extra cost!",
 cost: 45,
-project_id: 8,
+project_id: Project.all.last.id,
 delivery_date: Time.now + 60.days,
 reward_count: nil,
 reward_max_count: 250
 })
 
+#######################
+####### Project 07 ####
+#######################
 
-Reward.create!({
-id: 10,
-title: "The Shoe",
-description: "Experience our new shoes as soon as they are ready!",
-cost: 1200,
-project_id: 9,
-delivery_date: Time.now + 200.days,
-reward_count: nil,
-reward_max_count: nil
+Project.create!({
+  title: "The Fancier Dress Shoe ",
+  blurb: "No other shoe comes close",
+  img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457330191/v9qys2h4dohy9zm2vceb.jpg",
+  details: "<div><span style=\"font-size: 18px;\">The Fancier Dress Shoe&nbsp;</span></div><div><br></div><div><br></div><div>The pinnacle of men's fashion. No other shoe is this classy, this comfortable, and this expensive. Experience the difference today. Your feet will thank you. </div>",
+  author_id: 1,
+  category_id: 4,
+  current_funding: 0,
+  funding_goal: 50000,
+  campaign_end_date: Time.now + 180.days
 })
 
 Reward.create!({
-id: 11,
-title: "The Shoe Delux",
-description: "Experience our new shoes as soon as they are ready! This package contains 2 pairs of shoes",
-cost: 2000,
-project_id: 9,
-delivery_date: Time.now + 200.days,
-reward_count: nil,
-reward_max_count: nil
+  title: "The Shoe",
+  description: "Experience our new shoes as soon as they are ready!",
+  cost: 1200,
+  project_id: Project.all.last.id,
+  delivery_date: Time.now + 200.days,
+  reward_count: nil,
+  reward_max_count: nil
 })
 
 Reward.create!({
-id: 12,
-title: "Founders Shoe",
-description: "Artesian hand made shoes. Get one of the first shoes our founders created during the design process.",
-cost: 3500,
-project_id: 9,
-delivery_date: Time.now + 200.days,
-reward_count: nil,
-reward_max_count: 50
+  title: "The Shoe Delux",
+  description: "Experience our new shoes as soon as they are ready! This package contains 2 pairs of shoes",
+  cost: 2000,
+  project_id: Project.all.last.id,
+  delivery_date: Time.now + 200.days,
+  reward_count: nil,
+  reward_max_count: nil
 })
 
 Reward.create!({
-id: 13,
- title: "Opening night tickets",
- description: "Come watch our documentary with the cast and crew!",
- cost: 150,
- project_id: 10,
- delivery_date: Time.now + 60.days,
- reward_count: nil,
- reward_max_count: 200
+  title: "Founders Shoe",
+  description: "Artesian hand made shoes. Get one of the first shoes our founders created during the design process.",
+  cost: 3500,
+  project_id: Project.all.last.id,
+  delivery_date: Time.now + 200.days,
+  reward_count: nil,
+  reward_max_count: 50
+})
+
+#######################
+####### Project 08 ####
+#######################
+
+Project.create!({
+  title: "Documentary ^ 2",
+  blurb: "Ever wondered how documentaries are made? Presenting the documentary about documentaries",
+  img_url: "http://res.cloudinary.com/dur3lr9q4/image/upload/v1457331670/crgrzotsphlhkx8rdttw.jpg",
+  details: "<div><br></div><div><span style=\"font-size: 32px;\">Documentary ^ 2</span></div><div><br></div><div>We take you behind the scenes exploring the world of documentaries. Our documentary has everything:</div><div><br></div><ol><li>Narration</li><li>Humor</li><li>Drama</li><li>Information</li></ol><div><br></div><div>Don't miss out on watching the documentary of a lifetime!</div>",
+  author_id: 1,
+  category_id: 5,
+  current_funding: 0,
+  funding_goal: 25000,
+  campaign_end_date: Time.now + 45.days
 })
 
 Reward.create!({
-id: 14,
-title: "Reserved tickets",
-description: "Come watch our documentary anytime with this reserved ticket coupon!",
-cost: 16,
-project_id: 10,
-delivery_date: Time.now + 60.days,
-reward_count: nil,
-reward_max_count: nil
+  title: "Opening night tickets",
+  description: "Come watch our documentary with the cast and crew!",
+  cost: 150,
+  project_id: Project.all.last.id,
+  delivery_date: Time.now + 60.days,
+  reward_count: nil,
+  reward_max_count: 200
 })
 
 Reward.create!({
-id: 25,
-title: "Thanks for the leg up",
-description: "Support our project! Get a premium sock!",
-cost: 5,
-project_id: 3,
-delivery_date: Time.now + 60.days,
-reward_count: nil,
-reward_max_count: nil
+  title: "Reserved tickets",
+  description: "Come watch our documentary anytime with this reserved ticket coupon!",
+  cost: 16,
+  project_id: Project.all.last.id,
+  delivery_date: Time.now + 60.days,
+  reward_count: nil,
+  reward_max_count: nil
 })
+
+
+
+####################
+###### Reward ######
+####################
+
+
+
+
 # ​
 # Reward.create!({
 # id: 26,
@@ -396,17 +426,6 @@ reward_max_count: nil
 # reward_max_count: 3
 # })
 #
-Reward.create!({
-id: 4,
-title: "Rulebook + Strategy Guide",
-description: "Learn how to play our game with our offical rulebook + strategy guide!",
-cost: 95,
-project_id: 2,
-delivery_date: Time.now + 32.days,
-reward_count: nil,
-reward_max_count: nil
-})
-
 
 
 ####################
