@@ -31924,7 +31924,11 @@
 	      }
 	      var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
 	      rewards = sortedRewards.map(function (el) {
-	        return React.createElement(RewardDetail, { reward: el, clickerFunc: 'expired' });
+	        return React.createElement(
+	          'span',
+	          { key: el.id },
+	          React.createElement(RewardDetail, { reward: el, clickerFunc: 'expired' })
+	        );
 	      });
 	    } else {
 	      sortedRewards = this._sortRewards(this.state.Project.project.rewards);
@@ -31932,9 +31936,17 @@
 	      rewards = sortedRewards.map(function (el) {
 	        if (el.reward_max_count !== null && el.reward_number_sold >= el.reward_max_count) {
 
-	          return React.createElement(RewardDetail, { reward: el, clickerFunc: 'soldout' });
+	          return React.createElement(
+	            'span',
+	            { key: el.id },
+	            React.createElement(RewardDetail, { reward: el, clickerFunc: 'soldout' })
+	          );
 	        } else {
-	          return React.createElement(RewardDetail, { reward: el });
+	          return React.createElement(
+	            'span',
+	            { key: el.id },
+	            React.createElement(RewardDetail, { reward: el })
+	          );
 	        }
 	      });
 	    }
@@ -60331,13 +60343,13 @@
 	        createdProjects
 	      ),
 	      React.createElement(
+	        'h2',
+	        null,
+	        'Purchase History'
+	      ),
+	      React.createElement(
 	        'table',
 	        { className: 'table table-hover' },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Purchase History'
-	        ),
 	        React.createElement(
 	          'thead',
 	          null,

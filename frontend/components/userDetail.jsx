@@ -92,8 +92,8 @@ var ProjectDetail = React.createClass({
         </div>
 
 
+        <h2>Purchase History</h2>
         <table className="table table-hover">
-          <h2>Purchase History</h2>
           <thead>
             <tr>
               <th>Reward:</th>

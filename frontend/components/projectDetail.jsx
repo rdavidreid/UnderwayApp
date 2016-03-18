@@ -179,7 +179,11 @@ var ProjectDetail = React.createClass({
       }
       var sortedRewards = this._sortRewards(this.state.Project.project.rewards);
       rewards = sortedRewards.map(function(el) {
-        return(<RewardDetail reward={el} clickerFunc="expired"/>);
+        return(
+          <span key={el.id} >
+            <RewardDetail reward={el} clickerFunc="expired"/>
+          </span>
+        );
       });
     }
     else {
@@ -189,10 +193,18 @@ var ProjectDetail = React.createClass({
         if (el.reward_max_count !== null &&
             el.reward_number_sold >= el.reward_max_count){
 
-          return(<RewardDetail reward={el} clickerFunc="soldout" />);
+          return(
+            <span key={el.id} >
+              <RewardDetail reward={el} clickerFunc="soldout"/>
+            </span>
+          );
         }
         else {
-          return(<RewardDetail reward={el} />);
+          return(
+            <span key={el.id} >
+              <RewardDetail reward={el} />
+            </span>
+          );
         }
       });
     }
