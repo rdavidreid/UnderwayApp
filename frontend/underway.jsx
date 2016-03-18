@@ -45,24 +45,6 @@ var routes = (
   </Route>
 );
 
-
-
-// var routes = (
-//   <Router>
-//
-//     <Route path="/" component={ProjectIndex} ></Route>
-//     <Route path="project/:id" component={ProjectDetail} ></Route>
-//     <Route path="createproject" component={ProjectForm}></Route>
-//     <Route path="editproject/:id" component={ProjectEditForm}></Route>
-//
-//   </Router>
-
-// );
-
-// TODO REMOVE:
-window.ApiUtil = ApiUtil;
-window.CategoryStore = CategoryStore;
-
 document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById('content');
   if (root){

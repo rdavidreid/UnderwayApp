@@ -94,22 +94,6 @@
 	  React.createElement(Route, { path: 'userdetails', component: UserDetail })
 	);
 
-	// var routes = (
-	//   <Router>
-	//
-	//     <Route path="/" component={ProjectIndex} ></Route>
-	//     <Route path="project/:id" component={ProjectDetail} ></Route>
-	//     <Route path="createproject" component={ProjectForm}></Route>
-	//     <Route path="editproject/:id" component={ProjectEditForm}></Route>
-	//
-	//   </Router>
-
-	// );
-
-	// TODO REMOVE:
-	window.ApiUtil = ApiUtil;
-	window.CategoryStore = CategoryStore;
-
 	document.addEventListener("DOMContentLoaded", function () {
 	  var root = document.getElementById('content');
 	  if (root) {
@@ -19770,9 +19754,6 @@
 	    case ProjectConstants.SINGLE_PROJECT_RECIEVED:
 	      this.resetProjects([payload.projects]);
 	      this.__emitChange();
-	    case ProjectConstants.REWARD_CREATED:
-	    // TODO: NEED THIS?
-	    // this.__emitChange
 	  }
 	};
 
@@ -60548,8 +60529,6 @@
 	  closeModal: function () {
 	    this.setState({ modalIsOpen: false });
 	  },
-
-	  // TODO: REFACTOR / CLEAN THIS. add into another file
 
 	  validateInput: function () {
 	    this.errors = [];

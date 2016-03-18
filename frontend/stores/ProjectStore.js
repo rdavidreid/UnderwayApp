@@ -42,9 +42,6 @@ ProjectStore.__onDispatch = function(payload) {
     case ProjectConstants.SINGLE_PROJECT_RECIEVED:
       this.resetProjects([payload.projects]);
       this.__emitChange();
-    case ProjectConstants.REWARD_CREATED:
-    // TODO: NEED THIS?
-      // this.__emitChange
   }
 };
 

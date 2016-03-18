@@ -4,10 +4,29 @@
 
 [heroku]: https://underway.herokuapp.com/
 
-## Minimum Viable Product
+## Description
 
 UnderWay is a web application inspired by Kickstarter built using Ruby on Rails
-and React.js. UnderWay allows users to:
+and React.js.
+
+Custom Auth Utilizes BCrypt to hash and salt passwords
+
+Cloudinary integration allows users to easily upload and crop pictures.
+
+Quill integration allows users to stylize project descriptions
+
+Users can easily explore projects based on category and see 'trending' projects (projects that have received the most funding and have not reached their campaign end date)
+
+Full CRUD API for projects - users can create projects, and edit or destroy projects they have created.
+
+Users can back a project simply by clicking on a reward
+
+Users can see projects they have backed and created on their user page
+
+Project's cannot be backed after they reach their campaign end date, and display weather or not they were successfully funded
+
+
+## Minimum Viable Product
 
 - [X] Create an account
 - [X] Log in / Log out
@@ -16,7 +35,6 @@ and React.js. UnderWay allows users to:
 - [X] Create projects that other users can back.
 - [X] Projects are funded if enough money is raised in a set amount of time.
 - [X] Projects are not funded if funding goal is not met by deadline.
-
 
 ## Design Docs
 * [View Wireframes][views]
@@ -135,8 +153,9 @@ chose which categories to display, or to display all.
 
 ### Bonus Features (TBD)
 - [X] Implement 'quill' for text inputs
-- [X] implement 'cloudinary' for picture uploading
+- [X] Implement 'cloudinary' for picture uploading
 - [ ] Author can post updates on authored project
+- [ ] Implement search bar
 - [ ] Multiple sessions
 - [ ] Users can post comments on projects they have backed
 - [ ] Users can 'follow' a project without backing it

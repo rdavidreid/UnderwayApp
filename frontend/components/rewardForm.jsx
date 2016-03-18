@@ -86,8 +86,6 @@ var rewardForm = React.createClass({
     this.setState({modalIsOpen: false});
   },
 
-  // TODO: REFACTOR / CLEAN THIS. add into another file
-
   validateInput: function() {
     this.errors = [];
     if(this.state.title ==="") {
