@@ -42,14 +42,19 @@ var ProjectDetail = React.createClass({
 
   render: function() {
     var that = this;
+    debugger;
 
-    if (this.state.User != undefined){
+    if (this.state.User !== undefined){
 
       var backedProjects = this.state.User.backed_projects.map(function(el) {
         return(<ProjectIndexItem project={el} key={el.id}/>);
       });
 
       var createdProjects = this.state.User.authored_projects.map(function(el) {
+        return(<ProjectIndexItem project={el} key={el.id}/>);
+      });
+
+      var likedProjects = this.state.User.liked_projects.map(function(el) {
         return(<ProjectIndexItem project={el} key={el.id}/>);
       });
 
@@ -62,6 +67,7 @@ var ProjectDetail = React.createClass({
 
       backedProjects = [];
       createdProjects = [];
+      likedProjects = [];
       rewardRow = [];
     }
 
@@ -78,6 +84,13 @@ var ProjectDetail = React.createClass({
         You have not created any projects
       </div>);
     }
+
+    if(likedProjects == ""){
+      var likedProjects = (<div className="alert alert-warning" role="alert">
+        You have not liked any projects
+      </div>);
+    }
+
     return (
       <div>
 
@@ -89,6 +102,11 @@ var ProjectDetail = React.createClass({
         <div className="row">
           <h2 className="user-detail-title"> Created Projects</h2>
           {createdProjects}
+        </div>
+
+        <div className="row">
+          <h2 className="user-detail-title"> Liked Projects</h2>
+          {likedProjects}
         </div>
 
 

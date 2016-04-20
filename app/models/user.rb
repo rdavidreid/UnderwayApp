@@ -22,6 +22,9 @@ class User < ActiveRecord::Base
   has_many(:backers)
   has_many(:rewards, through: :backers)
 
+  has_many(:likes)
+  has_many(:liked_projects, through: :likes, source: :project)
+
   def authored_projects
     arr = []
     Project.all.each do |project|
