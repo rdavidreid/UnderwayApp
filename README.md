@@ -2,7 +2,7 @@
 
 [www.underwayapp.com][heroku]
 
-[heroku]: http://www.underwayapp.com/
+[heroku]: http://underway.herokuapp.com
 
 ## Description
 
